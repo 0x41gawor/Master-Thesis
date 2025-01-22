@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.25)  21 JAN 2025 22:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.4.25)  22 JAN 2025 23:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1060,7 +1060,12 @@ pdfTeX warning: pdflatex.exe (file ./src/pl/title/mgr.pdf): PDF inclusion: multi
 >] [2
 
 
-] (./tex/abstract/pl.tex) [3] (./tex/abstract/eng.tex) [4
+] (./tex/abstract/pl.tex)
+Overfull \hbox (0.984pt too wide) in paragraph at lines 3--47
+[]\T1/futs/m/n/12 (-20) Naturalnym na-st¦p-nym kro-kiem jest za-pro-po-wa-nie plat-formy, na któ-rej ope-ra-tor mógªby
+ []
+
+[3] (./tex/abstract/eng.tex) [4
 
 ] (./main.toc
 LaTeX Font Info:    Trying to load font information for FML+futmi on input line 2.
@@ -1209,15 +1214,15 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 28418 strings out of 478233
- 495367 string characters out of 5840816
+ 28414 strings out of 478233
+ 495330 string characters out of 5840816
  1637799 words of memory out of 5000000
  45719 multiletter control sequences out of 15000+600000
- 597934 words of font info for 371 fonts, out of 8000000 for 9000
+ 597664 words of font info for 368 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 123i,14n,120p,1984b,2066s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 123i,14n,120p,1265b,2066s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {a:/Program Files/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{a:/Program Files/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<a:/Program Files/texlive/2022/texmf-dist/fonts/type1/public/fourier/fourier-mex.pfb><a:/Program Files/texlive/2022/texmf-dist/fonts/type1/public/fourier/fourier-mlit.pfb><a:/Program Files/texlive/2022/texmf-dist/fonts/type1/public/fourier/fourier-ms.pfb><a:/Program Files/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb><a:/Program Files/texlive/2022/texmf-dist/fonts/type1/adobe/utopia/putb8a.pfb><a:/Program Files/texlive/2022/texmf-dist/fonts/type1/adobe/utopia/putr8a.pfb><a:/Program Files/texlive/2022/texmf-dist/fonts/type1/adobe/utopia/putri8a.pfb><a:/Program Files/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on main.pdf (21 pages, 544335 bytes).
+Output written on main.pdf (21 pages, 544261 bytes).
 PDF statistics:
  355 PDF objects out of 1000 (max. 8388607)
  306 compressed objects within 4 object streams
