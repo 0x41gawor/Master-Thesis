@@ -13,9 +13,9 @@
 \graphicspath{{tex/img/}} % Katalog z obrazkami.
 \addbibresource{bibliografia.bib} % Plik .bib z bibliografią
 
-\facultyeiti    % Wydział Elektroniki i Technik Informacyjnych
-\MasterThesis % Praca inżynierska
-\langpol % Praca w języku polskim
+\facultyeiti    
+\MasterThesis 
+\langpol 
 
 \begin{document}
 
@@ -31,7 +31,6 @@
 \engtitle{
     Creation of a platform for designing and running closed control loops in Kubernetes
 }
-
 \author{Andrzej Gawor}
 \album{300528}
 \promotor{dr inż. Dariusz Bursztynowski}
@@ -41,7 +40,7 @@
 %-------------------------------------
 % Streszczenie po polsku 
 %-------------------------------------
-\cleardoublepage % Zaczynamy od nieparzystej strony
+\cleardoublepage
 \abstract
 \input{tex/abstract/pl.tex}
 \keywords Zamknięte pętle sterowania, Kubernetes, Zarządzanie sieciami telekomunikacyjnymi, Automatyzacja, Go, Open5GS, Mikroserwisy
@@ -59,20 +58,21 @@
 %--------------
 % Spis treści
 %--------------
-\cleardoublepage % Zaczynamy od nieparzystej strony
+\cleardoublepage
 \tableofcontents
 
 %------------
 % Rozdziały
 %------------
-\cleardoublepage % Zaczynamy od nieparzystej strony
+\cleardoublepage 
 \pagestyle{headings}
-\input{tex/1-wstep/main.tex} 
+\input{tex/1-wstep/main.tex}
+\input{tex/2-stan-wiedzy/main.tex} 
 
 %---------------
 % Literatura
 %---------------
-\cleardoublepage % Zaczynamy od nieparzystej strony
+\cleardoublepage 
 \printbibliography
 \clearpage
 
@@ -85,11 +85,11 @@
 \pagestyle{plain}
 \input{tex/util/acronym-list.tex}
 
-\listoffigurestoc    % Spis rysunków.
-\vspace{1cm}         % vertical space
-\listoftablestoc     % Spis tabel.
+\listoffigurestoc    
 \vspace{1cm}         
-\listofappendicestoc % Spis załączników
+\listoftablestoc     
+\vspace{1cm}         
+\listofappendicestoc 
 
 %-------------
 % Załączniki
