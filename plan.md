@@ -21,6 +21,7 @@
      - Tak jak tu: [detailed-docs](https://github.com/0x41gawor/lupus/blob/master/docs/detailed-docs.md)
      - Odniesienia do [definitions](https://github.com/0x41gawor/lupus/blob/master/docs/defs.md), które będą w załączniku
      - Odniesienia do pełnych specyfikacji [specs/](https://github.com/0x41gawor/lupus/tree/master/docs/spec), które będą w załącznikach
+     - [Open Policy Agents](https://github.com/0x41gawor/lupus/blob/master/docs/open-policy-agents.md)
      - Tu też daj Open Policy Agent
    - 3.5 Krótka instrukcja jak używać
      - Może opis jak tu: [Getting-Started](https://github.com/0x41gawor/lupus/blob/master/docs/getting-started.md)
@@ -36,12 +37,10 @@
    - 4.3 Decyzje podjęte podczas developmentu (każda wynikająca z wymagań następnie opis implementacji)
      - To tu objawia się badawcza natura pracy
      - [Komunikacja pomiędzy lupus-elements](https://github.com/0x41gawor/lupus/blob/master/docs/com-bet-lup-ele.md)
-     - [Data](https://github.com/0x41gawor/lupus/blob/master/docs/spec/data.md)
-     - [Actions](https://github.com/0x41gawor/lupus/blob/master/docs/spec/actions.md)
-     - [Polimorfizm w LupN](https://github.com/0x41gawor/lupus/blob/master/docs/go-style-polymorphism.md)
-     - [2 workflows](https://github.com/0x41gawor/lupus/blob/master/docs/2-workflows.md)
-     - [Open Policy Agents](https://github.com/0x41gawor/lupus/blob/master/docs/open-policy-agents.md)
-     - [User-functions](https://github.com/0x41gawor/lupus/blob/master/docs/user-functions.md)
+     - [Data](https://github.com/0x41gawor/lupus/blob/master/docs/spec/data.md) tu napisz, jak dojdzięto do decyzji że będzie to json oraz ze map[string]interface a ze w k8s RawExtension
+     - [Polimorfizm w LupN](https://github.com/0x41gawor/lupus/blob/master/docs/go-style-polymorphism.md) 
+     - [2 workflows](https://github.com/0x41gawor/lupus/blob/master/docs/2-workflows.md) to taka kwestia różnic w ipce tych dwóch workflow, ale nie było tu zadnych decyzji, raczej ta sekcja omówi skąd różnice w workflowach
+     - [User-functions](https://github.com/0x41gawor/lupus/blob/master/docs/user-functions.md) Jak je zaimplementowano
      - Może historia zmian w developmencie? Jak to się zmieniało na przestrzeni sprintów. Tak jak tu: [journal.md](https://github.com/0x41gawor/lupus/blob/master/journal.md) to raczej inny rozdział niż implementacja. Może architektura? Napisz go oddzielnie 
 5. **Test platformy na Open5GS**
     - 5.1 Wstęp
@@ -66,3 +65,10 @@
 **Załącznik 4 - Open5GS**
 
 - Wszelki kody źródłowe i rysunki związane z testem na Open5GS
+
+**Załącznik 5 - LupN**
+
+- To będzie niosło w sumie najwięcej info
+
+**Załącznik 5 - Specyfikacja Akji**
+- Tu napisać należy ze akcje wybrano jako atomowy zbiór.

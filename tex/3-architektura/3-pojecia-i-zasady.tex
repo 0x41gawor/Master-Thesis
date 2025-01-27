@@ -19,7 +19,7 @@ Za to system, którym chcemy zarządzać nazywamy \textbf{zarządzanym systemem}
 
 \subsubsection{System kontroli}
 
-\textbf{System kontroli} (ang. \textit{Control System\footnote{innym tłumaczeniem na polski jest "regulator"}} to system, który reguluje pracą \textbf{zarządzanego systemu}. Na przykład:
+\textbf{System kontroli} (ang. \textit{Control System\footnote{innym tłumaczeniem na polski jest "regulator"}}) to system, który reguluje pracą \textbf{zarządzanego systemu}. Na przykład:
 \begin{itemize}
     \item tempomat, który reguluje pracą silnika w celu utrzymania stałej prędkości,
     \item lodówka, która reguluje pracą sprężarki w celu utrzymania stałej, chłodnej temperatury
@@ -33,8 +33,10 @@ Innymi słowy mówiąc \textbf{System kontroli} rozwiązuje \textbf{Problem Zarz
 Ogólną architekturą \textbf{Systemów Kontroli} używaną do rozwiązywania \textbf{Problemów Zarządzania} jest \textbf{Pętla Sterowania}.
 
 Pętle sterowania są klasyfikowane w zależności od tego, czy wykorzystują mechanizmy sprzężenia zwrotnego (ang. \textit{feedback mechanism}):
-- \textbf{Otwarte Pętle Sterowania}: Akcja Sterująca (ang. \textit{Control Action}) (czyli wejście do \textbf{Systemu Zarządzanego}) jest niezależne od wyjścia \textbf{Systemu Zarządzanego}.
-- \textbf{Zamknięte Pętle Sterowania}: Wyjście \textbf{Systemu Zarządzanego} jest sprzężane do wejścia \textbf{Systemu Kontroli} i wpływa na Akcję Sterującą. 
+\begin{itemize}
+    \item \textbf{Otwarte Pętle Sterowania}: Akcja Sterująca (ang. \textit{Control Action}) (czyli wejście do \textbf{Systemu Zarządzanego}) jest niezależne od wyjścia \textbf{Systemu Zarządzanego}.
+    \item \textbf{Zamknięte Pętle Sterowania}: Wyjście \textbf{Systemu Zarządzanego} jest sprzężane do wejścia \textbf{Systemu Kontroli} i wpływa na Akcję Sterującą. 
+\end{itemize}
 
 W Lupus bierzemy pod uwagę wyłącznie zamknięte pętle sterowania.
 
@@ -88,7 +90,7 @@ Kiedy Lupus otrzyma \textbf{Aktualny Stan} poprzez interfejs \textbf{Lupin}, roz
 
 Elementem pętli może być zarówno:
 \begin{itemize}
-    \item \text{Element Lupus}, który działa w warstwie sterowania Kubernetes a jego misją jest wykonywać \textit{Workflow Pętli}
+    \item \textbf{Element Lupus}, który działa w warstwie sterowania Kubernetes a jego misją jest wykonywać \textit{Workflow Pętli}
     \item referencja do \textbf{Elementu Zewnętrznego}, który działa poza warstwą sterowania Kubernetes a jego misją jest wykonywać \textbf{Część Obliczeniową} \textbf{Logiki Pętli}
 \end{itemize}
 
@@ -102,11 +104,41 @@ Przykładowe \textbf{workflow pętli} pokazano na rysunku \ref{fig:33-workflow}
 \end{figure}
 
 \begin{itemize}
-    \item Niebieskie, zaokrąglone prostokąty reprezentują elementy Lupus,
-    \item Czerwone prostokąty oznaczają elementy zewnętrzne.
-    \item Niebieski obszar wyznaczony linią przerywaną wskazuje elementy działające w klastrze Kubernetes. Wyróżniono elementy Lupus odpowiedzialne za ingress i egress.
+    \item Niebieskie, zaokrąglone prostokąty reprezentują \textbf{Elementy Lupus},
+    \item Czerwone prostokąty oznaczają \textbf{Elementy Zewnętrzne}.
+    \item Niebieski obszar wyznaczony linią przerywaną wskazuje elementy działające w warstwie sterowania Kubernetes. 
+    \item Wyróżniono elementy Lupus odpowiedzialne za ingress i egress.
 \end{itemize}
 
 \textbf{Elementy Zewnętrzne} to zazwyczaj serwery HTTP (w szczególności serwery Open Policy Agent).
 
-Jak można zauważyć, jeden \textbf{Element Lupus} może komunikować się z zerem, jednym lub wieloma elementami zewnętrznymi (liczba ta może się różnić w każdej iteracji pętli).
+Jak można zauważyć, jeden \textbf{Element Lupus} może komunikować się z żadnym, jednym lub wieloma elementami zewnętrznymi, a liczba ta może się różnić w każdej iteracji pętli).
+
+\subsubsection{Dane i Akcje}
+
+\textbf{Dane} (ang. \textit{data}) to nośnik informacji w ramach jednej iteracji pętli w postaci JSON. Na wejściu \textbf{Elementu Ingress} reprezentują one \textbf{aktualny stan} (ang. \textit{current state}) \textbf{Systemu Zarządzanego}. Następnie, w trakcie iteracji pętli, to projektant decyduje jakie informacje będą przenosić. Zazwyczaj są to informacje związane z \textbf{logiką pętli} takie jak wejścia (ang. \textit{inputs}) do \textbf{Elementów Zewnętrznych} oraz ich odpowiedzi. Na końcu iteracji, gdy \textbf{dane} trafiają do \textbf{Agenta Egress} muszę reprezentować \textbf{Akcję Sterowania}. 
+
+Działanie pojedynczego \textbf{Elementu Lupus} jest opisane poprzez \textbf{Workflow Akcji}. \textbf{Akcja} wykonują różne operacje na \textbf{danych}. Istnieje wiele rodzajów akcji, a kluczowym typem akcji jest "Send", która pozwala komunikować się \textbf{Elementowi Lupus} z \textbf{Elementem Zewnętrznym}. Inne typy akcji służą organizacji danych.
+
+Pełna specyfikacja \textbf{Danych} znajduje się w //TODO, zaś pełna specyfikacja \textbf{Akcji} w załączniku //TODO.
+
+\subsubsection{Open Policy Agent}
+
+Open Policy Agent (OPA) to otwartoźródłowe narzędzie przeznaczone do definiowania, egzekwowania i zarządzania politykami w systemach oprogramowania. Systemy informatyczne odpytują serwery OPA podczas wykonywania operacji, które wymagają decyzji (decyzji dostępu, konfiguracji czy zachowania aplikacji). Dzięki takiemu podejściu można oddzielić logikę podejmowania decyzji od kodu aplikacji, co zwiększa modularność, wprowadza centralny punkt zarządzania politykami oraz ułatwia utrzymanie systemów.
+
+Polity w OPA definiowane są w języku Rego. Jest to deklaratywny język stworzony specjalnie na potrzeby OPA. Pozwala na tworzenie złożonych reguł i logiki decyzji.
+
+//TODO official site
+
+\begin{lstlisting}[language=sh, caption={\emph{Przykładowy kod rego}}]
+allow {
+    input.user.role == "admin"
+}
+
+allow {
+    input.user.role == "user"
+    input.action == "read"
+}
+\end{lstlisting}
+
+Open Policy Agent jest rekomendowanym \textbf{Elementem Zewnętrznym} dla Lupus.
