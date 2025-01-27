@@ -12,3 +12,41 @@ Kiedy dany \textbf{Użytkownik} planuje użyć Lupus jako \textbf{Systemu Kontro
     \item Zaaplikować pliki manifestacyjne zawierające kod \textbf{LupN} w klastrze
 \end{enumerate}
 
+Podjęcie przez użytkownika takich akcji nazywamy pojedynczym \textbf{Wdrożeniem Lupus}.
+
+\subsubsection{Instalacja Lupus}
+
+Lupus jest zaimplementowany jako Niestandardowe Zasoby (ang. \textit{Custom Resources}) w Kubernetes. Instalacja polega na zainstalowaniu tych zasobów w swoim klastrze. 
+
+Pełna dokumentacje tego procesu znajduje się w załączniku //TODO
+
+\subsubsection{Implementacja Agentów Translacyjnych}
+
+To użytkownik podczas \textbf{Wdrożenia} jest odpowiedzialny za implementację agentów translacji. Tylko użytkownik zna specyfikę swojego Systemu Zarządzanego. Stąd w zespole użytkownika potrzebne są umiejętności programistyczne. 
+
+Podczas implementację należy kierować się specyfikacją interfejsów Lupin oraz Lupout zawartą w załączniku //TODO.
+
+\subsubsection{Planowanie Workflow Pętli}
+
+Workflow pętli powinno wyrazić logikę rekoncylacji, czyli w każdej iteracji doprowadzić System Zarządzany do Stanu Pożądanego. Użytkownik w tym kroku jedynie modeluje wysokopoziomowo workflow pętli, rysując np. jego diagram. Dopiero takie spojrzenie podpowie użytkownikowi jakich elementów zewnętrznych potrzebuje.
+
+\subsubsection{Przygotowanie Elementów Zewnętrznych}
+
+Elementami Zewnętrznymi może być dowolne oprogramowanie, z którym chce komunikować się \textbf{Designer} podczas wykonywania pętli. Mogą to być już gotowe elementy, ale równie dobrze użytkownik może stworzyć oprogramowanie samemu. Ważne jest to, aby wystawiały one jakiś sposób komunikacji. Na razie jedynym wspieranym przez Lupus sposobem jest komunikacja HTTP. Użytkownik musi umożliwić, więc komunikację tego typu.
+
+Rekomendowanym przez Lupus typem Elementu Zewnętrznego jest serwer Open Policy Agent. Przygotowanie w tym wypadku polega na uruchomieniu takiego serwera oraz wgraniu mu odpowiednich polityk. Użytkownik jednakże może wydewelopować dowolny serwer HTTP.
+
+Ostatnim możliwym elementem zewnętrznym są \textbf{Funkcje Użytkownika}. Funkcje w kodzie kontrolera zasobu \textbf{Lupus Element}, które są definiowane przez użytkownika. Stanowią one alternatywę dla serwerów HTTP, gdy specjalne wdrażanie takowych może się okazać zbyt kosztowne. Przykładowo jeśli logika wykonywana przez dany \textbf{Element Zewnętrzny} miała by mieć tylko kilka linijek kodu, dużo łatwiej użyć \textbf{Funkcji Użytkownika}. Ich dokładna specyfikacja znajduje się w załączniku //TODO.
+
+\subsubsection{Wyrażenie workflow pętli}
+
+Gdy już całe workflow pętli oraz elementy zewnętrzne są gotowe czas wyrazić jej workflow w notacji \textbf{LupN}. Za jej pomocą wyraża się workflow pętli jako zbiór  \textbf{Elementów Lupus}, połączenia między nimi oraz specyfikacja każdego z nich.
+
+\subsubsection{Aplikacja plików manifestacyjnych}
+
+Aby stworzyć pętle opisaną przez kod LupN w pliku manifestacyjnym zasobu Master należy wykonać komendę z listingu \ref{lst:2}, która tworzy instancję obiektu API typu Master. Kontroler tego zasobu stworzy odpowiednie obiekty API typu Element według specyfikacji w pliku LupN. Podczas iteracji pętli, kontroler każdego elementu interpretuje ich specyfikacje wykonując odpowiednie \textbf{akcje} na \textbf{danych}. \textbf{Workflow Akcji} również specyfikowane jest w notacji \textbf{LupN}, której specyfikacja znajduje się w załączniku //TODO.
+
+
+\begin{lstlisting}[language=sh, caption={\emph{Stworzenie zasobu Master}}\label{lst:2}]
+    kubectl apply -f <nazwa_pliku>
+\end{lstlisting}

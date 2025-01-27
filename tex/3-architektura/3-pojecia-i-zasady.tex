@@ -120,6 +120,8 @@ Jak można zauważyć, jeden \textbf{Element Lupus} może komunikować się z ż
 
 Działanie pojedynczego \textbf{Elementu Lupus} jest opisane poprzez \textbf{Workflow Akcji}. \textbf{Akcja} wykonują różne operacje na \textbf{danych}. Istnieje wiele rodzajów akcji, a kluczowym typem akcji jest "Send", która pozwala komunikować się \textbf{Elementowi Lupus} z \textbf{Elementem Zewnętrznym}. Inne typy akcji służą organizacji danych.
 
+//TODO daj tu przykładowe workflow akcji
+
 Pełna specyfikacja \textbf{Danych} znajduje się w //TODO, zaś pełna specyfikacja \textbf{Akcji} w załączniku //TODO.
 
 \subsubsection{Open Policy Agent}
@@ -130,7 +132,7 @@ Polity w OPA definiowane są w języku Rego. Jest to deklaratywny język stworzo
 
 //TODO official site
 
-\begin{lstlisting}[language=sh, caption={\emph{Przykładowy kod rego}}]
+\begin{lstlisting}[language=sh, caption={\emph{Przykładowy kod rego}}\label{lst:1}]
 allow {
     input.user.role == "admin"
 }
