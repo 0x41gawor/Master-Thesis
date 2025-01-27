@@ -21,6 +21,7 @@
      - Tak jak tu: [detailed-docs](https://github.com/0x41gawor/lupus/blob/master/docs/detailed-docs.md)
      - Odniesienia do [definitions](https://github.com/0x41gawor/lupus/blob/master/docs/defs.md), które będą w załączniku
      - Odniesienia do pełnych specyfikacji [specs/](https://github.com/0x41gawor/lupus/tree/master/docs/spec), które będą w załącznikach
+     - Tu też daj Open Policy Agent
    - 3.5 Krótka instrukcja jak używać
      - Może opis jak tu: [Getting-Started](https://github.com/0x41gawor/lupus/blob/master/docs/getting-started.md)
      - A może same potrzebne kroki jak tu: [readme#how-to-use-it](https://github.com/0x41gawor/lupus/tree/master?tab=readme-ov-file#how-to-use-it)
@@ -41,7 +42,7 @@
      - [2 workflows](https://github.com/0x41gawor/lupus/blob/master/docs/2-workflows.md)
      - [Open Policy Agents](https://github.com/0x41gawor/lupus/blob/master/docs/open-policy-agents.md)
      - [User-functions](https://github.com/0x41gawor/lupus/blob/master/docs/user-functions.md)
-     - Może historia zmian w developmencie? Jak to się zmieniało na przestrzeni sprintów. Tak jak tu: [journal.md](https://github.com/0x41gawor/lupus/blob/master/journal.md)
+     - Może historia zmian w developmencie? Jak to się zmieniało na przestrzeni sprintów. Tak jak tu: [journal.md](https://github.com/0x41gawor/lupus/blob/master/journal.md) to raczej inny rozdział niż implementacja. Może architektura? Napisz go oddzielnie 
 5. **Test platformy na Open5GS**
     - 5.1 Wstęp
     - 5.2 Opis podobny jak w [examples/open5gs](https://github.com/0x41gawor/lupus/tree/master/examples/open5gs), jednocześnie stanowiący walk-through guide dla usera na żywym przykładzie, krok po kroku, cały kod Ingress-Agent, LupN, Egress-Agent, rysunek workflow i przepływ Date'y w załącznikach.
