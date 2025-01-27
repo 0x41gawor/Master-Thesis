@@ -1,6 +1,6 @@
 \subsection{Instrukcja Użycia}
 
-Niniejsza podsekcja prezentuje krótką instrukcję użycia platformy Lupus. \textbf{Użytkownikiem} Lupus może stać się dowolna organizacja bądź pojedyncza osoba. Ważne jest aby w zespole użytkownik posiadał kompetencje z zakresu tworzenia oprogramowania. W zespole \textbf{Użytkownika} wyróżniamy rolę \textbf{Designera}, który jest odpowiedzialny jedynie za projektowanie i wyrażanie \textbf{Workflow Pętli}, niekoniecznie też musi posiadać umiejętności techniczne. 
+Niniejsza podsekcja prezentuje krótką instrukcję użycia platformy Lupus. \textbf{Użytkownikiem} Lupus może stać się dowolna organizacja bądź pojedyncza osoba. Ważne jest aby zespół użytkownika posiadał kompetencje z zakresu tworzenia oprogramowania. W zespole \textbf{Użytkownika} wyróżniamy rolę \textbf{Designera}, który jest odpowiedzialny jedynie za projektowanie i wyrażanie \textbf{Workflow Pętli}, i niekoniecznie musi posiadać umiejętności techniczne. 
 
 Kiedy dany \textbf{Użytkownik} planuje użyć Lupus jako \textbf{Systemu Kontroli} do rozwiązywania \textbf{Problemu Zarządzania} w swoim \textbf{Systemie Zarządzanym}, powinien:
 \begin{enumerate}
@@ -24,7 +24,7 @@ Pełna dokumentacje tego procesu znajduje się w załączniku //TODO
 
 To użytkownik podczas \textbf{Wdrożenia} jest odpowiedzialny za implementację agentów translacji. Tylko użytkownik zna specyfikę swojego Systemu Zarządzanego. Stąd w zespole użytkownika potrzebne są umiejętności programistyczne. 
 
-Podczas implementację należy kierować się specyfikacją interfejsów Lupin oraz Lupout zawartą w załączniku //TODO.
+Podczas implementacji należy kierować się specyfikacją interfejsów Lupin oraz Lupout zawartą w załączniku //TODO.
 
 \subsubsection{Planowanie Workflow Pętli}
 
@@ -32,7 +32,7 @@ Workflow pętli powinno wyrazić logikę rekoncylacji, czyli w każdej iteracji 
 
 \subsubsection{Przygotowanie Elementów Zewnętrznych}
 
-Elementami Zewnętrznymi może być dowolne oprogramowanie, z którym chce komunikować się \textbf{Designer} podczas wykonywania pętli. Mogą to być już gotowe elementy, ale równie dobrze użytkownik może stworzyć oprogramowanie samemu. Ważne jest to, aby wystawiały one jakiś sposób komunikacji. Na razie jedynym wspieranym przez Lupus sposobem jest komunikacja HTTP. Użytkownik musi umożliwić, więc komunikację tego typu.
+Elementem Zewnętrznym może być dowolne oprogramowanie, z które \textbf{Designer} ma chęć włączyć w \textbf{workflow pętli}. Mogą to być już gotowe systemu (np. sztucznej inteligencji), ale równie dobrze użytkownik może stworzyć oprogramowanie samemu. Ważne jest to, aby wystawiały one jakiś sposób komunikacji. Na razie jedynym wspieranym przez Lupus sposobem jest komunikacja HTTP. Użytkownik musi umożliwić, więc komunikację tego typu z elementem.
 
 Rekomendowanym przez Lupus typem Elementu Zewnętrznego jest serwer Open Policy Agent. Przygotowanie w tym wypadku polega na uruchomieniu takiego serwera oraz wgraniu mu odpowiednich polityk. Użytkownik jednakże może wydewelopować dowolny serwer HTTP.
 
