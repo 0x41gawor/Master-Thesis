@@ -1,0 +1,233 @@
+\subsection{Decyzje podjęte podczas developmentu}
+
+\subsubsection{Wstęp}
+
+W tym rozdziale objawia się badawcza natura pracy. Podczas realizacji projektu zbadano wiele podejść oraz rozwiązano wiele problemów implementacyjnych, aby dojść do postawionej w sekcji 3 architektury. Każda podsekcja omawia po jednym z aspektów od wymagań do implementacyji.
+
+\subsubsection{Komunikacja pomiędzy Elementami Lupus}
+
+Pierwszym krokiem w implementacji było wymyślenie sposobu na komunikację pomiędzy \textbf{Elementami Lupus}. Z racji, że \textbf{Elementy Lupus} są \textit{Zasobami Własnymi} wykorzystano tu natywne mechanizmy Kubernetes opisane w podsekcji 4.2 i 4.3. Ideą było to, że \textit{Operator} jednego zasobu dokonuje zmian w obiekcie API innego elementu, co z kolei wywoła ponownie Operator z innym obiektem wejściowym. Elementy modyfikują nawzajem swój Status, a dokładniej jego pole \texttt{input} przekazując tam swoją \textbf{Finalną Postać Danych}. 
+
+
+\begin{figure}[!h]
+    \centering \includegraphics[width=1\linewidth]{43-komunikacja.png}
+    \caption{Komunikacja pomiędzy Elementami Lupus}\label{fig:43-komunikacja}
+\end{figure}
+
+Działa to w sposób ukazany na rysunku \ref{fig:43-komunikacja}. Początkowo Elementy Lupus mogły przyjąć postać jednego z 4 typów: Observe, Learn, Decide lub Execute \footnote{W myśl pętli ODA}. Agent Ingress modyfikował Status obiektu Observe, natomiast Operator Observe modyfikował statusy obiektów Learn oraz Decide. Na koniec modyfikacje otrzymywał obiekt Execute, którego Operator przekazywał swoje \textbf{Dane} do Agenta Egress. Z czasem jednak, aby nie narzucać konkretnej struktury pętli, zrezygnowano z 4 typów i stworzono jeden uniwersalny typ, którego Operator jest w stanie wykonać \textbf{Workflow Akcji}, co pozwalało na wyrażenie logiki dowolnego z 4 poprzednich typów. W ten sposób spełniono \hyperref[req:5]{Wymaganie 5}. 
+
+\subsubsection{Dane}
+
+\hyperref[req:5]{Wymaganie 5} nakazuje, aby Elementy Lupus były sterowane danymi (\textit{data-driven}). \textbf{Dane} oraz \textbf{workflow akcji} spełniają te wymaganie. Dzięki nim Elementy Lupus może wykonać dowolny zestaw akcji na danych dając \textbf{Designerowi} pewną elastyczność. To właśnie \textbf{Dane} przekazywane są jako pole \texttt{input} w statusie obiektu API Elementu Lupus. 
+
+Z racji uniwersalności danych należało wybrać format, który pozwoli na ich możliwie dużą dowolność. Wybór padł na JSON, racji ogólnie przyjętego standardu i możliwości reprezentacji dowolnej struktury danych. 
+
+Kubernetes z kolei wymaga, aby pola umieszczane w Statusie Zasobu miały konkretny typ. Dokonano, więc analizy jaki typ nadaje się do reprezentacji obiektu JSON. Wybór padł na \texttt{RawExtension} Jest to typ zdefiniowany przez zespół Kubernetes używany do obsługi dowolnych surowych danych w formacie JSON lub YAML. Należy do pakietu \texttt{k8s.io/apimachinery/pkg/runtime} i jest często stosowany, gdy zasób musi osadzić lub pracować ze strukturą danych, która jest elastyczna, ale jednocześnie uporządkowana. \texttt{RawExtension} spełnia nasze wymagania.
+
+\begin{lstlisting}[language=go, caption={\emph{Definicja struktury Go reprezentującej status Elementu Lupus}}\label{lst:431}]
+// ElementStatus defines the observed state of Element
+type ElementStatus struct {
+	// Input contains operational data
+	Input runtime.RawExtension `json:"input"`
+	// Timestamp of the last update
+	LastUpdated metav1.Time `json:"lastUpdated"`
+}
+\end{lstlisting}
+
+\texttt{RawExtension} to typ, które użyjemy do przenoszenia \textbf{Danych} między Elementami Lupus. Pozostaje kwestia reprezentacji tych danych w Operatorach Lupus. 
+
+\begin{lstlisting}[language=go, caption={\emph{Definicja struktury Go RawExtension w paczce k8s.io/apimachinery/pkg/runtime}}\label{lst:432}]
+type RawExtension struct {
+    Raw []byte `json:"-"` // Serialized JSON or YAML data
+    Object Object         // A runtime.Object representation
+}
+\end{lstlisting}
+
+Zamierzonym celem RawExtension według deweloperów Kubernetes jest umożliwienie deserializacji do określonej, znanej struktury. Jednak ze względu na \hyperref[req:5]{Wymaganie 5} taka struktura nie istnieje. Potrzebujemy więc natywnej struktury Go, która jest w stanie reprezentować dowolny obiekt JSON. Pierwszym pomysłem, który się nasuwa, jest użycie typu Go \texttt{interface{}}, ponieważ może on reprezentować dowolne dane. Problem z \texttt{interface{}} polega jednak na tym, że nie można na nim operować – nie udostępnia żadnego interfejsu do interakcji. Jest to typ podstawowy.
+
+Drugim pomysłem na reprezentację JSON-a było użycie \texttt{map[string]interface{}}, ponieważ większość instancji JSON-a to faktycznie obiekty klucz-wartość. Klucze w tym przypadku są typu \texttt{string}, a wartości mogą być dowolne (stąd użycie \texttt{interface{}}) w Go. W większości przypadków obiekty JSON zawierają kilka głównych pól (ang. \textit{top-level fields}), co idealnie pasuje do reprezentacji \texttt{map[string]interface{}}.
+
+Tak właśnie narodziło się pojęcie \textbf{Danych}. \textbf{Dane} to w rzeczywistości struktura opakowująca i dająca odpowiedni interfejs (ang. \textit{Wrapper}) dla wspomnianej wcześniej mapy.
+
+\begin{lstlisting}[language=go, caption={\emph{Definicja struktury Go dla Danych}}\label{lst:433}]
+type Data struct {
+	Body map[string]interface{}
+}
+\end{lstlisting}
+
+Ta struktura posiada bogaty zestaw funkcji (metod), które pełnią rolę interfejsu do pracy z danymi. Metody te są wywoływane podczas wykonywania akcji i zazwyczaj – z wyjątkiem metod \texttt{Get} i \texttt{Set} – każda metoda odpowiada dokładnie jednej akcji. Kluczowym konceptem danych jest \textbf{pole danych} (ang. \textit{Data-field}). Jest ono odpowiednikiem pola w JSON-ie. Każde pole jest identyfikowane przez swój \textbf{klucz} i przechowuje wartość. Za pomocą metody \texttt{Get} możemy pobrać wartość znajdującą się pod danym kluczem, a przy użyciu \texttt{Set} możemy ustawić nową wartość dla pola wskazanego określonym kluczem. Nie obejmuje to jednak wszystkich obiektów JSON, jakie istnieją. JSON pozwala, aby element na najwyższym poziomie był tablicą. Nakłada to pewne ograniczenia na projektowanie pętli. Szczególnie JSON reprezentujący aktualny stan \textbf{managed-system}, wysyłany przez \textbf{lupin-interface}, musi być serializowalny do \texttt{map[string]interface{}}. Oznacza to, że nie może być:
+\begin{itemize}
+    \item typem prymitywnym,
+    \item tablicą,
+    \item obiektem JSON z kluczami innymi niż string.
+\end{itemize}
+
+\subsubsection{Polimorfizm w Go}
+
+Notacja \textbf{LupN} pozwala, aby wiele jej obiektów posiadało swój typ. Przykładowo akcje są różnorakiego typu. Mają pewną część wspólną, ale też pola szczególne dla każdego typu. Go jest statycznie typowanym językiem, który nie posiada dziedziczenia ani tradycyjnego obiektowego polimorfizmu. Dlatego dokonano analizy jak w Go osiągnąć tę wielopostaciowość.
+
+\paragraph{Polimorfizm poprzez interfejsy}
+
+Natywnym sposobem na polimorfizm w Go jest ten osiągany poprzez interfejsy. To zagadnienie najlepiej tłumaczy poniższy kod.
+
+
+\begin{lstlisting}[language=go, caption={\emph{Przykład polimorfizmu poprzez interfejsy}}\label{lst:434}]
+package main
+
+import (
+	"fmt"
+)
+
+type Forwarder interface {
+	Forward() string
+}
+
+type NextElement struct {
+	Name string
+}
+
+func (e *NextElement) Forward() string {
+	return fmt.Sprintf("Forwarding to element: %s", e.Name)
+}
+
+type Destination struct {
+	URL string
+}
+
+func (d *Destination) Forward() string {
+	return fmt.Sprintf("Forwarding to destination: %s", d.URL)
+}
+
+func ProcessForwarder(f Forwarder) {
+	fmt.Println(f.Forward())
+}
+
+func main() {
+	element := &NextElement{Name: "Element1"}
+	destination := &Destination{URL: "https://example.com"}
+
+	ProcessForwarder(element)
+	ProcessForwarder(destination)
+}
+\end{lstlisting}
+
+\textbf{Jak to działa}
+
+\begin{itemize}
+    \item \textbf{Definicja interfejsu:}  
+    \texttt{Forwarder} definiuje metodę \texttt{Forward()}, którą muszą zaimplementować określone typy.
+    
+    \item \textbf{Konkretne implementacje:}  
+    \texttt{NextElement} oraz \texttt{Destination} implementują metodę \texttt{Forward()}.
+    
+    \item \textbf{Zastosowanie:}  
+    Każdy typ spełniający interfejs \texttt{Forwarder} może być przekazywany do funkcji oczekujących obiektu \texttt{Forwarder}.
+\end{itemize}
+
+\paragraph{Polimorfizm poprzez wskaźniki oraz pole dyskryminatora}
+
+Kolejnym potężnym i idiomatycznym wzorcem w Go jest \textbf{polimorfizm w stylu Go z użyciem wskaźników}, gdzie struktura posiada opcjonalne pola wskaźnikowe, a pole \texttt{type} (znacznik) określa, które z tych pól jest istotne w czasie działania programu.
+
+\begin{lstlisting}[language=go, caption={\emph{Przykład polimorfizmu poprzez wskaźniki oraz pole dyskryminatora}}\label{lst:435}]
+type Next struct {
+	// Type specifies the type of next loop-element
+	Type string `json:"type"`
+	// List of input keys (Data fields) that have to be forwarded
+	Keys []string `json:"keys"`
+	// One of the fields below is not null
+	Element     *NextElement `json:"element,omitempty"`
+	Destination *Destination `json:"destination,omitempty"`
+}
+
+type NextElement struct {
+	Name string `json:"name"`
+}
+
+type Destination struct {
+	URL string `json:"url"`
+}
+
+func (n *Next) Validate() error {
+	if n.Type == "element" && n.Element == nil {
+		return fmt.Errorf("Element must be set 
+        for type 'element'")
+	}
+	if n.Type == "destination" && n.Destination == nil {
+		return fmt.Errorf("Destination must be set 
+        for type 'destination'")
+	}
+	if n.Element != nil && n.Destination != nil {
+		return fmt.Errorf("Only one of Element 
+        or Destination can be set")
+	}
+	return nil
+}
+\end{lstlisting}
+
+\textbf{Jak to działa}
+
+\textbf{Unia tagowana} to wzorzec, w którym pole \texttt{tag} określa, którą z kilku możliwych reprezentacji danych wykorzystuje dany obiekt. W Go jest to realizowane poprzez kombinację:
+
+\begin{itemize}
+    \item Pole dyskryminujące typ (np. \texttt{Type string}).
+    \item Pola wskaźnikowe dla możliwych wariantów. Jeśli dane pole nie występuje w aktualnej reprezentacji obiektu, jego wartość jest po prostu \texttt{nil}.
+    \item Podczas działania programu możemy zweryfikować, której reprezentacji danych używa obiekt, i odpowiednio na tej podstawie podjąć działanie.
+\end{itemize}
+
+Podczas działania programu możemy zweryfikować, której reprezentacji danych używa obiekt, i odpowiednio na tej podstawie podjąć działanie.
+
+\paragraph{Porównanie}
+
+Porównanie zostało przedstawione w tabeli \ref{tab:431}
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.5} % Zwiększenie odstępów między wierszami
+\begin{tabular}{|p{4cm}|p{5.5cm}|p{5.5cm}|}
+\hline
+\textbf{Funkcja}               & \textbf{Polimorfizm przez wskaźniki}                                   & \textbf{Polimorfizm przez interfejsy}                          \\ \hline
+\textbf{Zachowanie w czasie działania} & Używa dyskryminatora (\texttt{Type}) i pól wskaźnikowych           & Używa implementacji metod do polimorfizmu                     \\ \hline
+\textbf{Bezpieczeństwo typów}      & Wymaga jawnej walidacji                                              & Wymuszane podczas kompilacji za pomocą interfejsów            \\ \hline
+\textbf{Serializacja}          & Bezproblemowa z JSON                                                 & Może wymagać niestandardowego \texttt{marshaling}             \\ \hline
+\textbf{Rozszerzalność}        & Dodaj nowe pola wskaźnikowe i zaktualizuj enum \texttt{Type}          & Dodaj nowe typy implementujące interfejs                      \\ \hline
+\textbf{Łatwość użycia}         & Prosta, ale wymaga ręcznej walidacji                                 & Czysta i idiomatyczna w Go                                    \\ \hline
+\textbf{Wspólne zachowanie}    & Wymaga zewnętrznej logiki                                            & Enkapsulowane w metodach interfejsu                           \\ \hline
+\end{tabular}
+\caption{Porównanie polimorfizmu przez wskaźniki i przez interfejsy w Go.}\label{tab:431}
+\end{table}
+
+Polimorfizm przez wskaźniki oferuje przejrzystą reprezentację danych, która może być łatwo serializowana i deserializowana (np. do formatu JSON lub YAML). Dodatkowo wspiera włączenie pola \texttt{type} jako części modelu danych, dzięki czemu może być ono również przechowywane lub przesyłane. Z drugiej strony polimorfizm przez interfejsy jest natywny dla Go, bardziej przejrzysty i gwarantuje silne sprawdzanie typów podczas kompilacji.
+
+\textbf{Podsumowanie:}
+
+\begin{itemize}
+    \item Polimorfizm przez wskaźniki jest preferowany w aplikacjach skoncentrowanych na danych.
+    \item Polimorfizm przez interfejsy jest preferowany w aplikacjach skoncentrowanych na zachowaniach.
+\end{itemize}
+
+W Lupus polimorfizm był potrzebny do reprezentacji różnych typów (odmian) niektórych \textbf{Obiektów Lupn} takich jak \textbf{Actions} lub \textbf{Next}, dlatego wybrano Polimorfizm poprzez wskaźniki oraz pole dyskryminatora.
+
+\subsubsection{Dwa rodzaje workflow}
+
+W Lupus występują dwa rodzaje \textit{workflow}: \textbf{Workflow Pętli}, które definiuje przepływ pracy \textbf{Elementów Lupn} oraz \textbf{Workflow Akcji}, które definiuje przepływ \textbf{Akcji} we wnętrzu pojedynczego elementu. Występują między pewne różnice w możliwościach wynikające ze sposobu implementacji komunikacji między ich węzłami.
+
+\begin{itemize}
+    \item Węzły w \textbf{Workflow Pętli} komunikują się ze sobą poprzez pobudzanie operatorów.
+    \item Węzły w \textbf{Workflow Akcji} komunikują się poprzez pamięć RAM zaalokowaną poprzez pojedyncy operator \textbf{Elementu Lupus}.
+\end{itemize}
+
+Różnice są widoczne w specyfikacji \textbf{LupN} //TODO.
+
+\subsubsection{Funkcje użytkownika}
+
+Zgodnie z \hyperref[req:6]{Wymaganiem 6} elementy Lupus nie wykonują \textbf{części obliczeniowej logiki pętli}.  Zamiast tego, jest ona delegowana do \textbf{Elementów Zewnętrznych}.
+
+Pojawiają się tutaj dwa aspekty:
+\begin{itemize}
+    \item Co w sytuacji, gdy ktoś potrzebuje wykonać małą i prostą operację na danych (np. dodanie dwóch pól), a wdrażanie dedykowanego serwera HTTP jest nieekonomiczne?
+    \item Każda platforma ramowa powinna być rozszerzalna. Powinniśmy zapewnić mechanizm umożliwiający rozszerzanie naszej platformy.
+\end{itemize}
+
+Z tych dwóch powodów wdrożono funkcję o nazwie „Definiowane przez użytkownika, wewnętrzne funkcje Go” (lub w skrócie – „Funkcje użytkownika”).
+
+Użytkownik może definiować własne fragmenty kodu Go jako funkcje i wywoływać je jako jedną z \textbf{Destynacji}) w akcji \textbf{Send}.

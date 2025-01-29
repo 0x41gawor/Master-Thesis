@@ -68,6 +68,7 @@
 \RequirePackage{tocloft}       % Custom ToC/LoF/LoT
 \RequirePackage{url}           % URL-sensitive line breaks
 \RequirePackage{xspace}        % Remove duplicated spaces
+\RequirePackage{array}
 
 %----------------------------
 % Parametrized dependencies
