@@ -231,3 +231,101 @@ Pojawiają się tutaj dwa aspekty:
 Z tych dwóch powodów wdrożono funkcję o nazwie „Definiowane przez użytkownika, wewnętrzne funkcje Go” (lub w skrócie – „Funkcje użytkownika”).
 
 Użytkownik może definiować własne fragmenty kodu Go jako funkcje i wywoływać je jako jedną z \textbf{Destynacji}) w akcji \textbf{Send}.
+
+W repozytorium kodu z projektem Kubebuilder znajduję plik o nazwie \texttt{user-functions.go} \footnote{\url{https://github.com/0x41gawor/lupus/blob/master/lupus/internal/controller/user-functions.go}}. To w nim \textbf{Użytkownik} może definiować swoje funkcje. Plik posiada już jedną przykładową funkcję.
+
+\begin{lstlisting}[language=go, caption={\emph{Przykładowa funkcja użytkownika}}\label{lst:436}]
+// Exemplary user-function. It just returns the input
+func (UserFunctions) Echo(input interface{}) (interface{}, error) {
+	return input, nil
+}
+\end{lstlisting}
+
+Funkcja jako argument przyjmuje \texttt{interface{}}, który będzie reprezentował \textbf{pole danych}.\footnote{Pola lub pola, gdyż pod tym pojęciem może też się kryć użycie "*"}. Zwracanym typem jest również \texttt{interface{}}, który zostanie przez akcję send wpisany jako \textbf{pole danych}.
+
+Nazwa \texttt{UserFunctions} jest strukturą, która gromadzi funkcje użytkownika.
+
+\begin{lstlisting}[language=go, caption={\emph{Stukrutra składują funckje użytkowniak jako swoje metody.}}\label{lst:437}]
+// UserFunctions struct for user-defined, internal functions
+type UserFunctions struct{}
+\end{lstlisting}
+
+Powstaje teraz pytanie jak wywołać takową funkcję w notacji \textbf{LupN}. Na szczęście funkcje w Go mogą być używane jako typy i przechowywane jako wartości. Dzięki temu mogą zostać zapisane jako wartości w mapie klucz-wartość, gdzie nazwy funkcje typu \texttt{string} pełnią rolę kluczy.
+
+
+\begin{lstlisting}[language=go, caption={\emph{Mapa przechowująca funkcje użytkownika}}\label{lst:438}]
+// A global map to store function references
+var FunctionRegistry = map[string]func(input interface{}) (interface{}, error){}
+\end{lstlisting}
+
+Następnie, z pomocą biblioteki \texttt{reflect}\footnote{\url{https://pkg.go.dev/reflect}} można zaimplementować funkcję, która iteruje po metodach struktury \texttt{UserFunctions} i zapisuje je do powyższej mapy jako wartości, dla których kluczami są nazwy funkcji. 
+
+\begin{lstlisting}[language=go, caption={\emph{Funkcja zapełniająca mapę funkcji użytkownika}}\label{lst:439}]
+// RegisterFunctions dynamically registers user-defined functions
+func RegisterFunctions(target interface{}) {
+	t := reflect.TypeOf(target)
+	v := reflect.ValueOf(target)
+
+	for i := 0; i < t.NumMethod(); i++ {
+		method := t.Method(i)
+
+		// Ensure the method matches the required signature
+		if method.Type.NumIn() == 2 && // Receiver + input
+			method.Type.NumOut() == 2 && // Output + error
+			method.Type.In(1).Kind() == reflect.Interface && // Input: interface{}
+			method.Type.Out(0).Kind() == reflect.Interface && // Output: interface{}
+			method.Type.Out(1).Implements(reflect.TypeOf((*error)(nil)).Elem()) { // Second output: error
+
+			funcName := method.Name
+			FunctionRegistry[funcName] = func(input interface{}) (interface{}, error) {
+				// Call the user-defined function
+				result := method.Func.Call([]reflect.Value{v, reflect.ValueOf(input)})
+
+				// Handle result[1] (error) being nil
+				var err error
+				if !result[1].IsNil() {
+					err = result[1].Interface().(error)
+				}
+
+				return result[0].Interface(), err
+			}
+		}
+	}
+}
+\end{lstlisting}
+
+Funkcja widoczna na listingu \ref{lst:439} jest wywoływana podczas inicjalizacji paczki kontrolera z strukturą \texttt{UserFunctions} jako argument.
+
+\begin{lstlisting}[language=go, caption={\emph{Inicjaliza mapy}}\label{lst:4310}]
+func init() {
+    // Fill in the FunctionRegistry map with functions defined as a method of UserFunctions{}
+	RegisterFunctions(UserFunctions{})
+}
+\end{lstlisting}
+
+
+Od tego momentu funkcja może zostać wywołana po nazwie w funkcji obsługujące akcję Send w interpreterze Operatora Elementu Lupus.
+
+\begin{lstlisting}[language=go, caption={\emph{Wywołąnie funkcji użytkownika w akcji send}}\label{lst:4311}]
+func sendToGoFunc(funcName string, body interface{}) (interface{}, error) {
+	if fn, exists := FunctionRegistry[funcName]; exists {
+		return fn(body)
+	} else {
+		return nil, fmt.Errorf("no such UserFunction defined")
+	}
+}
+\end{lstlisting}
+
+W notacji \textbf{LupN} wystarczy zapis:
+
+\begin{lstlisting}[language=sh, caption={\emph{Użycie funkcji użytkownika w LupN}}\label{lst:4312}]
+  - name: "bounce"
+    type: send
+    send:
+        inputKey: "field1"
+        destination:
+        type: gofunc
+        gofunc:
+            name: echo
+        outputKey: "field2"
+\end{lstlisting}
