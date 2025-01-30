@@ -1,0 +1,39 @@
+\appendix{Specyfikacja akcji}\label{appendix:6}
+
+Specyfikacja w formie elektronicznej znajduje się pod linkiem: \url{https://github.com/0x41gawor/lupus/blob/master/docs/spec/actions.md}.
+
+Specyfikacja akcji w LupN znajduje się w załączniku //TODO. Ten dokument prezentuje przykładowe działanie \textbf{akcji} na \textbf{danych}.
+
+Akcje zostały opracowane jako najbardziej atomowe operacje, które, gdy zostaną odpowiednio połączone, stanowią narzędzie umożliwiające \textbf{designer'owi pętli} pełne operowanie na \textbf{danych}.
+
+Czasami operacja, która na pierwszy rzut oka wydaje się atomowa, wymaga użycia dwóch połączonych akcji. Z drugiej strony, zdarza się, że operacja początkowo uznana za atomową okazuje się jedynie szczególnym przypadkiem bardziej ogólnej operacji. Dobrym przykładem jest nieistniejąca już akcja \texttt{concat}. Została ona zaprojektowana do łączenia dwóch pól w jedno, jednak okazało się, że jest to specyficzny przypadek akcji \texttt{nest}, w której lista \texttt{InputKey} zawiera tylko dwa elementy.
+
+\subsection{Podział ogólny}
+
+Mamy 8 typów akcji:
+
+\begin{itemize}
+    \item \textbf{Send}
+    \item \textbf{Nest}
+    \item \textbf{Remove}
+    \item \textbf{Rename}
+    \item \textbf{Duplicate}
+    \item \textbf{Insert}
+    \item \textbf{Print}
+    \item \textbf{Switch}
+\end{itemize}
+
+Możemy wyróżnić następujące kategorie:
+
+\begin{itemize}
+    \item 6 akcji, które mogą być używane do modyfikacji danych: \\ 
+          \texttt{\{Send, Nest, Remove, Rename, Duplicate, Insert\}}
+    \item 1 akcja do komunikacji z \textbf{Elementami Zewnętrznymi}: \\ 
+          \texttt{\{Send\}}
+    \item 2 akcje do debugowania: \\ 
+          \texttt{\{Insert, Print\}}
+    \item 1 akcja do logowania: \\ 
+          \texttt{\{Print\}}
+    \item 1 akcja do sterowania przepływem \textbf{workflow akcji}: \\ 
+          \texttt{\{Switch\}}
+\end{itemize}

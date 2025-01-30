@@ -66,7 +66,7 @@ Ta struktura posiada bogaty zestaw funkcji (metod), które pełnią rolę interf
 
 Notacja \textbf{LupN} pozwala, aby wiele jej obiektów posiadało swój typ. Przykładowo akcje są różnorakiego typu. Mają pewną część wspólną, ale też pola szczególne dla każdego typu. Go jest statycznie typowanym językiem, który nie posiada dziedziczenia ani tradycyjnego obiektowego polimorfizmu. Dlatego dokonano analizy jak w Go osiągnąć tę wielopostaciowość.
 
-\paragraph{Polimorfizm poprzez interfejsy}
+\textbf{Polimorfizm poprzez interfejsy}
 
 Natywnym sposobem na polimorfizm w Go jest ten osiągany poprzez interfejsy. To zagadnienie najlepiej tłumaczy poniższy kod.
 
@@ -124,7 +124,7 @@ func main() {
     Każdy typ spełniający interfejs \texttt{Forwarder} może być przekazywany do funkcji oczekujących obiektu \texttt{Forwarder}.
 \end{itemize}
 
-\paragraph{Polimorfizm poprzez wskaźniki oraz pole dyskryminatora}
+\textbf{Polimorfizm poprzez wskaźniki oraz pole dyskryminatora}
 
 Kolejnym potężnym i idiomatycznym wzorcem w Go jest \textbf{polimorfizm w stylu Go z użyciem wskaźników}, gdzie struktura posiada opcjonalne pola wskaźnikowe, a pole \texttt{type} (znacznik) określa, które z tych pól jest istotne w czasie działania programu.
 
@@ -176,7 +176,7 @@ func (n *Next) Validate() error {
 
 Podczas działania programu możemy zweryfikować, której reprezentacji danych używa obiekt, i odpowiednio na tej podstawie podjąć działanie.
 
-\paragraph{Porównanie}
+\textbf{Porównanie}
 
 Porównanie zostało przedstawione w tabeli \ref{tab:431}
 
@@ -218,8 +218,7 @@ W Lupus występują dwa rodzaje \textit{workflow}: \textbf{Workflow Pętli}, kt�
 
 Różnice są widoczne w specyfikacji \textbf{LupN} //TODO.
 
-\subsubsection{Funkcje użytkownika}
-
+\subsubsection{Funkcje użytkownika}\label{sec:funkcje-uzytkownika}
 Zgodnie z \hyperref[req:6]{Wymaganiem 6} elementy Lupus nie wykonują \textbf{części obliczeniowej logiki pętli}.  Zamiast tego, jest ona delegowana do \textbf{Elementów Zewnętrznych}.
 
 Pojawiają się tutaj dwa aspekty:

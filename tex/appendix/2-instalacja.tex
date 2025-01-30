@@ -1,0 +1,46 @@
+\appendix{Instalacja Lupus}\label{appendix:2}
+
+Specyfikacja w formie elektronicznej znajduje się pod linkiem: \url{https://github.com/0x41gawor/lupus/blob/master/docs/installation.md}.
+
+\subsection{Przedsłowie}
+
+Instalacja Lupus wymaga umiejętności technicznych oraz podstawowej znajomości operacyjnej Kubernetes.
+
+Lupus jest zaimplementowany jako projekt Kubebuilder \footnote{https://book.kubebuilder.io}. Zalecanym sposobem instalacjiLupus jest sklonowanie tego repozytorium i przyjęcie roli dewelopera tego projektu.
+
+Nie istnieje coś takiego jak instalacja Lupus (np. w systemie operacyjnym). Można zainstalować \textbf{Zasoby Własne} dla \textbf{Elementów Lupus} w klastrze Kubernetes i uruchomić dla nich \textbf{kontrolery}. Niniejszy załącznik opisuje właśnie taki proces.
+
+\subsection{Wymagania wstępne}
+
+Użytkownik musi posiadać działający klaster Kubernetes. Może to być Minikube\footnote{\url{https://minikube.sigs.k8s.io/docs/}}, zainstalowany silnik kontenerów (ang. \textit{container engine}) (np. Docker\footnote{\url{https://docs.docker.com}}) oraz język Go\footnote{\url{https://go.dev}}.
+
+\subsubsection{Instalacja Kubebuilder}
+
+Instrukcja dostępna pod adresem: \url{https://book.kubebuilder.io/quick-start}.
+
+\subsection{Klonowanie repozytorium}
+
+\begin{lstlisting}[language=bash, caption={Klonowanie repozytorium}]
+git clone https://github.com/0x41gawor/lupus
+cd lupus
+\end{lstlisting}
+
+\subsection{Instalacja CRD w klastrze}
+
+To polecenie zastosuje \textbf{CRD} (pl. Definicje Zasobów Własnych) dla \textbf{Master} i \textbf{Element} w klastrze, umożliwiając ich użycie.
+
+\begin{lstlisting}[language=bash, caption={Instalacja CRD}]
+make install
+\end{lstlisting}
+
+\subsection{Uruchomienie kontrolerów }
+
+To polecenie uruchomi \textbf{kontrolery} dla \textit{zasobów własnych} \textbf{master} i \textbf{element}.
+
+\begin{lstlisting}[language=bash, caption={Uruchomienie kontrolerów}]
+make run
+\end{lstlisting}
+
+Istnieje możliwość uruchomienia kontrolerów jako pody w klastrze Kubernetes. W tym celu użytkownik jest zaproszony do bliższego zapoznania się z platformą Kubebuilder. Dopóki \textbf{Użytkownik} jest pewien, że nie będzie dopisywał \textbf{Funkcji Użytkownika} nie jest to zalecane podejście. 
+
+
