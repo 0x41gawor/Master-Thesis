@@ -174,3 +174,49 @@ Element "demux" służy do rozdzielenia \textbf{danych} na dwie części. Każde
 Kod LupN znajduje się w załączniku //TODO. Ostatnim krokiem w celu uruchomienia pętli jest zaaplikowanie \textbf{pliku LupN}. 
 
 \subsubsection{Prezentacja działania jednej iteracji pętli}
+
+Iteracje rozpoczyna Ingress Agent, który pobiera dane z Kubernetes (rys \ref{fig:53-scr-1}). Następnie aktualizuje on status obiektu API \texttt{lola-demux} (rys. \ref{fig:53-scr-2}), który wykonuje swoje workflow akcji (rys. \ref{fig:53-scr-3}), skutkujące aktualizacją statusu obiektów API \texttt{upf1} i \texttt{upf2} (rys. \ref{fig:53-scr-6}). To skutkuje wywołaniem Operatora dla tych obiektów. Operator wykonuje dla obu workflow akcji (rys. \ref{fig:53-scr-4}). Na koniec oba elementy uderzają w endpoint \texttt{api/data} serwowany przez Agenta Egress (rys. \ref{fig:53-scr-5}).
+
+\begin{figure}[!h]
+    \centering \includegraphics[width=1\linewidth]{53-scr-1.png}
+    \caption{Logi Agenta Ingress}\label{fig:53-scr-1}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering \includegraphics[width=0.5\linewidth]{53-scr-2.png}
+    \caption{Status obiektu API "lola-demux"}\label{fig:53-scr-2}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering \includegraphics[width=1\linewidth]{53-scr-3.png}
+    \caption{Logi operatora element rekoncylującego obiekt API "lola-demux"}\label{fig:53-scr-3}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering \includegraphics[width=1\linewidth]{53-scr-6.png}
+    \caption{Statusy obiektów API "lola-upf1" oraz "lola-upf2"}\label{fig:53-scr-6}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering \includegraphics[width=1\linewidth]{53-scr-4.png}
+    \caption{Logi operatora element rekoncylującego obiekt API "lola-upf1"}\label{fig:53-scr-4}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering \includegraphics[width=1\linewidth]{53-scr-5.png}
+    \caption{Logi Agenta Egress}\label{fig:53-scr-5}
+\end{figure}
+
+Gdy pobudzimy funkcję UPF do większej pracy ruchem z UE (//TODO załącznik jak), widzimy raportowane większe zużycie zasobów przez odpowiednie wdrożenie (rys. \ref{fig:53-scr-7}). Aktualne zużycie przekraczające zdefiniowany punkt pracy powoduje otrzymanie od elementu zewnętrznego \texttt{opa-point} punkt \texttt{NORMAL\_TO\_CRITICAL}, co z kolei wpływa na workflow akcji (rys. \ref{fig:53-scr-8}). W kolejnych iteracjach w logach Agenta Ingress widzimy błąd spowodowany tym, ze Pod UPF1 chwilowo nie istnieje, stało się tak dlatego iż Agent Egress w poprzedniej iteracji zmienił jego wartość \texttt{requests} oraz \texttt{limits}, co poskutkowało restartem Poda. Po restarcie widzimy iż Agent Ingress raportuje nowe wartości \texttt{requests} i \texttt{limits} dla Poda UPF1.
+
+\begin{figure}[!h]
+    \centering \includegraphics[width=1\linewidth]{53-scr-7.png}
+    \caption{Logi Agenta Ingress przy pobudzeniu ruchem}\label{fig:53-scr-7}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering \includegraphics[width=1\linewidth]{53-scr-8.png}
+    \caption{Logi z workflow akcji elementu "upf1" przy pobudzeniu ruchem}\label{fig:53-scr-8}
+\end{figure}
+
+Dokmuntacja elektroniczna całego procesu wraz z instrukcją uruchomienia na własnym środowisku znaduje się pod linkiem: \url{https://github.com/0x41gawor/lupus/tree/master/examples/open5gs}.
