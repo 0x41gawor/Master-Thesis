@@ -1,12 +1,12 @@
 \subsection{Instrukcja Użycia}
 
-Niniejsza podsekcja prezentuje krótką instrukcję użycia platformy Lupus. \textbf{Użytkownikiem} Lupus może stać się dowolna organizacja bądź pojedyncza osoba. Ważne jest aby zespół użytkownika posiadał kompetencje z zakresu tworzenia oprogramowania. W zespole \textbf{Użytkownika} wyróżniamy rolę \textbf{Designera}, który jest odpowiedzialny jedynie za projektowanie i wyrażanie \textbf{Workflow Pętli}, i niekoniecznie musi posiadać umiejętności techniczne. 
+Niniejsza podsekcja prezentuje krótką instrukcję użycia platformy Lupus. \textbf{Użytkownikiem} Lupus może stać się dowolna organizacja bądź pojedyncza osoba. Ważne jest aby zespół użytkownika posiadał kompetencje z zakresu tworzenia oprogramowania. W zespole \textbf{Użytkownika} wyróżniamy rolę \textbf{Projektant}, który jest odpowiedzialny jedynie za projektowanie i wyrażanie \textbf{Workflow Pętli} oraz niekoniecznie zgodnie z \hyperref[req:8]{Wymaganiem 8} musi posiadać umiejętności techniczne. 
 
-Kiedy dany \textbf{Użytkownik} planuje użyć Lupus jako \textbf{Systemu Kontroli} do rozwiązywania \textbf{Problemu Zarządzania} w swoim \textbf{Systemie Zarządzanym}, powinien:
+Kiedy dany \textbf{Użytkownik} planuje użyć Lupus jako \textbf{Systemu Sterowania} do rozwiązywania \textbf{Problemu Zarządzania} w swoim \textbf{Systemie Zarządzanym}, powinien:
 \begin{enumerate}
-    \item Zainstalować Lupus w swoim klastrze
+    \item Zainstalować Lupus w swoim klastrze Kubernetes
     \item Zintegrować \textbf{Zarządzany System} z Lupusem poprzez implementację \textbf{Agentów Translacji}
-    \item Zaplanować \textbf{Workflow Pętli} (w dowolnym narzędziu)
+    \item Zaplanować \textbf{Workflow Pętli}
     \item Przygotować \textbf{Elementy Zewnętrzne} 
     \item Wyrazić \textbf{Workflow Pętli} w \textbf{LupN} 
     \item Zaaplikować pliki manifestacyjne zawierające kod \textbf{LupN} w klastrze
@@ -18,34 +18,33 @@ Podjęcie przez użytkownika takich akcji nazywamy pojedynczym \textbf{Wdrożeni
 
 Lupus jest zaimplementowany jako Niestandardowe Zasoby (ang. \textit{Custom Resources}) w Kubernetes. Instalacja polega na zainstalowaniu tych zasobów w swoim klastrze. 
 
-Pełna dokumentacje tego procesu znajduje się w załączniku //TODO
+Pełna dokumentacje tego procesu znajduje się w \hyperref[appendix:2]{Załączniku 2}.
 
 \subsubsection{Implementacja Agentów Translacyjnych}
 
-To użytkownik podczas \textbf{Wdrożenia} jest odpowiedzialny za implementację agentów translacji. Tylko użytkownik zna specyfikę swojego Systemu Zarządzanego. Stąd w zespole użytkownika potrzebne są umiejętności programistyczne. 
+To użytkownik podczas \textbf{Wdrożenia} jest odpowiedzialny za implementację \textbf{Agentów Translacji}. Tylko użytkownik zna specyfikę swojego \textbf{Systemu Zarządzanego}. Stąd w zespole użytkownika potrzebne są umiejętności programistyczne. 
 
-Podczas implementacji należy kierować się specyfikacją interfejsów Lupin oraz Lupout zawartą w załączniku //TODO.
+Podczas implementacji należy kierować się specyfikacją \textbf{Interfejsów Lupus} zawartą w \hyperref[appendix:4]{Załączniku 4}.
 
 \subsubsection{Planowanie Workflow Pętli}
 
-Workflow pętli powinno wyrazić logikę rekoncylacji, czyli w każdej iteracji doprowadzić System Zarządzany do Stanu Pożądanego. Użytkownik w tym kroku jedynie modeluje wysokopoziomowo workflow pętli, rysując np. jego diagram. Dopiero takie spojrzenie podpowie użytkownikowi jakich elementów zewnętrznych potrzebuje.
+Workflow pętli powinno wyrazić \textbf{Logikę Pętli}, czyli w każdej iteracji doprowadzić \textbf{System Zarządzany} do \textbf{Stanu Pożądanego}. Użytkownik w tym kroku jedynie modeluje wysokopoziomowo workflow pętli, rysując np. jego diagram. Dopiero takie spojrzenie podpowie użytkownikowi jakich elementów zewnętrznych potrzebuje.
 
 \subsubsection{Przygotowanie Elementów Zewnętrznych}
 
-Elementem Zewnętrznym może być dowolne oprogramowanie, z które \textbf{Designer} ma chęć włączyć w \textbf{workflow pętli}. Mogą to być już gotowe systemu (np. sztucznej inteligencji), ale równie dobrze użytkownik może stworzyć oprogramowanie samemu. Ważne jest to, aby wystawiały one jakiś sposób komunikacji. Na razie jedynym wspieranym przez Lupus sposobem jest komunikacja HTTP. Użytkownik musi umożliwić, więc komunikację tego typu z elementem.
+Elementem Zewnętrznym może być dowolne oprogramowanie, które \textbf{Projektant} ma chęć włączyć w \textbf{Workflow Pętli}. Mogą to być już gotowe systemy (np. sztucznej inteligencji), ale równie dobrze użytkownik może stworzyć oprogramowanie samemu. Ważne jest to, aby wystawiały one jakiś sposób komunikacji. Na razie jedynym wspieranym przez Lupus sposobem jest komunikacja HTTP. Użytkownik musi umożliwić, więc komunikację tego typu.
 
 Rekomendowanym przez Lupus typem Elementu Zewnętrznego jest serwer Open Policy Agent. Przygotowanie w tym wypadku polega na uruchomieniu takiego serwera oraz wgraniu mu odpowiednich polityk. Użytkownik jednakże może wydewelopować dowolny serwer HTTP.
 
-Ostatnim możliwym elementem zewnętrznym są \textbf{Funkcje Użytkownika}. Funkcje w kodzie kontrolera zasobu \textbf{Lupus Element}, które są definiowane przez użytkownika. Stanowią one alternatywę dla serwerów HTTP, gdy specjalne wdrażanie takowych może się okazać zbyt kosztowne. Przykładowo jeśli logika wykonywana przez dany \textbf{Element Zewnętrzny} miała by mieć tylko kilka linijek kodu, dużo łatwiej użyć \textbf{Funkcji Użytkownika}. Ich dokładniejszy opis znajduje się w \hyperref[sec:funkcje-uzytkownika]{Sekcji \ref{sec:funkcje-uzytkownika}}.
+Ostatnim możliwym elementem zewnętrznym są \textbf{Funkcje Użytkownika}. Są to funkcje w kodzie \textit{kontrolera} zasobu \textbf{Lupus Element}, które są definiowane przez użytkownika. Stanowią one alternatywę dla serwerów HTTP, gdy specjalne wdrażanie takowych może się okazać zbyt kosztowne. Przykładowo jeśli logika wykonywana przez dany \textbf{Element Zewnętrzny} miała by mieć tylko kilka linijek kodu, dużo łatwiej użyć \textbf{Funkcji Użytkownika}. Ich dokładniejszy opis znajduje się w \hyperref[sec:funkcje-uzytkownika]{Sekcji \ref{sec:funkcje-uzytkownika}}.
 
 \subsubsection{Wyrażenie workflow pętli}
 
-Gdy już całe workflow pętli oraz elementy zewnętrzne są gotowe czas wyrazić jej workflow w notacji \textbf{LupN}. Za jej pomocą wyraża się workflow pętli jako zbiór  \textbf{Elementów Lupus}, połączenia między nimi oraz specyfikacja każdego z nich.
+Gdy już całe \textbf{Workflow Pętli} oraz \textbf{Elementy Zewnętrzne} są gotowe czas wyrazić je w notacji \textbf{LupN}. Za jej pomocą wyraża się workflow pętli jako zbiór  \textbf{Elementów Lupus}, połączenia między nimi oraz specyfikacja każdego z nich.
 
 \subsubsection{Aplikacja plików manifestacyjnych}
 
-Aby stworzyć pętle opisaną przez kod LupN w pliku manifestacyjnym zasobu Master należy wykonać komendę z listingu \ref{lst:2}, która tworzy instancję obiektu API typu Master. Kontroler tego zasobu stworzy odpowiednie obiekty API typu Element według specyfikacji w pliku LupN. Podczas iteracji pętli, kontroler każdego elementu interpretuje ich specyfikacje wykonując odpowiednie \textbf{akcje} na \textbf{danych}. \textbf{Workflow Akcji} również specyfikowane jest w notacji \textbf{LupN}, której specyfikacja znajduje się w załączniku //TODO.
-
+Aby stworzyć pętle opisaną przez \textbf{kod LupN} w pliku manifestacyjnym zasobu Master należy wykonać komendę z listingu \ref{lst:2}, która tworzy instancję \textit{obiektu API} typu \textbf{Master}. Kontroler tego zasobu stworzy odpowiednie obiekty API typu \textbf{Element} według specyfikacji w pliku LupN. Podczas iteracji pętli, kontroler każdego \textbf{Elementu} interpretuje ich specyfikacje wykonując odpowiednie \textbf{akcje} na \textbf{danych}. \textbf{Workflow Akcji} również specyfikowane jest w notacji \textbf{LupN} (\hyperref[appendix:3]{Załącznik 3})
 
 \begin{lstlisting}[language=sh, caption={\emph{Stworzenie zasobu Master}}\label{lst:2}]
     kubectl apply -f <nazwa_pliku>
