@@ -4,15 +4,15 @@ Specyfikacja w formie elektronicznej znajduje się pod linkiem: \url{https://git
 
 \subsection{Przedsłowie}
 
-Instalacja Lupus wymaga umiejętności technicznych oraz podstawowej znajomości operacyjnej Kubernetes.
+Instalacja \hyperlink{def:lupus}{\textbf{Lupus}} wymaga umiejętności technicznych oraz podstawowej znajomości operacyjnej Kubernetes.
 
-Lupus jest zaimplementowany jako projekt Kubebuilder \footnote{https://book.kubebuilder.io}. Zalecanym sposobem instalacjiLupus jest sklonowanie tego repozytorium i przyjęcie roli dewelopera tego projektu.
+\hyperlink{def:lupus}{\textbf{Lupus}} jest zaimplementowany jako projekt Kubebuilder\footnote{\url{https://book.kubebuilder.io}}. Zalecanym sposobem instalacji \hyperlink{def:lupus}{\textbf{Lupus}} jest sklonowanie tego repozytorium i przyjęcie roli dewelopera tego projektu.
 
-Nie istnieje coś takiego jak instalacja Lupus (np. w systemie operacyjnym). Można zainstalować \textbf{Zasoby Własne} dla \textbf{Elementów Lupus} w klastrze Kubernetes i uruchomić dla nich \textbf{kontrolery}. Niniejszy załącznik opisuje właśnie taki proces.
+Nie istnieje coś takiego jak instalacja \hyperlink{def:lupus}{\textbf{Lupus}} (np. w systemie operacyjnym). Można zainstalować \hyperlink{def:zasoby-wlasne}{\textbf{Zasoby Własne}} dla \hyperlink{def:element-lupus}{\textbf{Elementów Lupus}} w klastrze Kubernetes i uruchomić dla nich \hyperlink{def:operator-zasobu-element}{\textbf{Kontrolery}}. Niniejszy załącznik opisuje właśnie taki proces.
 
 \subsection{Wymagania wstępne}
 
-Użytkownik musi posiadać działający klaster Kubernetes. Może to być Minikube\footnote{\url{https://minikube.sigs.k8s.io/docs/}}, zainstalowany silnik kontenerów (ang. \textit{container engine}) (np. Docker\footnote{\url{https://docs.docker.com}}) oraz język Go\footnote{\url{https://go.dev}}.
+\hyperlink{def:uzytkownik}{\textbf{Użytkownik}} musi posiadać działający klaster Kubernetes. Może to być Minikube\footnote{\url{https://minikube.sigs.k8s.io/docs/}}, zainstalowany silnik kontenerów (ang. \textit{container engine}) (np. Docker\footnote{\url{https://docs.docker.com}}) oraz język Go\footnote{\url{https://go.dev}}.
 
 \subsubsection{Instalacja Kubebuilder}
 
@@ -27,7 +27,7 @@ cd lupus
 
 \subsection{Instalacja CRD w klastrze}
 
-To polecenie zastosuje \textbf{CRD} (pl. Definicje Zasobów Własnych) dla \textbf{Master} i \textbf{Element} w klastrze, umożliwiając ich użycie.
+To polecenie zastosuje \hyperlink{def:crd}{\textbf{CRD}} (pl. Definicje \hyperlink{def:zasoby-wlasne}{\textbf{Zasobów Własnych}}) dla \hyperlink{def:master}{\textbf{Master}} i \hyperlink{def:element}{\textbf{Element}}, umożliwiając ich użycie.
 
 \begin{lstlisting}[language=bash, caption={Instalacja CRD}]
 make install
@@ -35,12 +35,12 @@ make install
 
 \subsection{Uruchomienie kontrolerów }
 
-To polecenie uruchomi \textbf{kontrolery} dla \textit{zasobów własnych} \textbf{master} i \textbf{element}.
+To polecenie uruchomi \textit{kontrolery} dla \textit{zasobów własnych} \hyperlink{def:master}{\textbf{master}} i \hyperlink{def:element}{\textbf{element}}.
 
 \begin{lstlisting}[language=bash, caption={Uruchomienie kontrolerów}]
 make run
 \end{lstlisting}
 
-Istnieje możliwość uruchomienia kontrolerów jako pody w klastrze Kubernetes. W tym celu użytkownik jest zaproszony do bliższego zapoznania się z platformą Kubebuilder. Dopóki \textbf{Użytkownik} jest pewien, że nie będzie dopisywał \textbf{Funkcji Użytkownika} nie jest to zalecane podejście. 
+Istnieje możliwość uruchomienia kontrolerów jako pody w klastrze Kubernetes. W tym celu użytkownik jest zaproszony do bliższego zapoznania się z platformą Kubebuilder. Dopóki \hyperlink{def:uzytkownik}{\textbf{Użytkownik}} jest pewien, że nie będzie dopisywał \hyperlink{def:funkcje-uzytkownika}{\textbf{Funkcji Użytkownika}} nie jest to zalecane podejście. 
 
 

@@ -2,27 +2,28 @@
 
 \subsubsection{Wstęp}
 
-W tym rozdziale objawia się badawcza natura pracy. Podczas realizacji projektu zbadano wiele podejść oraz rozwiązano wiele problemów implementacyjnych, aby dojść do postawionej w sekcji 3 architektury. Każda podsekcja omawia po jednym z aspektów od wymagań do implementacyji.
+W tym rozdziale objawia się badawcza natura pracy. Podczas realizacji projektu zbadano wiele podejść oraz rozwiązano wiele problemów implementacyjnych, aby dojść do postawionej w sekcji 3 architektury. Każda podsekcja omawia po jednym z aspektów – od wymagań do implementacji.
 
 \subsubsection{Komunikacja pomiędzy Elementami Lupus}
 
-Pierwszym krokiem w implementacji było wymyślenie sposobu na komunikację pomiędzy \textbf{Elementami Lupus}. Z racji, że \textbf{Elementy Lupus} są \textit{Zasobami Własnymi} wykorzystano tu natywne mechanizmy Kubernetes opisane w podsekcji 4.2 i 4.3. Ideą było to, że \textit{Operator} jednego zasobu dokonuje zmian w obiekcie API innego elementu, co z kolei wywoła ponownie Operator z innym obiektem wejściowym. Elementy modyfikują nawzajem swój Status, a dokładniej jego pole \texttt{input} przekazując tam swoją \textbf{Finalną Postać Danych}. 
-
+Pierwszym krokiem w implementacji było wymyślenie sposobu na komunikację pomiędzy \hyperlink{def:element-lupus}{\textbf{Elementami Lupus}}. Z racji, że \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} są \textit{Zasobami Własnymi}, wykorzystano tu natywne mechanizmy Kubernetes opisane w podsekcji 4.2 i 4.3. Ideą było to, że \textit{Operator} jednego zasobu dokonuje zmian w obiekcie API innego elementu, co z kolei wywoła ponownie Operator z innym obiektem wejściowym. \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} modyfikują nawzajem swój \texttt{Status}, a dokładniej jego pole \texttt{input}, przekazując tam swoją \hyperlink{def:finalne-dane}{\textbf{Finalną Postać Danych}}.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{43-komunikacja.png}
     \caption{Komunikacja pomiędzy Elementami Lupus}\label{fig:43-komunikacja}
 \end{figure}
 
-Działa to w sposób ukazany na rysunku \ref{fig:43-komunikacja}. Początkowo Elementy Lupus mogły przyjąć postać jednego z 4 typów: Observe, Learn, Decide lub Execute \footnote{W myśl pętli ODA}. Agent Ingress modyfikował Status obiektu Observe, natomiast Operator Observe modyfikował statusy obiektów Learn oraz Decide. Na koniec modyfikacje otrzymywał obiekt Execute, którego Operator przekazywał swoje \textbf{Dane} do Agenta Egress. Z czasem jednak, aby nie narzucać konkretnej struktury pętli, zrezygnowano z 4 typów i stworzono jeden uniwersalny typ, którego Operator jest w stanie wykonać \textbf{Workflow Akcji}, co pozwalało na wyrażenie logiki dowolnego z 4 poprzednich typów. W ten sposób spełniono \hyperref[req:5]{Wymaganie 5}. 
+Działa to w sposób ukazany na rysunku \ref{fig:43-komunikacja}. Początkowo \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} mogły przyjąć postać jednego z 4 typów: Observe, Learn, Decide lub Execute\footnote{W myśl pętli ODA}. \hyperlink{def:agent-ingress}{\textbf{Agent Ingress}} modyfikował \texttt{Status} obiektu Observe, natomiast Operator Observe modyfikował \texttt{Statusy} obiektów Learn oraz Decide. Na koniec modyfikacje otrzymywał obiekt Execute, którego Operator przekazywał swoje \hyperlink{def:dane}{\textbf{Dane}} do \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}. 
+
+Z czasem jednak, aby nie narzucać konkretnej struktury pętli, zrezygnowano z 4 typów i stworzono jeden uniwersalny typ, którego Operator jest w stanie wykonać \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}}, co pozwalało na wyrażenie logiki dowolnego z 4 poprzednich typów. W ten sposób spełniono \hyperref[req:5]{Wymaganie 5}.
 
 \subsubsection{Dane}
 
-\hyperref[req:5]{Wymaganie 5} nakazuje, aby Elementy Lupus były sterowane danymi (\textit{data-driven}). \textbf{Dane} oraz \textbf{workflow akcji} spełniają te wymaganie. Dzięki nim Elementy Lupus może wykonać dowolny zestaw akcji na danych dając \textbf{Designerowi} pewną elastyczność. To właśnie \textbf{Dane} przekazywane są jako pole \texttt{input} w statusie obiektu API Elementu Lupus. 
+\hyperref[req:5]{Wymaganie 5} nakazuje, aby \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} były sterowane danymi (\textit{data-driven}). \hyperlink{def:dane}{\textbf{Dane}} oraz \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} spełniają to wymaganie. Dzięki nim \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} mogą wykonać dowolny zestaw \hyperlink{def:akcja}{\textbf{Akcji}} na \hyperlink{def:dane}{\textbf{Danych}}, dając \hyperlink{def:projektant}{\textbf{Projektantowi}} pewną elastyczność. To właśnie \hyperlink{def:dane}{\textbf{Dane}} przekazywane są jako pole \texttt{input} w statusie obiektu API \hyperlink{def:element-lupus}{\textbf{Elementu Lupus}}. 
 
-Z racji uniwersalności danych należało wybrać format, który pozwoli na ich możliwie dużą dowolność. Wybór padł na JSON, racji ogólnie przyjętego standardu i możliwości reprezentacji dowolnej struktury danych. 
+Z racji uniwersalności \hyperlink{def:dane}{\textbf{Danych}}, należało wybrać format, który pozwoli na ich możliwie dużą dowolność. Wybór padł na JSON, ze względu na jego ogólnie przyjęty standard i możliwości reprezentacji dowolnej struktury danych. 
 
-Kubernetes z kolei wymaga, aby pola umieszczane w Statusie Zasobu miały konkretny typ. Dokonano, więc analizy jaki typ nadaje się do reprezentacji obiektu JSON. Wybór padł na \texttt{RawExtension} Jest to typ zdefiniowany przez zespół Kubernetes używany do obsługi dowolnych surowych danych w formacie JSON lub YAML. Należy do pakietu \texttt{k8s.io/apimachinery/pkg/runtime} i jest często stosowany, gdy zasób musi osadzić lub pracować ze strukturą danych, która jest elastyczna, ale jednocześnie uporządkowana. \texttt{RawExtension} spełnia nasze wymagania.
+Kubernetes z kolei wymaga, aby pola umieszczane w \texttt{Statusie} Zasobu miały konkretny typ. Dokonano więc analizy, jaki typ nadaje się do reprezentacji obiektu JSON. Wybór padł na \texttt{RawExtension}. Jest to typ zdefiniowany przez zespół Kubernetes, używany do obsługi dowolnych surowych danych w formacie JSON lub YAML. Należy do pakietu \texttt{k8s.io/apimachinery/pkg/runtime} i jest często stosowany, gdy zasób musi osadzić lub pracować ze strukturą danych, która jest elastyczna, ale jednocześnie uporządkowana. \texttt{RawExtension} spełnia te wymagania.
 
 \begin{lstlisting}[language=go, caption={\emph{Definicja struktury Go reprezentującej status Elementu Lupus}}\label{lst:431}]
 // ElementStatus defines the observed state of Element
@@ -34,7 +35,7 @@ type ElementStatus struct {
 }
 \end{lstlisting}
 
-\texttt{RawExtension} to typ, które użyjemy do przenoszenia \textbf{Danych} między Elementami Lupus. Pozostaje kwestia reprezentacji tych danych w Operatorach Lupus. 
+\texttt{RawExtension} to typ, którego użyjemy do przenoszenia \hyperlink{def:dane}{\textbf{Danych}} między \hyperlink{def:element-lupus}{\textbf{Elementami Lupus}}. Pozostaje kwestia reprezentacji tych \hyperlink{def:dane}{\textbf{Danych}} w Operatorach \hyperlink{def:lupus}{\textbf{Lupus}}. 
 
 \begin{lstlisting}[language=go, caption={\emph{Definicja struktury Go RawExtension w paczce k8s.io/apimachinery/pkg/runtime}}\label{lst:432}]
 type RawExtension struct {
@@ -43,11 +44,11 @@ type RawExtension struct {
 }
 \end{lstlisting}
 
-Zamierzonym celem RawExtension według deweloperów Kubernetes jest umożliwienie deserializacji do określonej, znanej struktury. Jednak ze względu na \hyperref[req:5]{Wymaganie 5} taka struktura nie istnieje. Potrzebujemy więc natywnej struktury Go, która jest w stanie reprezentować dowolny obiekt JSON. Pierwszym pomysłem, który się nasuwa, jest użycie typu Go \texttt{interface{}}, ponieważ może on reprezentować dowolne dane. Problem z \texttt{interface{}} polega jednak na tym, że nie można na nim operować – nie udostępnia żadnego interfejsu do interakcji. Jest to typ podstawowy.
+Zamierzonym celem \texttt{RawExtension} według deweloperów Kubernetes jest umożliwienie deserializacji do określonej, znanej struktury. Jednak ze względu na \hyperref[req:5]{Wymaganie 5} taka struktura nie istnieje. Potrzebujemy więc natywnej struktury Go, która jest w stanie reprezentować dowolny obiekt JSON. Pierwszym pomysłem, który się nasuwa, jest użycie typu Go \texttt{interface{}}, ponieważ może on reprezentować dowolne dane. Problem z \texttt{interface{}} polega jednak na tym, że nie można na nim operować – nie udostępnia żadnego interfejsu do interakcji. Jest to typ podstawowy.
 
 Drugim pomysłem na reprezentację JSON-a było użycie \texttt{map[string]interface{}}, ponieważ większość instancji JSON-a to faktycznie obiekty klucz-wartość. Klucze w tym przypadku są typu \texttt{string}, a wartości mogą być dowolne (stąd użycie \texttt{interface{}}) w Go. W większości przypadków obiekty JSON zawierają kilka głównych pól (ang. \textit{top-level fields}), co idealnie pasuje do reprezentacji \texttt{map[string]interface{}}.
 
-Tak właśnie narodziło się pojęcie \textbf{Danych}. \textbf{Dane} to w rzeczywistości struktura opakowująca i dająca odpowiedni interfejs (ang. \textit{Wrapper}) dla wspomnianej wcześniej mapy.
+Tak właśnie narodziło się pojęcie \hyperlink{def:dane}{\textbf{Danych}}. \hyperlink{def:dane}{\textbf{Dane}} to w rzeczywistości struktura opakowująca i dająca odpowiedni interfejs (ang. \textit{Wrapper}) dla wspomnianej wcześniej mapy.
 
 \begin{lstlisting}[language=go, caption={\emph{Definicja struktury Go dla Danych}}\label{lst:433}]
 type Data struct {
@@ -55,12 +56,15 @@ type Data struct {
 }
 \end{lstlisting}
 
-Ta struktura posiada bogaty zestaw funkcji (metod), które pełnią rolę interfejsu do pracy z danymi. Metody te są wywoływane podczas wykonywania akcji i zazwyczaj – z wyjątkiem metod \texttt{Get} i \texttt{Set} – każda metoda odpowiada dokładnie jednej akcji. Kluczowym konceptem danych jest \textbf{pole danych} (ang. \textit{Data-field}). Jest ono odpowiednikiem pola w JSON-ie. Każde pole jest identyfikowane przez swój \textbf{klucz} i przechowuje wartość. Za pomocą metody \texttt{Get} możemy pobrać wartość znajdującą się pod danym kluczem, a przy użyciu \texttt{Set} możemy ustawić nową wartość dla pola wskazanego określonym kluczem. Nie obejmuje to jednak wszystkich obiektów JSON, jakie istnieją. JSON pozwala, aby element na najwyższym poziomie był tablicą. Nakłada to pewne ograniczenia na projektowanie pętli. Szczególnie JSON reprezentujący aktualny stan \textbf{managed-system}, wysyłany przez \textbf{lupin-interface}, musi być serializowalny do \texttt{map[string]interface{}}. Oznacza to, że nie może być:
+Ta struktura posiada bogaty zestaw funkcji (metod), które pełnią rolę interfejsu do pracy z \hyperlink{def:dane}{\textbf{Danymi}}. Metody te są wywoływane podczas wykonywania \hyperlink{def:akcja}{\textbf{Akcji}} i zazwyczaj – z wyjątkiem metod \texttt{Get} i \texttt{Set} – każda metoda odpowiada dokładnie jednej akcji. Kluczowym konceptem \hyperlink{def:dane}{\textbf{Danych}} jest \hyperlink{def:pole-danych}{\textbf{Pole Danych}} (ang. \textit{Data-field}). Jest ono odpowiednikiem pola w JSON-ie. Każde pole jest identyfikowane przez swój \hyperlink{def:klucz}{\textbf{Klucz}} i przechowuje wartość. Za pomocą metody \texttt{Get} możemy pobrać wartość znajdującą się pod danym kluczem, a przy użyciu \texttt{Set} możemy ustawić nową wartość dla pola wskazanego określonym kluczem. 
+
+Nie obejmuje to jednak wszystkich obiektów JSON, jakie istnieją. JSON pozwala, aby element na najwyższym poziomie był tablicą. Nakłada to pewne ograniczenia na projektowanie pętli. Szczególnie JSON reprezentujący aktualny stan \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}, wysyłany przez \hyperlink{def:interfejs-lupin}{\textbf{Interfejs Lupin}}, musi być serializowalny do \texttt{map[string]interface{}}. Oznacza to, że nie może być:
 \begin{itemize}
     \item typem prymitywnym,
     \item tablicą,
-    \item obiektem JSON z kluczami innymi niż string.
+    \item obiektem JSON z kluczami innymi niż \texttt{string}.
 \end{itemize}
+
 
 \subsubsection{Polimorfizm w Go}
 
@@ -205,31 +209,32 @@ Polimorfizm przez wskaźniki oferuje przejrzystą reprezentację danych, która 
     \item Polimorfizm przez interfejsy jest preferowany w aplikacjach skoncentrowanych na zachowaniach.
 \end{itemize}
 
-W Lupus polimorfizm był potrzebny do reprezentacji różnych typów (odmian) niektórych \textbf{Obiektów Lupn} takich jak \textbf{Actions} lub \textbf{Next}, dlatego wybrano Polimorfizm poprzez wskaźniki oraz pole dyskryminatora.
+W \hyperlink{def:lupus}{\textbf{Lupus}} polimorfizm był potrzebny do reprezentacji różnych typów (odmian) niektórych \hyperlink{def:element}{\textbf{Obiektów LupN}}, takich jak \hyperlink{def:akcja}{\textbf{Actions}} lub \hyperlink{def:next}{\textbf{Next}}, dlatego wybrano polimorfizm poprzez wskaźniki oraz pole dyskryminatora.
 
 \subsubsection{Dwa rodzaje workflow}
 
-W Lupus występują dwa rodzaje \textit{workflow}: \textbf{Workflow Pętli}, które definiuje przepływ pracy \textbf{Elementów Lupn} oraz \textbf{Workflow Akcji}, które definiuje przepływ \textbf{Akcji} we wnętrzu pojedynczego elementu. Występują między pewne różnice w możliwościach wynikające ze sposobu implementacji komunikacji między ich węzłami.
+W \hyperlink{def:lupus}{\textbf{Lupus}} występują dwa rodzaje \textit{workflow}: \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}}, które definiuje przepływ pracy \hyperlink{def:element-lupus}{\textbf{Elementów Lupus}}, oraz \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}}, które definiuje przepływ \hyperlink{def:akcja}{\textbf{Akcji}} we wnętrzu pojedynczego elementu. Występują między nimi pewne różnice w możliwościach, wynikające ze sposobu implementacji komunikacji między ich węzłami.
 
 \begin{itemize}
-    \item Węzły w \textbf{Workflow Pętli} komunikują się ze sobą poprzez pobudzanie operatorów.
-    \item Węzły w \textbf{Workflow Akcji} komunikują się poprzez pamięć RAM zaalokowaną poprzez pojedyncy operator \textbf{Elementu Lupus}.
+    \item Węzły w \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} komunikują się ze sobą poprzez pobudzanie operatorów.
+    \item Węzły w \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} komunikują się poprzez pamięć RAM zaalokowaną przez pojedynczy operator \hyperlink{def:element-lupus}{\textbf{Elementu Lupus}}.
 \end{itemize}
 
-Różnice są widoczne w specyfikacji \textbf{LupN} //TODO.
+Różnice są widoczne w specyfikacji \hyperlink{def:lupn}{\textbf{LupN}} //TODO.
 
 \subsubsection{Funkcje użytkownika}\label{sec:funkcje-uzytkownika}
-Zgodnie z \hyperref[req:6]{Wymaganiem 6} elementy Lupus nie wykonują \textbf{części obliczeniowej logiki pętli}.  Zamiast tego, jest ona delegowana do \textbf{Elementów Zewnętrznych}.
+
+Zgodnie z \hyperref[req:6]{Wymaganiem 6}, \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} nie wykonują \hyperlink{def:czesc-obliczeniowa}{\textbf{Części Obliczeniowej Logiki Pętli}}. Zamiast tego, jest ona delegowana do \hyperlink{def:element-zewnetrzny}{\textbf{Elementów Zewnętrznych}}.
 
 Pojawiają się tutaj dwa aspekty:
 \begin{itemize}
-    \item Co w sytuacji, gdy ktoś potrzebuje wykonać małą i prostą operację na danych (np. dodanie dwóch pól), a wdrażanie dedykowanego serwera HTTP jest nieekonomiczne?
+    \item Co w sytuacji, gdy ktoś potrzebuje wykonać małą i prostą operację na \hyperlink{def:dane}{\textbf{Danych}} (np. dodanie dwóch pól), a wdrażanie dedykowanego serwera HTTP jest nieekonomiczne?
     \item Każda platforma ramowa powinna być rozszerzalna. Powinniśmy zapewnić mechanizm umożliwiający rozszerzanie naszej platformy.
 \end{itemize}
 
-Z tych dwóch powodów wdrożono funkcję o nazwie „Definiowane przez użytkownika, wewnętrzne funkcje Go” (lub w skrócie – „Funkcje użytkownika”).
+Z tych dwóch powodów wdrożono funkcję o nazwie „Definiowane przez użytkownika, wewnętrzne funkcje Go” (lub w skrócie – \hyperlink{def:funkcje-uzytkownika}{\textbf{Funkcje Użytkownika}}).
 
-Użytkownik może definiować własne fragmenty kodu Go jako funkcje i wywoływać je jako jedną z \textbf{Destynacji} w akcji \textbf{Send}.
+\hyperlink{def:uzytkownik}{\textbf{Użytkownik}} może definiować własne fragmenty kodu Go jako funkcje i wywoływać je jako jedną z \hyperlink{def:destynacja}{\textbf{Destynacji}} w akcji \hyperlink{def:akcja}{\textbf{Send}}.
 
 W repozytorium kodu z projektem Kubebuilder znajduję plik o nazwie \texttt{user-functions.go} \footnote{\url{https://github.com/0x41gawor/lupus/blob/master/lupus/internal/controller/user-functions.go}}. To w nim \textbf{Użytkownik} może definiować swoje funkcje. Plik posiada już jedną przykładową funkcję.
 
@@ -249,7 +254,7 @@ Nazwa \texttt{UserFunctions} jest strukturą, która gromadzi funkcje użytkowni
 type UserFunctions struct{}
 \end{lstlisting}
 
-Powstaje teraz pytanie jak wywołać takową funkcję w notacji \textbf{LupN}. Na szczęście funkcje w Go mogą być używane jako typy i przechowywane jako wartości. Dzięki temu mogą zostać zapisane jako wartości w mapie klucz-wartość, gdzie nazwy funkcje typu \texttt{string} pełnią rolę kluczy.
+Powstaje teraz pytanie jak wywołać takową funkcję w notacji \hyperlink{def:lupn}{\textbf{LupN}}. Na szczęście funkcje w Go mogą być używane jako typy i przechowywane jako wartości. Dzięki temu mogą zostać zapisane jako wartości w mapie klucz-wartość, gdzie nazwy funkcje typu \texttt{string} pełnią rolę kluczy.
 
 
 \begin{lstlisting}[language=go, caption={\emph{Mapa przechowująca funkcje użytkownika}}\label{lst:438}]

@@ -2,42 +2,131 @@
 
 Specyfikacja w formie elektronicznej znajduje się pod linkiem: \url{https://github.com/0x41gawor/lupus/blob/master/docs/defs.md}.
 
-\acronym{Problem Zarządzania (ang. \textit{Management Problem})}{}
+\hypertarget{def:akcja}{}
+\acronym{Akcja (ang. \textit{Action})}{Obiekt LupN. Za jej pomocą możliwe są operacje na danych}
 
-\acronym{System Zarządzany (ang. \textit{Managed System})}{}
+\hypertarget{def:akcja-sterujaca}{}
+\acronym{Akcja Sterująca (ang. \textit{Control Action})}{Akcja wywnioskowana przez System Sterowania i wykonywana na Systemie Zarządzanym przez Agenta Egress. Akcja Sterowania ma za zadanie przybliżyć Stan Aktualny do Stanu Pożądanego.}
 
-\acronym{System Sterowania (ang. \textit{Control System})}{}
-\acronym{Pętla Sterowania (ang. \textit{Control Loop})}{}
-\acronym{Zamknięta Pętla Sterowania (ang. \textit{Closed Control Loop})}{}
-\acronym{Akcja Sterująca (ang. \textit{Control Action})}{}
-\acronym{Sprzeżenie Zwrotne (ang. \textit{Control Feedback})}{}
-\acronym{Stan Aktualny (ang. \textit{Current State})}{}
-\acronym{Stan Pożądany (ang. \textit{Desired State})}{}
-\acronym{Pętla Sterowania (ang. \textit{Control Loop})}{}
-\acronym{Wdrożenie Lupus (ang. \textit{Lupus deployment, Lupus usage or Lupus application})}{}
-\acronym{Użytkownik (ang. \textit{User})}{}
-\acronym{Agent Translacji (ang. \textit{Translation Agent})}{}
-\acronym{Interfejs Lupin (ang. \textit{Lupin interface})}{}
-\acronym{Interfejs Lupout (ang. \textit{Lupout interface})}{}
-\acronym{Interfejsy Lupus} (ang. \textit{Lupus interfaces}){}
-\acronym{Finalne dane (ang. \textit{Final Data})}{}
-\acronym{Workflow Pętli (ang. \textit{Loop Workflow})}{}
-\acronym{Logika Pętli (ang. \textit{Loop logic})}{}
-\acronym{Element Pętli (ang. \textit{Loop Element})}{}
-\acronym{Element Lupus (ang. \textit{Lupus Element})}{}
-\acronym{Element Zewnętrzny (ang. \textit{External Element})}{}
-\acronym{Część Obliczeniowa (ang. \textit{Computing Part})}{}
-\acronym{LupN (ang. \textit{LupN})}{}
-\acronym{Element Ingres (ang. \textit{Ingress Element})}{}
-\acronym{Element Egress (ang. \textit{Egress Element})}{}
-\acronym{Open Policy Agent (ang. \textit{Open Policy Agent})}{}
-\acronym{Dane (ang. \textit{Data})}{}
-\acronym{kod LupN (ang. \textit{LupN code})}{}
-\acronym{plik LupN (ang. \textit{LupN file})}{}
-\acronym{Element (ang. \textit{Element})}{}
-\acronym{Master (ang. \textit{Master})}{}
-\acronym{Pole Danych (ang. \textit{Data Field})}{}
-\acronym{Użytkownik (ang. \textit{User})}{}
-\acronym{Użytkownik (ang. \textit{User})}{}
-\acronym{Użytkownik (ang. \textit{User})}{}
+\hypertarget{def:agent-translacji}{}
+\acronym{Agent Translacji (ang. \textit{Translation Agent})}{Agent oprogramowania na styku Lupus oraz Systemu Zarządzanego pełniący rolę integratora. Termin zbiorczy na Agent Ingress i Agent Egress.}
 
+\hypertarget{def:agent-egress}{}
+\acronym{Agent Egress (ang. \textit{Egress Agent})}{Jeden z agentów translacji umieszczony na wyjściu z Lupus. Przekazuje finalne dane reprezentujące akcję sterowania do systemu zarządzanego. Implementuje interfejs Lupout.}
+
+\hypertarget{def:agent-ingress}{}
+\acronym{Agent Ingress (ang. \textit{Ingress Agent})}{Jeden z agentów translacji umieszczony na wejściu do Lupus. Przekazuje stan aktualny zarządzanego systemu do Lupus. Implementuje interfejs Lupin.}
+
+\hypertarget{def:czesc-obliczeniowa}{}
+\acronym{Część Obliczeniowa (ang. \textit{Computing Part})}{Część logiki pętli odpowiedzialna za obliczenia. Wykonywana jest przez elementy zewnętrzne, nie elementy Lupus.}
+
+\hypertarget{def:dane}{}
+\acronym{Dane (ang. \textit{Data})}{Nośnik informacji w jednej iteracji pętli. Informacje zapisane są w formacie JSON.}
+
+\hypertarget{def:destynacja}{}
+\acronym{Destynacja (ang. \textit{Destination})}{Referencja do Elementu Zewnętrznego. Jednoznacznie opisuje żądanie HTTP, jakie ma wykonać Operator Zasobu Element.}
+
+\hypertarget{def:element}{}
+\acronym{Element (ang. \textit{Element})}{Typ (ang. \textit{kind}) obiektu API stanowiącego Element Lupus.}
+
+\hypertarget{def:element-egress}{}
+\acronym{Element Egress (ang. \textit{Egress Element})}{Ostatni element w danej ścieżce workflow pętli. Implementuje interfejs Lupout.}
+
+\hypertarget{def:element-ingres}{}
+\acronym{Element Ingres (ang. \textit{Ingress Element})}{Pierwszy element w workflow pętli. Implementuje interfejs Lupin.}
+
+\hypertarget{def:element-lupus}{}
+\acronym{Element Lupus (ang. \textit{Lupus Element})}{Jeden z elementów pętli. Działa w warstwie sterowania Kubernetes. Jego celem jest wyrażenie workflow pętli oraz delegacja części obliczeniowej do elementów zewnętrznych.}
+
+\hypertarget{def:element-petli}{}
+\acronym{Element Pętli (ang. \textit{Loop Element})}{Element realizujący jednostkę logiki pętli. Termin zbiorczy na Element Lupus oraz Element Zewnętrzny.}
+
+\hypertarget{def:element-zewnetrzny}{}
+\acronym{Element Zewnętrzny (ang. \textit{External Element})}{Jeden z elementów pętli. Działa poza klastrem Kubernetes. Jego celem jest część obliczeniowa logiki pętli.}
+
+\hypertarget{def:finalne-dane}{}
+\acronym{Finalne dane (ang. \textit{Final Data})}{Postać danych po wykonaniu ostatniej akcji z workflow akcji Elementu Egress. To ona definiuje Akcję Sterującą.}
+
+\hypertarget{def:funkcje-uzytkownika}{}
+\acronym{Funkcje użytkownika (ang. \textit{User Functions})}{//TODO}
+
+\hypertarget{def:interfejs-lupin}{}
+\acronym{Interfejs Lupin (ang. \textit{Lupin interface})}{Interfejs wejściowy do Lupus. Implementować go musi Agent Ingress oraz Element Ingress.}
+
+\hypertarget{def:interfejs-lupout}{}
+\acronym{Interfejs Lupout (ang. \textit{Lupout interface})}{Interfejs wyjściowy z Lupus. Implementować go musi Agent Egress oraz Element Egress.}
+
+\hypertarget{def:interfejsy-lupus}{}
+\acronym{Interfejsy Lupus (ang. \textit{Lupus interfaces})}{Termin zbiorczy na Interfejs Lupin oraz Interfejs Lupout.}
+
+\hypertarget{def:kod-lupn}{}
+\acronym{Kod LupN (ang. \textit{LupN code})}{Kod wyrażający notację LupN. Zbiór obiektów LupN zapisanych w YAML. Zapisany jest w pliku LupN.}
+
+\hypertarget{def:logika-petli}{}
+\acronym{Logika Pętli (ang. \textit{Loop logic})}{Kroki, które muszą zostać wykonane, aby w każdej iteracji pętli przybliżyć Stan Aktualny do Stanu Pożądanego. Instrukcje określające, jak na podstawie reprezentacji Stanu Aktualnego ma zostać \textit{wywnioskowana} Akcja Sterująca.}
+
+\hypertarget{def:lupn}{}
+\acronym{LupN (ang. \textit{LupN})}{Notacja do wyrażania workflow pętli za pomocą obiektów LupN. Zapisywana w pliku LupN.}
+
+\hypertarget{def:lupus}{}
+\acronym{Lupus (ang. \textit{Lupus})}{//TODO}
+
+\hypertarget{def:lupus-master}{}
+\acronym{Lupus Master (ang. \textit{Lupus Master})}{Nadzorca pojedynczej pętli Lupus. Odpowiedzialny za kreację obiektów Zasobu Lupus Element.}
+
+\hypertarget{def:master}{}
+\acronym{Master (ang. \textit{Master})}{Typ (ang. \textit{kind}) obiektu API dla Lupus Master.}
+
+\hypertarget{def:opa}{}
+\acronym{Open Policy Agent (ang. \textit{Open Policy Agent})}{Serwer HTTP dedykowany do definiowania polityk i stosowania ich w systemach informatycznych.}
+
+\hypertarget{def:operator-zasobu-master}{}
+\acronym{Operator Zasobu Master (ang. \textit{Master Operator})}{\textit{Kontroler} zasobu Master. Odpowiedzialny za interpretację workflow pętli notacji LupN i tworzenie obiektów Element.}
+
+\hypertarget{def:obiekt-lupn}{Obiekt LupN}
+\acronym{Obiekt LupN (ang. \textit{LupN Object})}{Obiekty składające się na składnię LupN za pomocą, których wyrażane jest workflow pętli}
+
+\hypertarget{def:operator-zasobu-element}{}
+\acronym{Operator Zasobu Element (ang. \textit{Element Operator})}{\textit{Kontroler} zasobu Element. Odpowiedzialny za interpretację workflow akcji notacji LupN i jego wykonanie.}
+
+\hypertarget{def:plik-lupn}{}
+\acronym{Plik LupN (ang. \textit{LupN file})}{Plik manifestowy YAML zasobu Master. Zapisana jest w nim notacja LupN.}
+
+\hypertarget{def:pole-danych}{}
+\acronym{Pole Danych (ang. \textit{Data Field})}{Jedno pole JSON w danych. Dostępne pod kluczem. Przekazywane jako wejście/wyjście akcji.}
+
+\hypertarget{def:problem-zarzadzania}{}
+\acronym{Problem Zarządzania (ang. \textit{Management Problem})}{Problem występujący w Systemie Zarządzanym, który System Sterowania ma za cel rozwiązać.}
+
+\hypertarget{def:projektant}{}
+\acronym{Projektant (ang. \textit{Designer})}{Jednostka użytkownika odpowiedzialna jedynie za projekt pętli. Nie musi posiadać umiejętności technicznych, a jedynie posługiwać się notacją LupN.}
+
+\hypertarget{def:sprzezenie-zwrotne}{}
+\acronym{Sprzężenie Zwrotne (ang. \textit{Control Feedback})}{Reprezentacja Stanu Aktualnego wysyłana przez (lub pobierana z) Systemu Zarządzanego.}
+
+\hypertarget{def:stan-aktualny}{}
+\acronym{Stan Aktualny (ang. \textit{Current State})}{Obserwowany w danej chwili stan Systemu Zarządzanego. Kontrastuje ze Stanem Pożądanym.}
+
+\hypertarget{def:stan-pozadany}{}
+\acronym{Stan Pożądany (ang. \textit{Desired State})}{Pożądany stan obserwowany w Systemie Zarządzanym, który System Sterowania próbuje osiągnąć. Zazwyczaj można go wywieść z Problemu Zarządzania.}
+
+\hypertarget{def:system-sterowania}{}
+\acronym{System Sterowania (ang. \textit{Control System})}{System odpowiedzialny za rozwiązanie Problemu Zarządzania w Systemie Zarządzanym za pomocą Zamkniętej Pętli Sterowania. Lupus aspiruje do tej roli.}
+
+\hypertarget{def:system-zarzadzany}{}
+\acronym{System Zarządzany (ang. \textit{Managed System})}{Dowolny system w posiadaniu Użytkownika, w którym występuje Problem Zarządzania.}
+
+\hypertarget{def:uzytkownik}{}
+\acronym{Użytkownik (ang. \textit{User})}{Organizacja lub indywidualność, która ma za cel użyć Lupus w celu rozwiązania Problemu Zarządzania w swoim Systemie Zarządzanym. W zespole użytkownika potrzebne są kompetencje programistyczne (do wdrożenia agentów translacji oraz elementów zewnętrznych), a także wyróżnia się rolę Projektanta.}
+
+\hypertarget{def:wdrozenie-lupus}{}
+\acronym{Wdrożenie Lupus (ang. \textit{Lupus deployment, Lupus usage or Lupus application})}{Pojedyncze rozwiązanie Problemu Zarządzania przez Użytkownika w danym Systemie Zarządzanym.}
+
+\hypertarget{def:workflow-akcji}{}
+\acronym{Workflow Akcji (ang. \textit{Actions Workflow})}{\textit{Workflow} złożone z Akcji w pojedynczym Elemencie Lupus. Interpretowane przez Operator Zasobu Element}.
+
+\hypertarget{def:workflow-petli}{}
+\acronym{Workflow Pętli (ang. \textit{Loop Workflow})}{\textit{Workflow} złożone z Elementów Pętli. Musi realizować Logikę Pętli.}
+
+\hypertarget{def:zamknieta-petla-sterowania}{}
+\acronym{Zamknięta Pętla Sterowania (ang. \textit{Closed Control Loop})}{Sposób, w jaki Lupus jako System Sterowania rozwiązuje Problem Zarządzania.}

@@ -1,20 +1,22 @@
-\appendix{Specfyfikacju obiektu danych}\label{appendix:5}
+\appendix{Specyfikacja obiektu danych}\label{appendix:5}
 
 Specyfikacja w formie elektronicznej znajduje się pod linkiem: \url{https://github.com/0x41gawor/lupus/blob/master/docs/spec/data.md}.
 
-Data jest kluczowym elementem spełnienia \hyperref[req:5]{Wymagania 5}. \textbf{Dane} jest to sposób w jaki \textbf{użytkownik}, podczas każdej iteracji, może:
+\hyperlink{def:dane}{\textbf{Dane}} są kluczowym elementem spełnienia \hyperref[req:5]{Wymagania 5}. \hyperlink{def:dane}{\textbf{Dane}} to sposób, w jaki \hyperlink{def:uzytkownik}{\textbf{Użytkownik}}, podczas każdej iteracji, może:
 \begin{itemize}
-    \item uzyskać informacje o \textbf{Aktualnym Stanie}
-    \item przechowywać pomocnicze informacje (takie jak odpowiedzi od \textbf{Elementów Zewnętrznych})
-    \item przechowywać informacje debuggingowe
-    \item zapisywać informacje potrzebne do sformułowania \textbf{Akcji Sterowania}
+    \item uzyskać informacje o \hyperlink{def:stan-aktualny}{\textbf{Aktualnym Stanie}},
+    \item przechowywać pomocnicze informacje (takie jak odpowiedzi od \hyperlink{def:element-zewnetrzny}{\textbf{Elementów Zewnętrznych}}),
+    \item przechowywać informacje debuggingowe,
+    \item zapisywać informacje potrzebne do sformułowania \hyperlink{def:akcja-sterujaca}{\textbf{Akcji Sterowania}}.
 \end{itemize}
 
-\textbf{Dane} są reprezentowane jako JSON dający się zapisać w strukturze Go \texttt{map[string]interface{}}. Nie może, więc być jedną z następujących form obiektu JSON:
+\hyperlink{def:dane}{\textbf{Dane}} są reprezentowane jako JSON dający się zapisać w strukturze Go \texttt{map[string]interface{}}. Nie mogą, więc być jedną z następujących form obiektu JSON:
 \begin{itemize}
     \item typem prymitywnym,
     \item tablicą,
-    \item obiektem JSON z kluczami innymi niż string.
+    \item obiektem JSON z kluczami innymi niż \texttt{string}.
 \end{itemize}
 
-To w jaki sposób można operować na danych prezentuje specyfikacja akcji //TODO link.
+To, w jaki sposób można operować na \hyperlink{def:dane}{\textbf{Danych}}, prezentuje specyfikacja akcji //TODO
+
+// TODO: Opisać koncepcję wildcard oraz pojęcie pola danych.

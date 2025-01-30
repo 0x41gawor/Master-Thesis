@@ -1,50 +1,51 @@
 \subsection{Instrukcja Użycia}
 
-Niniejsza podsekcja prezentuje krótką instrukcję użycia platformy Lupus. \textbf{Użytkownikiem} Lupus może stać się dowolna organizacja bądź pojedyncza osoba. Ważne jest aby zespół użytkownika posiadał kompetencje z zakresu tworzenia oprogramowania. W zespole \textbf{Użytkownika} wyróżniamy rolę \textbf{Projektant}, który jest odpowiedzialny jedynie za projektowanie i wyrażanie \textbf{Workflow Pętli} oraz niekoniecznie zgodnie z \hyperref[req:8]{Wymaganiem 8} musi posiadać umiejętności techniczne. 
+Niniejsza podsekcja prezentuje krótką instrukcję użycia platformy \hyperlink{def:lupus}{\textbf{Lupus}}. \hyperlink{def:uzytkownik}{\textbf{Użytkownikiem}} \hyperlink{def:lupus}{\textbf{Lupus}} może stać się dowolna organizacja bądź pojedyncza osoba. Ważne jest, aby zespół \hyperlink{def:uzytkownik}{\textbf{Użytkownika}} posiadał kompetencje z zakresu tworzenia oprogramowania. W zespole \hyperlink{def:uzytkownik}{\textbf{Użytkownika}} wyróżniamy rolę \hyperlink{def:projektant}{\textbf{Projektanta}}, który jest odpowiedzialny jedynie za projektowanie i wyrażanie \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} oraz niekoniecznie – zgodnie z \hyperref[req:8]{Wymaganiem 8} – musi posiadać umiejętności techniczne. 
 
-Kiedy dany \textbf{Użytkownik} planuje użyć Lupus jako \textbf{Systemu Sterowania} do rozwiązywania \textbf{Problemu Zarządzania} w swoim \textbf{Systemie Zarządzanym}, powinien:
+Kiedy dany \hyperlink{def:uzytkownik}{\textbf{Użytkownik}} planuje użyć \hyperlink{def:lupus}{\textbf{Lupus}} jako \hyperlink{def:system-sterowania}{\textbf{Systemu Sterowania}} do rozwiązywania \hyperlink{def:problem-zarzadzania}{\textbf{Problemu Zarządzania}} w swoim \hyperlink{def:system-zarzadzany}{\textbf{Systemie Zarządzanym}}, powinien:
 \begin{enumerate}
-    \item Zainstalować Lupus w swoim klastrze Kubernetes
-    \item Zintegrować \textbf{Zarządzany System} z Lupusem poprzez implementację \textbf{Agentów Translacji}
-    \item Zaplanować \textbf{Workflow Pętli}
-    \item Przygotować \textbf{Elementy Zewnętrzne} 
-    \item Wyrazić \textbf{Workflow Pętli} w \textbf{LupN} 
-    \item Zaaplikować pliki manifestacyjne zawierające kod \textbf{LupN} w klastrze
+    \item Zainstalować \hyperlink{def:lupus}{\textbf{Lupus}} w swoim klastrze Kubernetes.
+    \item Zintegrować \hyperlink{def:system-zarzadzany}{\textbf{System Zarządzany}} z \hyperlink{def:lupus}{\textbf{Lupusem}} poprzez implementację \hyperlink{def:agent-translacji}{\textbf{Agentów Translacji}}.
+    \item Zaplanować \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}}.
+    \item Przygotować \hyperlink{def:element-zewnetrzny}{\textbf{Elementy Zewnętrzne}}.
+    \item Wyrazić \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} w \hyperlink{def:lupn}{\textbf{LupN}}.
+    \item Zaaplikować pliki manifestacyjne zawierające kod \hyperlink{def:lupn}{\textbf{LupN}} w klastrze.
 \end{enumerate}
 
-Podjęcie przez użytkownika takich akcji nazywamy pojedynczym \textbf{Wdrożeniem Lupus}.
+Podjęcie przez użytkownika takich akcji nazywamy pojedynczym \hyperlink{def:wdrozenie-lupus}{\textbf{Wdrożeniem Lupus}}.
 
 \subsubsection{Instalacja Lupus}
 
-Lupus jest zaimplementowany jako Niestandardowe Zasoby (ang. \textit{Custom Resources}) w Kubernetes. Instalacja polega na zainstalowaniu tych zasobów w swoim klastrze. 
+\hyperlink{def:lupus}{\textbf{Lupus}} jest zaimplementowany jako \textit{Zasoby Własne} (ang. \textit{Custom Resources}) w Kubernetes. Instalacja polega na zainstalowaniu tych zasobów w swoim klastrze. 
 
-Pełna dokumentacje tego procesu znajduje się w \hyperref[appendix:2]{Załączniku 2}.
+Pełna dokumentacja tego procesu znajduje się w \hyperref[appendix:2]{Załączniku 2}.
 
 \subsubsection{Implementacja Agentów Translacji}
 
-To użytkownik podczas \textbf{Wdrożenia} jest odpowiedzialny za implementację \textbf{Agentów Translacji}. Tylko użytkownik zna specyfikę swojego \textbf{Systemu Zarządzanego}. Stąd w zespole użytkownika potrzebne są umiejętności programistyczne. 
+To \hyperlink{def:uzytkownik}{\textbf{Użytkownik}} podczas \hyperlink{def:wdrozenie-lupus}{\textbf{Wdrożenia}} jest odpowiedzialny za implementację \hyperlink{def:agent-translacji}{\textbf{Agentów Translacji}}. Tylko \hyperlink{def:uzytkownik}{\textbf{Użytkownik}} zna specyfikę swojego \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}. Stąd w zespole \hyperlink{def:uzytkownik}{\textbf{Użytkownika}} potrzebne są umiejętności programistyczne. 
 
-Podczas implementacji należy kierować się specyfikacją \textbf{Interfejsów Lupus} zawartą w \hyperref[appendix:4]{Załączniku 4}.
+Podczas implementacji należy kierować się specyfikacją \hyperlink{def:interfejsy-lupus}{\textbf{Interfejsów Lupus}} zawartą w \hyperref[appendix:4]{Załączniku 4}.
 
 \subsubsection{Planowanie Logiki Pętli}
 
-Workflow pętli powinno wyrazić \textbf{Logikę Pętli}, czyli w każdej iteracji doprowadzić \textbf{System Zarządzany} do \textbf{Stanu Pożądanego}. Użytkownik w tym kroku jedynie modeluje wysokopoziomowo workflow pętli, rysując np. jego diagram. Dopiero takie spojrzenie podpowie użytkownikowi jakich elementów zewnętrznych potrzebuje.
+\hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} powinno wyrazić \hyperlink{def:logika-petli}{\textbf{Logikę Pętli}}, czyli w każdej iteracji doprowadzić \hyperlink{def:system-zarzadzany}{\textbf{System Zarządzany}} do \hyperlink{def:stan-pozadany}{\textbf{Stanu Pożądanego}}. \hyperlink{def:uzytkownik}{\textbf{Użytkownik}} w tym kroku jedynie modeluje wysokopoziomowo \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}}, rysując np. jego diagram. Dopiero takie spojrzenie podpowie \hyperlink{def:uzytkownik}{\textbf{Użytkownikowi}}, jakich \hyperlink{def:element-zewnetrzny}{\textbf{Elementów Zewnętrznych}} potrzebuje.
 
 \subsubsection{Przygotowanie Elementów Zewnętrznych}
 
-Elementem Zewnętrznym może być dowolne oprogramowanie, które \textbf{Projektant} ma chęć włączyć w \textbf{Workflow Pętli}. Mogą to być już gotowe systemy (np. sztucznej inteligencji), ale równie dobrze użytkownik może stworzyć oprogramowanie samemu. Ważne jest to, aby wystawiały one jakiś sposób komunikacji. Na razie jedynym wspieranym przez Lupus sposobem jest komunikacja HTTP. Użytkownik musi umożliwić, więc komunikację tego typu.
+\hyperlink{def:element-zewnetrzny}{\textbf{Elementem Zewnętrznym}} może być dowolne oprogramowanie, które \hyperlink{def:projektant}{\textbf{Projektant}} ma chęć włączyć w \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}}. Mogą to być już gotowe systemy (np. sztucznej inteligencji), ale równie dobrze \hyperlink{def:uzytkownik}{\textbf{Użytkownik}} może stworzyć oprogramowanie samodzielnie. Ważne jest to, aby wystawiały one jakiś sposób komunikacji. Na razie jedynym wspieranym przez \hyperlink{def:lupus}{\textbf{Lupus}} sposobem jest komunikacja HTTP. \hyperlink{def:uzytkownik}{\textbf{Użytkownik}} musi umożliwić więc komunikację tego typu.
 
-Rekomendowanym przez Lupus typem Elementu Zewnętrznego jest serwer Open Policy Agent. Przygotowanie w tym wypadku polega na uruchomieniu takiego serwera oraz wgraniu mu odpowiednich polityk. Użytkownik jednakże może wydewelopować dowolny serwer HTTP.
+Rekomendowanym przez \hyperlink{def:lupus}{\textbf{Lupus}} typem \hyperlink{def:element-zewnetrzny}{\textbf{Elementu Zewnętrznego}} jest serwer \hyperlink{def:opa}{\textbf{Open Policy Agent}}. Przygotowanie w tym wypadku polega na uruchomieniu takiego serwera oraz wgraniu mu odpowiednich polityk. \hyperlink{def:uzytkownik}{\textbf{Użytkownik}} jednakże może wydewelopować dowolny serwer HTTP.
 
-Ostatnim możliwym elementem zewnętrznym są \textbf{Funkcje Użytkownika}. Są to funkcje w kodzie \textit{kontrolera} zasobu \textbf{Lupus Element}, które są definiowane przez użytkownika. Stanowią one alternatywę dla serwerów HTTP, gdy specjalne wdrażanie takowych może się okazać zbyt kosztowne. Przykładowo jeśli logika wykonywana przez dany \textbf{Element Zewnętrzny} miała by mieć tylko kilka linijek kodu, dużo łatwiej użyć \textbf{Funkcji Użytkownika}. Ich dokładniejszy opis znajduje się w \hyperref[sec:funkcje-uzytkownika]{Sekcji \ref{sec:funkcje-uzytkownika}}.
+Ostatnim możliwym \hyperlink{def:element-zewnetrzny}{\textbf{Elementem Zewnętrznym}} są \hyperlink{def:funkcje-uzytkownika}{\textbf{Funkcje Użytkownika}}. Są to funkcje w kodzie \textit{kontrolera} zasobu \hyperlink{def:element-lupus}{\textbf{Lupus Element}}, które są definiowane przez \hyperlink{def:uzytkownik}{\textbf{Użytkownika}}. Stanowią one alternatywę dla serwerów HTTP, gdy specjalne wdrażanie takowych może się okazać zbyt kosztowne. Przykładowo, jeśli logika wykonywana przez dany \hyperlink{def:element-zewnetrzny}{\textbf{Element Zewnętrzny}} miałaby mieć tylko kilka linijek kodu, dużo łatwiej użyć \hyperlink{def:funkcje-uzytkownika}{\textbf{Funkcji Użytkownika}}. Ich dokładniejszy opis znajduje się w \hyperref[sec:funkcje-uzytkownika]{Sekcji \ref{sec:funkcje-uzytkownika}}.
+
 
 \subsubsection{Wyrażenie workflow pętli}
 
-Gdy już całe \textbf{Workflow Pętli} oraz \textbf{Elementy Zewnętrzne} są gotowe czas wyrazić je w notacji \textbf{LupN}. Za jej pomocą wyraża się workflow pętli jako zbiór  \textbf{Elementów Lupus}, połączenia między nimi oraz specyfikacja każdego z nich.
+Gdy już całe \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} oraz \hyperlink{def:element-zewnetrzny}{\textbf{Elementy Zewnętrzne}} są gotowe, czas wyrazić je w notacji \hyperlink{def:lupn}{\textbf{LupN}}. Za jej pomocą wyraża się \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} jako zbiór \hyperlink{def:element-lupus}{\textbf{Elementów Lupus}}, połączenia między nimi oraz specyfikacja każdego z nich.
 
 \subsubsection{Aplikacja plików manifestacyjnych}
 
-Aby stworzyć pętle opisaną przez \textbf{kod LupN} w pliku manifestacyjnym zasobu Master należy wykonać komendę z listingu \ref{lst:2}, która tworzy instancję \textit{obiektu API} typu \textbf{Master}. Kontroler tego zasobu stworzy odpowiednie obiekty API typu \textbf{Element} według specyfikacji w pliku LupN. Podczas iteracji pętli, kontroler każdego \textbf{Elementu} interpretuje ich specyfikacje wykonując odpowiednie \textbf{akcje} na \textbf{danych}. \textbf{Workflow Akcji} również specyfikowane jest w notacji \textbf{LupN} (\hyperref[appendix:3]{Załącznik 3})
+Aby stworzyć pętlę opisaną przez \hyperlink{def:kod-lupn}{\textbf{Kod LupN}} w pliku manifestacyjnym zasobu \hyperlink{def:master}{\textbf{Master}}, należy wykonać komendę z listingu \ref{lst:2}, która tworzy instancję \textit{obiektu API} typu \hyperlink{def:master}{\textbf{Master}}. Kontroler tego zasobu stworzy odpowiednie obiekty API typu \hyperlink{def:element}{\textbf{Element}} według specyfikacji w pliku \hyperlink{def:plik-lupn}{\textbf{LupN}}. Podczas iteracji pętli, kontroler każdego \hyperlink{def:element}{\textbf{Elementu}} interpretuje ich specyfikację, wykonując odpowiednie \hyperlink{def:akcja}{\textbf{Akcje}} na \hyperlink{def:dane}{\textbf{Danych}}. \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} również specyfikowane jest w notacji \hyperlink{def:lupn}{\textbf{LupN}} (\hyperref[appendix:3]{Załącznik 3}).
 
 \begin{lstlisting}[language=sh, caption={\emph{Stworzenie zasobu Master}}\label{lst:2}]
     kubectl apply -f <nazwa_pliku>

@@ -3,26 +3,26 @@
 Specyfikacja w formie elektronicznej znajduje się pod linkiem: \url{https://github.com/0x41gawor/lupus/blob/master/docs/spec/lupn.md}.
 
 
-LupN (od ang. \textit{loop} oraz \text{Notation}) to język/notacja służąca do wyrażania \textbf{workflow pętli}. Nie zawiera opisu \textbf{części obliczeniowej} \textbf{logiki pętli}. \textbf{Cześć obliczeniowa} jest określona poza Lupus, w \textbf{Elementach Zewnętrznych}.
+\hyperlink{def:lupn}{\textbf{LupN}} (od ang. \textit{loop} oraz \textit{Notation}) to język/notacja służąca do wyrażania \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}}. Nie zawiera opisu \hyperlink{def:czesc-obliczeniowa}{\textbf{Części Obliczeniowej}} \hyperlink{def:logika-petli}{\textbf{Logiki Pętli}}. \hyperlink{def:czesc-obliczeniowa}{\textbf{Część Obliczeniowa}} jest określona poza \hyperlink{def:lupus}{\textbf{Lupus}}, w \hyperlink{def:element-zewnetrzny}{\textbf{Elementach Zewnętrznych}}.
 
 \texttt{LupN} specyfikuje:
 \begin{itemize}
-    \item \textbf{Workflow Pętli}, czyli workflow \textbf{Elementów Lupus}
-    \item odniesienia do \textbf{Elementów Zewnętrznych} wyrażone jako \textbf{Destynacje},
-    \item \textbf{Workflow Akcji}  w ramach \textbf{lupus-element},
-    \item odniesienie (lub odniesienia) do \textbf{Agenta Egress} jako \textbf{Destynacja}.
+    \item \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}}, czyli workflow \hyperlink{def:element-lupus}{\textbf{Elementów Lupus}},
+    \item odniesienia do \hyperlink{def:element-zewnetrzny}{\textbf{Elementów Zewnętrznych}}, wyrażone jako \hyperlink{def:destynacja}{\textbf{Destynacje}},
+    \item \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} w ramach \hyperlink{def:element-lupus}{\textbf{Elementu Lupus}},
+    \item odniesienie (lub odniesienia) do \hyperlink{def:agent-egress}{\textbf{Agenta Egress}} jako \hyperlink{def:destynacja}{\textbf{Destynacja}}.
 \end{itemize}
 
-Jak można zauważyć, \texttt{LupN} wyraża \textbf{workflow} na dwóch poziomach: globalnym (czyli \textbf{Workflow Elementów Lupus}) oraz wewnątrz Elementu Lupus (czyli \textbf{Workflow Akcji}). Możliwości obu poziomów są do siebie zbliżone, ale ostatecznie różne. Ten dokument również omówi tę kwestię.
+Jak można zauważyć, \texttt{LupN} wyraża \textbf{workflow} na dwóch poziomach: globalnym (czyli \hyperlink{def:workflow-petli}{\textbf{Workflow Elementów Lupus}}) oraz wewnątrz \hyperlink{def:element-lupus}{\textbf{Elementu Lupus}} (czyli \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}}). Możliwości obu poziomów są do siebie zbliżone, ale ostatecznie różne. Ten dokument również omówi tę kwestię.
 
-Z punktu widzenia implementacji \textbf{plik LupN} to w rzeczywistości \textit{YAML manifest file} dla \textit{Zasobu Własnego} \textbf{Master}. Po zaaplikowaniu (ang. \textit{apply}), \textbf{Operator Zasobu Master} uruchamia \textbf{Elementy Lupus}, które realizują wyrażone \textbf{Workflow Pętli}.
 
-\texttt{LupN} wyraża \textbf{workflow pętli} poprzez specyfikację różnych obiektów w \textbf{YAML notation}. Nazwijmy te obiekty \textbf{obiektami LupN}. Załącznik specyfikuje te obiekty oraz relacje między nimi. Wskazuje również, co oznacza użycie każdego z nich w kontekście \textbf{workflow pętli} i jak \textbf{Operator Zasobu Element} je interpretuje w czasie działania.
+Z punktu widzenia implementacji \hyperlink{def:plik-lupn}{\textbf{Plik LupN}} to w rzeczywistości \textit{YAML manifest file} dla \hyperlink{def:zasoby-wlasne}{\textit{Zasobu Własnego}} \hyperlink{def:master}{\textbf{Master}}. Po zaaplikowaniu (ang. \textit{apply}), \hyperlink{def:operator-zasobu-master}{\textbf{Operator Zasobu Master}} uruchamia \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}}, które realizują wyrażone \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}}.
 
-Okazuje się, że obiekty YAML w \textbf{YAML manifest files} są pochodnymi struktur Golang (typów Golang), dlatego możemy opisać \textbf{lupn-objects} na podstawie tych struktur Golang.
-Obiekty YAML w \textbf{pliku LupN} są pochodnymi struktur Go, dlatego \textbf{Obiekty LupN} możemy opisać na ich podstawie. 
+\texttt{LupN} wyraża \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} poprzez specyfikację różnych obiektów w notacji YAML. Nazwijmy te obiekty \hyperlink{def:obiekt-lupn}{\textbf{Obiektami LupN}}. \hyperref[appendix://TODO]{Załącznik} specyfikuje te obiekty oraz relacje między nimi. Wskazuje również, co oznacza użycie każdego z nich w kontekście \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} i jak \hyperlink{def:operator-zasobu-element}{\textbf{Operator Zasobu Element}} je interpretuje w czasie działania.
 
-Wymagane jest wcześniejsze zapoznanie się z \textbf{YAML}. Ten dokument nie obejmuje translacji dokonywanej przez Kubernetes między strukturami Go a reprezentacjami obiektów YAML. Serializacja jest wykonywana przez \textbf{controller-gen} i opisana w \textbf{kubebuilder book}. Tłumaczenie to można łatwo zaobserwować i nauczyć się, analizując przykłady zamieszczone w repozytorium projektu //TODO.
+Okazuje się, że obiekty YAML w \textbf{YAML manifest files} są pochodnymi struktur Golang (typów Golang), dlatego możemy opisać \hyperlink{def:obiekt-lupn}{\textbf{Obiekty LupN}} na podstawie tych struktur Golang. Obiekty YAML w \hyperlink{def:plik-lupn}{\textbf{Pliku LupN}} są pochodnymi struktur Go, dlatego \hyperlink{def:obiekt-lupn}{\textbf{Obiekty LupN}} możemy opisać na ich podstawie. 
+
+Wymagane jest wcześniejsze zapoznanie się z YAML. Ten dokument nie obejmuje translacji dokonywanej przez Kubernetes między strukturami Go a reprezentacjami obiektów YAML. Serializacja jest wykonywana przez \texttt{controller-gen} i opisana w \textit{Kubebuilder Book}. Tłumaczenie to można łatwo zaobserwować i nauczyć się, analizując przykłady zamieszczone w \hyperref[appendix://TODO]{repozytorium projektu}.
 
 \subsection{Możliwości LupN}
 
@@ -50,7 +50,7 @@ Notacja LupN rozpoczyna się od pola \texttt{spec}. Każdy obiekt Lupn zostanie 
 
 \subsubsection{Drzewo obiektów LupN}
 
-Podczas przeglądania specyfikacji \textbf{obiektów LupN} pomocne będzie śledzenie aktualnej pozycji w drzewie zależności obiektów. 
+Podczas przeglądania specyfikacji \hyperlink{def:obiekt-lupn}{\textbf{obiektów LupN}} pomocne będzie śledzenie aktualnej pozycji w drzewie zależności obiektów. 
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{a3-tree.png}
@@ -194,7 +194,7 @@ type Action struct {
 }
 \end{lstlisting}
 
-Pole \texttt{Next} oprócz nazw akcji może przyjąć jedną z dwóch zdefiniowanych wartości. Wartość \texttt{final} oznacza, że postać \textbf{danych} po tej akcji jest już w swojej \textbf{finalnej postaci} i musi zostać przekazane do następnego \textbf{Elementu Lupus}. Wartość \texttt{exit} oznacza nagłe zaniechanie aktualnej iteracji pętli (zazwyczaj wskutek błędu). 
+Pole \texttt{Next}, oprócz nazw akcji, może przyjąć jedną z dwóch zdefiniowanych wartości. Wartość \texttt{final} oznacza, że postać \hyperlink{def:dane}{\textbf{Danych}} po tej akcji jest już w swojej \hyperlink{def:finalne-dane}{\textbf{Finalnej Postaci}} i musi zostać przekazana do następnego \hyperlink{def:element-lupus}{\textbf{Elementu Lupus}}. Wartość \texttt{exit} oznacza nagłe zaniechanie aktualnej iteracji \hyperlink{def:zamknieta-petla-sterowania}{\textbf{Pętli Sterowania}} (zazwyczaj wskutek błędu).
 
 \subsubsection{SendAction}
 \begin{lstlisting}[language=go, caption={SendAction}\label{lst:sendaction}]
