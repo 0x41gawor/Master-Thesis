@@ -1,38 +1,39 @@
 \vspace{0.8cm}
 \acronymlist
 
-\acronym{ETSI}{Europen Telecommunications Standards Institute}
+\acronym{Architektura}{Zbiór reguł i metod opisujących funkcjonalność, organizację oraz implementację systemu.}\label{def:architektura}
+
+\acronym{Definicje Zasobów Własnych (ang. \textit{Custom Resource Definitions})}{Pliki manifestacyjne YAML służące do zarejestrowania w klastrze nowe zasoby własne}
 
 \acronym{ENI}{Experiential Networked Intelligence}
 
-\acronym{Architektura}{Zbiór reguł i metod opisujących funkcjonalność, organizację oraz implementację systemu.}\label{def:architektura}
-
-\acronym{Workflow}{Sekwencja połączonych węzłów, czasami zależnych warunkowo, która realizuje określony cel. Zazwyczaj workflow defniuje się w celu organizacji pracy.}\label{def:workflow}
-
-\acronym{Wnioskowanie (ang. \textit{reasoning})}{Proces, w którym system wyciąga logiczne wnioski z dostępnych danych i wiedzy}\label{def:wnioskowanie}
+\acronym{ETSI}{Europen Telecommunications Standards Institute}
 
 \acronym{Kognitywność (ang. \textit{cognition})}{Proces rozumienia danych oraz informacji w celu produkcji nowych danych, informacji oraz wiedzy}\label{def:kognitywność}
 
+\acronym{Kontroler (ang. \textit{controller})}{Proces monitorujący stan obiektów API w klastrze i doprowadzający je do stanu pożądanego}
+
+\acronym{Obiekt API (ang. \textit{API object})}{Zasób reprezentujący element klastra, np. Poda, Deployment, Service. Jest przechowywany w etcd i zarządzany przez API Server. Jest to konkretna instancja danego typu (ang. \textit{Kind}) zasobów}
+
+\acronym{Plik Manifestowy YAML (ang. \textit{YAML Manifest File})}{Plik konfiguracyjny zapisany w formacie YAML, definiujący obiekty API Kubernetes. Służy do deklaratywnego zarządzania zasobami klastra}
+
+\acronym{Polityka (ang. \textit{Policy})}{Sposób działania :)}
+
+\acronym{Regulator (ang. \textit{Control System})}{Pojęcie z teorii sterowania. System, który reguluje pracę obiektu}
+
+\acronym{Sterowany danymi (ang. \textit{Data-Driven})}{Nie narzucający żadnej logiki pętli – logika jest interpretowana na podstawie danych.}
+
+\acronym{System ENI}{Centralny punkt architektury ENI. Odpowiedzialny za zamkniętą pętlę sterowania, za pomocą której ENI chce osiągnąć kognitywność. Lupus aspiruje do tego, aby zaproponować architekturę dla Systemu ENI na Kubernetes}
+
 \acronym{System kognitywny}{System, który uczy się, wnioskuje oraz podejmuje decyzje w sposób przypominający ludzki umysł}\label{def:system-kognitywny}
 
-\acronym{System ENI}{}
+\acronym{Warstwa Sterowania (ang. \textit{Control Plane})}{Zestaw komponentów zarządzających stanem klastra Kubernetes. W szczególności \textsl{Controller Manager}, który nadzoruje kontrolery zasobów}
 
-\acronym{Regulator (ang. \textit{Control System})}{}
+\acronym{Workflow}{Sekwencja połączonych węzłów, czasami zależnych warunkowo, która realizuje określony cel. Zazwyczaj workflow definiuje się w celu organizacji pracy.}\label{def:workflow}
 
-\acronym{Warstwa Sterowania (ang. \textit{Control Plane})}{}
+\acronym{Wnioskowanie (ang. \textit{reasoning})}{Proces, w którym system wyciąga logiczne wnioski z dostępnych danych i wiedzy}\label{def:wnioskowanie}
 
-\acronym{Wzorzec Operator (ang. \textit{Operator Pattern})}{}
+\acronym{Wzorzec Operator (ang. \textit{Operator Pattern})}{Rozszerzenie Kubernetes pozwalające rozwijać kontrolery dla zasobów własnych}
 
-\acronym{Definicje Zasobów Własnych (ang. \textit{Custom Resource Definitions})}{}
-
-\acronym{Zasoby Własne (ang. \textit{Custom Resources})}{}
-
-\acronym{Sterowany danymi (ang. \textit{Data-Driven})}{}
-
-\acronym{kontrolera (ang. \textit{controller})}{}
-
-\acronym{obiekt API (ang. \textit{API object})}{}
-\acronym{Polityka (ang. \textit{Policy})}{}
-\acronym{Kontroler (ang. \textit{Kontroler})}{}
-\acronym{Plik Manifestowy YAML (ang. \textit{YAML Manifest File})}{}
+\acronym{Zasoby Własne (ang. \textit{Custom Resources})}{Mechanizm rozszerzenia klastra Kubernetes o nowe typy obiektów API}
 
