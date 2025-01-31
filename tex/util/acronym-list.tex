@@ -1,39 +1,82 @@
 \vspace{0.8cm}
 \acronymlist
 
-\acronym{Architektura}{Zbiór reguł i metod opisujących funkcjonalność, organizację oraz implementację systemu.}\label{def:architektura}
+\hypertarget{def:architektura}{}
+\acronym{Architektura}{Zbiór reguł i metod opisujących funkcjonalność, organizację oraz implementację systemu.}
 
+\hypertarget{def:dane}{}
+\acronym{Dane}{Fakty oraz statystyk zebrane razem w celu analizy. Stanowią podstawę do wydobycia z ich \hyperlink{def:informacja}{Informacji}}
+
+\hypertarget{def:custom-resource-definitions}{}
 \acronym{Definicje Zasobów Własnych (ang. \textit{Custom Resource Definitions})}{Pliki manifestacyjne YAML służące do zarejestrowania w klastrze nowe zasoby własne}
 
+\hypertarget{def:doswiadczenie}{}
+\acronym{Doświadczenie (ang. \textit{Experience})}{Proces zdobywania \hyperlink{def:wiedza}{wiedzy} przez system podczas funkcjonowania w środowisku docelowym}.
+
+\hypertarget{def:edukacja}{Edukacja}
+\acronym{Edukacja (ang. \textit{Education})}{Proces zdobywania \hyperlink{def:wiedza}{wiedzy} przez system poza środowiskiem docelowym, np. podczas trenowania modelu}.
+
+\hypertarget{def:wiedza}{Knowledge}
+\acronym{Wiedza (ang. \textit{Wiedza})}{Zestaw wzorców, które są wykorzystywane do wyjaśniania, a także przewidywania tego, co się wydarzyło, dzieje lub może się wydarzyć w przyszłości. Bazuje na danych, informacjach oraz umiejętnościach zdobytych poprzez \hyperlink{def:doswiadczenie}{doświadczenie} oraz \hyperlink{def:edukacja}{edukację}}
+
+\hypertarget{def:eni}{}
 \acronym{ENI}{Experiential Networked Intelligence}
 
+\hypertarget{def:etsi}{}
 \acronym{ETSI}{Europen Telecommunications Standards Institute}
 
-\acronym{Kognitywność (ang. \textit{cognition})}{Proces rozumienia danych oraz informacji w celu produkcji nowych danych, informacji oraz wiedzy}\label{def:kognitywność}
+\hypertarget{Informacja}{Reprezentacja pojęć będących przedmiotem zainteresowania środowiska w formie niezależnej od formy \hyperlink{def:dane}{danych}}
 
+\hypertarget{def:kognitywnosc}{}
+\acronym{Kognitywność (ang. \textit{cognition})}{Proces rozumienia danych oraz informacji w celu produkcji nowych danych, informacji oraz wiedzy}
+
+\hypertarget{def:kognitywny-system-zarzadzania-siecia}{}
+\acronym{Kognitywny System Zarządzania Siecią}{System zarządzania siecią, który jest jednocześnie \hyperlink{def:system-kognitywny}{kognitywny}. Docelowy system specyfikowany przez ENI}
+
+\hypertarget{def:kontroler}{}
 \acronym{Kontroler (ang. \textit{controller})}{Proces monitorujący stan obiektów API w klastrze i doprowadzający je do stanu pożądanego}
 
+\hypertarget{def:obiekt-api}{}
 \acronym{Obiekt API (ang. \textit{API object})}{Zasób reprezentujący element klastra, np. Poda, Deployment, Service. Jest przechowywany w etcd i zarządzany przez API Server. Jest to konkretna instancja danego typu (ang. \textit{Kind}) zasobów}
 
+\hypertarget{def:plik-manifestowy}{}
 \acronym{Plik Manifestowy YAML (ang. \textit{YAML Manifest File})}{Plik konfiguracyjny zapisany w formacie YAML, definiujący obiekty API Kubernetes. Służy do deklaratywnego zarządzania zasobami klastra}
 
-\acronym{Polityka (ang. \textit{Policy})}{Sposób działania :)}
+\hypertarget{def:polityka}{}
+\acronym{Polityka (ang. \textit{Policy})}{Zestaw reguł, który jest używany do zarządzania i kontrolowania zmiany i/lub utrzymania stanu jednego lub więcej zarządzanych obiektów}
 
+\hypertarget{def:regulator}{}
 \acronym{Regulator (ang. \textit{Control System})}{Pojęcie z teorii sterowania. System, który reguluje pracę obiektu}
 
+\hypertarget{def:data-driven}{}
 \acronym{Sterowany danymi (ang. \textit{Data-Driven})}{Nie narzucający żadnej logiki pętli – logika jest interpretowana na podstawie danych.}
 
+\hypertarget{def:system-eni}{}
 \acronym{System ENI}{Centralny punkt architektury ENI. Odpowiedzialny za zamkniętą pętlę sterowania, za pomocą której ENI chce osiągnąć kognitywność. Lupus aspiruje do tego, aby zaproponować architekturę dla Systemu ENI na Kubernetes}
 
-\acronym{System kognitywny}{System, który uczy się, wnioskuje oraz podejmuje decyzje w sposób przypominający ludzki umysł}\label{def:system-kognitywny}
+\hypertarget{def:system-kognitywny}{}
+\acronym{System kognitywny}{System, który uczy się, wnioskuje oraz podejmuje decyzje w sposób przypominający ludzki umysł}
 
+\hypertarget{def:uczenie-maszynowe}{}
+\acronym{Uczenie maszynowe (ang. \textit{Machine Learning})}{proces, który zdobywa nową wiedzę i/lub aktualizuje istniejącą wiedzę w celu optymalizacji funkcjonowanie systemu przy użyciu przykładowych obserwacji}
+
+\hypertarget{def:swiadomosc-kontekstu}{}
+\acronym{Świadomość kontekstu (ang. \textit{Context Aware})}{Posiadanie przez system informacji oraz wiedzy, które opisują środowisko w jakim znajduje się dana jednostka w celu lepszego doboru \hyperlink{def:wzorzec}{wzorca} do rozwiązania danego problemu}
+
+\hypertarget{def:wzorzec}{}
+\acronym{Wzorzecz (ang. \textit{pattern})}{Generyczne, reużywalne rozwiązanie danego problemu. Część składowa wiedzy}.
+
+\hypertarget{def:warstwa-sterowania}{}
 \acronym{Warstwa Sterowania (ang. \textit{Control Plane})}{Zestaw komponentów zarządzających stanem klastra Kubernetes. W szczególności \textsl{Controller Manager}, który nadzoruje kontrolery zasobów}
 
-\acronym{Workflow}{Sekwencja połączonych węzłów, czasami zależnych warunkowo, która realizuje określony cel. Zazwyczaj workflow definiuje się w celu organizacji pracy.}\label{def:workflow}
+\hypertarget{def:workflow}{}
+\acronym{Workflow}{Sekwencja połączonych węzłów, czasami zależnych warunkowo, która realizuje określony cel. Zazwyczaj workflow definiuje się w celu organizacji pracy.}
 
-\acronym{Wnioskowanie (ang. \textit{reasoning})}{Proces, w którym system wyciąga logiczne wnioski z dostępnych danych i wiedzy}\label{def:wnioskowanie}
+\hypertarget{def:wnioskowanie}{}
+\acronym{Wnioskowanie (ang. \textit{reasoning})}{Proces, w którym system wyciąga logiczne wnioski z dostępnych danych i wiedzy}
 
+\hypertarget{def:wzorzec-operator}{}
 \acronym{Wzorzec Operator (ang. \textit{Operator Pattern})}{Rozszerzenie Kubernetes pozwalające rozwijać kontrolery dla zasobów własnych}
 
+\hypertarget{def:zasoby-wlasne}{}
 \acronym{Zasoby Własne (ang. \textit{Custom Resources})}{Mechanizm rozszerzenia klastra Kubernetes o nowe typy obiektów API}
-
