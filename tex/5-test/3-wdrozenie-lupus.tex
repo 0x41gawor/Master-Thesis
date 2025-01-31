@@ -100,7 +100,7 @@ Jeśli rzeczywiste wykorzystanie zasobów jest znacząco niższe od wartości op
     }
 \end{lstlisting}
 
-Kod agenta Ingress znajduje się w załączniku //TODO.
+Kod agenta Ingress znajduje się w \hyperlink{appengix:7}{Załączniku 7}.
 
 \textbf{Agent Egress}
 
@@ -111,7 +111,7 @@ Agent Egress udostępnia endpoint HTTP, który przyjmuje dane w postaci przedsta
     \caption{Endpoint Egress Agent przyjmujący finalne dane}\label{fig:53-egress}
 \end{figure}
 
-Następnie dla wdrożenia (ang. \textit{deployment}) zadanego polem \texttt{name} zmodyfikuje zdefiniowane wartości \texttt{requests} oraz \texttt{limits} według pola \texttt{spec}. Opcjonalne jest pole \texttt{interval}, które określa z jakim interwałem czasowym (w sekundach) raportować aktualne zużycie zasobów. Agent Egress odpowiednio wysteruje tym polem Agenta Ingress.
+Następnie dla wdrożenia (ang. \textit{deployment}) zadanego polem \texttt{name} zmodyfikuje zdefiniowane wartości \texttt{requests} oraz \texttt{limits} według pola \texttt{spec}. Opcjonalne jest pole \texttt{interval}, które określa z jakim interwałem czasowym (w sekundach) raportować aktualne zużycie zasobów. Agent Egress odpowiednio wysteruje tym polem Agenta Ingress. Kod Agenta Egress znajduje się w \hyperlink{appendix:8}{Załączniku 8}.
 
 \subsubsection{Planowanie Logiki Pętli}
 
@@ -158,7 +158,7 @@ A \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} dla \hyperlink{def:ele
 
 Każdy z \hyperlink{def:element-zewnetrzny}{\textbf{Elementów Zewnętrznych}} przygotowano jako aplikację Python emulującą serwer \hyperlink{def:opa}{\textbf{Open Policy Agent}}.
 
-Implementacje można znaleźć w //TODO
+Implementacje można znaleźć w \hyperlink{appendix:9}{Załączniku 9}.
 
 \subsubsection{Wyrażenie workflow pętli w notacji LupN}
 
@@ -171,7 +171,7 @@ Implementacje można znaleźć w //TODO
 
 Element \texttt{demux} służy do rozdzielenia \hyperlink{def:dane}{\textbf{Danych}} na dwie części. Każde wdrożenie UPF ma swój dedykowany element \texttt{upf1} lub \texttt{upf2}, który obsługuje je według \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} przedstawionego w poprzedniej podsekcji. Elementy \texttt{upf1} oraz \texttt{upf2} niezależnie pobudzają endpoint \texttt{/api/data} \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}.
 
-Kod \hyperlink{def:lupn}{\textbf{LupN}} znajduje się w //TODO. Ostatnim krokiem w celu uruchomienia pętli jest zaaplikowanie \hyperlink{def:plik-lupn}{\textbf{Pliku LupN}}.
+Kod \hyperlink{def:lupn}{\textbf{LupN}} znajduje się w \hyperlink{appendix:10}{Załączniku 10}. Ostatnim krokiem w celu uruchomienia pętli jest zaaplikowanie \hyperlink{def:plik-lupn}{\textbf{Pliku LupN}}.
 
 \subsubsection{Prezentacja działania jednej iteracji pętli}
 
