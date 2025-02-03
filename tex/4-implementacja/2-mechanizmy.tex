@@ -16,9 +16,9 @@ Flow pracy kontrolera pokazano na rysunku \ref{fig:42-flow}. Gdy `kube-api-serve
     \caption{Flow pracy kontrolera}\label{fig:42-flow}
 \end{figure}
 
-\subsubsection{Zasoby niestandardowe} 
+\subsubsection{Zasoby własne} 
 
-Zasoby niestandardowe (ang. \textit{Custom Resources}) rozszerzają wbudowane zasoby (ang. \textit{buit-in resources}) o niestandardowe, zdefiniowane przez użytkownika. Najczęściej tworzone są w celu zarządzania konfiguracją skomplikowanych lub stanowych aplikacji. 
+\hyperlink{def:zasoby-wlasne}{\textit{Zasoby własne} (ang. \textit{Custom Resources})} rozszerzają wbudowane zasoby (ang. \textit{buit-in resources}) o niestandardowe, zdefiniowane przez użytkownika. Najczęściej tworzone są w celu zarządzania konfiguracją skomplikowanych lub stanowych aplikacji. 
 
 Czasami wbudowane typy zasobów (jak Pody, Wdrożenia (ang. \textit{Deployments}), Serwisy (ang. \textit{Services})) nie są dla nas wystarczające, dlatego Kubernetes udostępnia możliwość rejestrowania nowych typów. Aby tego dokonać należy stworzyć plik manifestacyjny YAML typu \textit{Custom Resource Definition} a następnie zaaplikować go w klastrze. Po pomyślnej operacji, będzie można tworzyć obiekty nowego typu.
 
