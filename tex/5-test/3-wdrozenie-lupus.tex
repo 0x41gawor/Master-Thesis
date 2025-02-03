@@ -208,7 +208,7 @@ Iterację rozpoczyna \hyperlink{def:agent-ingress}{\textbf{Agent Ingress}}, któ
     \caption{Logi Agenta Egress}\label{fig:53-scr-5}
 \end{figure}
 
-Gdy pobudzimy funkcję UPF do większej pracy ruchem z UE (//TODO załącznik jak), widzimy raportowane większe zużycie zasobów przez odpowiednie wdrożenie (rys. \ref{fig:53-scr-7}). Aktualne zużycie przekraczające zdefiniowany punkt pracy powoduje otrzymanie od elementu zewnętrznego \texttt{opa-point} punkt \texttt{NORMAL\_TO\_CRITICAL}, co z kolei wpływa na workflow akcji (rys. \ref{fig:53-scr-8}). W kolejnych iteracjach w logach Agenta Ingress widzimy błąd spowodowany tym, ze Pod UPF1 chwilowo nie istnieje, stało się tak dlatego iż Agent Egress w poprzedniej iteracji zmienił jego wartość \texttt{requests} oraz \texttt{limits}, co poskutkowało restartem Poda. Po restarcie widzimy iż Agent Ingress raportuje nowe wartości \texttt{requests} i \texttt{limits} dla Poda UPF1.
+Gdy pobudzimy funkcję UPF do większej pracy ruchem z UE, widzimy raportowane większe zużycie zasobów przez odpowiednie wdrożenie (rys. \ref{fig:53-scr-7}). Aktualne zużycie przekraczające zdefiniowany punkt pracy powoduje otrzymanie od elementu zewnętrznego \texttt{opa-point} punkt \texttt{NORMAL\_TO\_CRITICAL}, co z kolei wpływa na workflow akcji (rys. \ref{fig:53-scr-8}). W kolejnych iteracjach w logach Agenta Ingress widzimy błąd spowodowany tym, ze Pod UPF1 chwilowo nie istnieje, stało się tak dlatego iż Agent Egress w poprzedniej iteracji zmienił jego wartość \texttt{requests} oraz \texttt{limits}, co poskutkowało restartem Poda. Po restarcie widzimy iż Agent Ingress raportuje nowe wartości \texttt{requests} i \texttt{limits} dla Poda UPF1.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-scr-7.png}

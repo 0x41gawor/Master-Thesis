@@ -19,4 +19,7 @@ Specyfikacja w formie elektronicznej znajduje się pod linkiem: \url{https://git
 
 To, w jaki sposób można operować na \hyperlink{def:dane}{\textbf{Danych}}, prezentuje specyfikacja akcji (\hyperref[appendix:6]{Załącznik 6}).
 
-// TODO: Opisać koncepcję wildcard oraz pojęcie pola danych.
+
+Kluczowym pojęciem jest \hyperlink{def:pole-danych}{\textbf{Pole Danych}}. Jest to pojedyncze pole JSON dostępne pod danym kluczem. Jest jednostką operacyjną danych. Przekazywane jako wejście lub wyjście akcji. 
+
+Parametry kluczy wejściowych lub wyjściowych akcji akceptują znak \texttt{*}. Jego uzycie wskazuje na przekazanie całego obiektu danych jako wejście/wyjście do/z akcji. Dodatkowo też klucze wejściowe/wyjściowe akcji wspierają zagnieżdżanie pól za pomocą operatora kropki (\texttt{.}).

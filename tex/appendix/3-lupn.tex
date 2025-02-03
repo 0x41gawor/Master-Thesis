@@ -18,15 +18,15 @@ Jak można zauważyć, \texttt{LupN} wyraża \textbf{workflow} na dwóch pozioma
 
 Z punktu widzenia implementacji \hyperlink{def:plik-lupn}{\textbf{Plik LupN}} to w rzeczywistości \textit{YAML manifest file} dla \hyperlink{def:zasoby-wlasne}{\textit{Zasobu Własnego}} \hyperlink{def:master}{\textbf{Master}}. Po zaaplikowaniu (ang. \textit{apply}), \hyperlink{def:operator-zasobu-master}{\textbf{Operator Zasobu Master}} uruchamia \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}}, które realizują wyrażone \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}}.
 
-\texttt{LupN} wyraża \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} poprzez specyfikację różnych obiektów w notacji YAML. Nazwijmy te obiekty \hyperlink{def:obiekt-lupn}{\textbf{Obiektami LupN}}. \hyperref[appendix://TODO]{Załącznik} specyfikuje te obiekty oraz relacje między nimi. Wskazuje również, co oznacza użycie każdego z nich w kontekście \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} i jak \hyperlink{def:operator-zasobu-element}{\textbf{Operator Zasobu Element}} je interpretuje w czasie działania.
+\texttt{LupN} wyraża \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} poprzez specyfikację różnych obiektów w notacji YAML. Nazwijmy te obiekty \hyperlink{def:obiekt-lupn}{\textbf{Obiektami LupN}}. \hyperref[appendix:3]{Załącznik 3} specyfikuje te obiekty oraz relacje między nimi. Wskazuje również, co oznacza użycie każdego z nich w kontekście \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} i jak \hyperlink{def:operator-zasobu-element}{\textbf{Operator Zasobu Element}} je interpretuje w czasie działania.
 
 Okazuje się, że obiekty YAML w \textbf{YAML manifest files} są pochodnymi struktur Golang (typów Golang), dlatego możemy opisać \hyperlink{def:obiekt-lupn}{\textbf{Obiekty LupN}} na podstawie tych struktur Golang. Obiekty YAML w \hyperlink{def:plik-lupn}{\textbf{Pliku LupN}} są pochodnymi struktur Go, dlatego \hyperlink{def:obiekt-lupn}{\textbf{Obiekty LupN}} możemy opisać na ich podstawie. 
 
-Wymagane jest wcześniejsze zapoznanie się z YAML. Ten dokument nie obejmuje translacji dokonywanej przez Kubernetes między strukturami Go a reprezentacjami obiektów YAML. Serializacja jest wykonywana przez \texttt{controller-gen} i opisana w \textit{Kubebuilder Book}. Tłumaczenie to można łatwo zaobserwować i nauczyć się, analizując przykłady zamieszczone w \hyperref[appendix://TODO]{repozytorium projektu}.
+Wymagane jest wcześniejsze zapoznanie się z YAML. Ten dokument nie obejmuje translacji dokonywanej przez Kubernetes między strukturami Go a reprezentacjami obiektów YAML. Serializacja jest wykonywana przez \texttt{controller-gen} i opisana w \textit{Kubebuilder Book}. Tłumaczenie to można łatwo zaobserwować i nauczyć się, analizując przykłady zamieszczone w repozytorium projektu: \url{https://github.com/0x41gawor/lupus/tree/master/examples}
 
 \subsection{Możliwości LupN}
 
-//TODO opisać jakie workflow potrafi na obu poziomach. Odnieść się do sekcji z implementacji.
+Ze względu na różnice implementacyjne węzłów omówione w sekcji \ref{sec:dwa-rodzaje-workflow}, możliwości \hyperlink{def:workflow-petli}{Workflow Pętli} oraz \hyperlink{def:workflow-akcji}{Workflow Akcji} różnią się od siebie. Sekwencja wykonawcza elementów jest definiowana poprzez obiekty \texttt{next}. Każdy element definiuje listę następnych elementów. Zazwyczaj jest to jeden element. Możliwe są rozgałęzienia (ang. \textit{forks}) czyli lista z większą ilością elementów, ale wtedy zostaje wywołane wiele elementów niezależnie. Nie ma możliwości na zsynchronizowane powrotne złączenie przepływu danych. W przypadku akcji stosowany jest ten sam mechanizm opierający się na definiowaniu następnej akcji, z tym, że tutaj może być ona tylko jedna. Flow akcji interpretowane jest bowiem przez kontroler elementu, który procesuje je po jednej na raz. Z tego powodu możliwe jest sterowanie przepływem (ang. \textit{flow control}), które zostało zaimplementowane jako specjalny typ akcji - \texttt{switch}. 
 
 \subsection{Specyfikacja}
 
@@ -70,7 +70,7 @@ type MasterSpec struct {
 Każdy element na liście \texttt{Elements} spowoduje, że \textbf{Operator Zasobu Master} stworzy obiekt API typu \textbf{Lupus Element}. 
 
 \subsubsection{ElementSpec}
-\begin{lstlisting}[language=go, caption={MasterSpec}\label{lst:a32}]
+\begin{lstlisting}[language=go, caption={MasterSpec}\label{lst:a32}, basicstyle=\ttfamily\tiny]
 // ElementSpec defines the desired state of Element
 type ElementSpec struct {
 	// Name is the name of the element, its distinct from Kubernetes API Object name, 
@@ -90,7 +90,7 @@ type ElementSpec struct {
 \end{lstlisting}
 
 \subsubsection{Next}
-\begin{lstlisting}[language=go, caption={Next}\label{lst:next}]
+\begin{lstlisting}[language=go, caption={Next}\label{lst:next}, basicstyle=\ttfamily\tiny]
 // Next specifies the next loop-element in a loop workflow, 
 // it may be either lupus-element or reference to an external-element
 // It allows to forward the whole final-data, but also parts of it
@@ -109,15 +109,17 @@ type Next struct {
 
 \subsubsection{NextElement}
 \begin{lstlisting}[language=go, caption={NextElement}\label{lst:nextelement}]
-// NextElement indicates the next loop-element in loop-workflow of type lupus-element
+// NextElement indicates the next loop-element 
+// in loop-workflow of type lupus-element
 type NextElement struct {
-	// Name is the lupus-name of lupus-element (the one specified in Element struct)
+	// Name is the lupus-name of lupus-element 
+	// (the one specified in Element struct)
 	Name string `json:"name"`
 }
 \end{lstlisting}
 
 \subsubsection{Destination}
-\begin{lstlisting}[language=go, caption={Destination}\label{lst:destination}]
+\begin{lstlisting}[language=go, caption={Destination}\label{lst:destination}, basicstyle=\ttfamily\tiny]
 // Destination represents an external-element
 // It holds all the info needed to make a call to an external-element
 // It supports calls to HTTP server, Open Policy Agent or user-functions
