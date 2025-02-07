@@ -1,2 +1,63 @@
 \subsection{Przegląd literatury}
 
+Rozważania na temat inteligentnych systemów w kontekście niniejszej pracy należy zacząć od artykułu opublikowanego przez IBM w 2003 roku \cite{kephart2003}. Wskazuje on, iż ówczesne systemy informatyczne stają się coraz bardziej skomplikowane, co prowadzi do kryzysy zarządzania. Ręczna administracja przestaje być skalowalna, ponieważ systemy wymagają coraz większej liczby specjalistów do instalacji, konfiguracji oraz optymalizacji. IBM wskazuje, że jedyną opcją poradzenia sobie z tym problemem jest Autonomiczne Przetwarzanie (ang. \textit{Autonomic Computing}). Nawiązuje ono do autonomicznego układu nerwowego człowieka, który zarządza pracą naszego serca lub utrzymaniem temperatury ciała, zwalniając świadomą część mózgu z tych obowiązków. W kontekście systemów informatycznych człowiek zwolniony by był z konfiguracji, optymalizacji, naprawy oraz ochrony, gdyż powstałe system były by "Self-CHOP" (ang. \textit{Self-Configuration, Self-Optimization, Self-Healing, Self-Protection}). Jest to ważne pojęcie stanowiące podwaliny wielu dalszych badań. Architektura autonomicznych systemów przedstawiona jest na rysunku \ref{fig:25-ibm}.
+
+\begin{figure}[!htbp]
+    \centering \includegraphics[width=1.0\linewidth]{24-ibm.png}
+    \caption{Architektura autonomicznych systemów IBM}\label{fig:24-ibm}
+\end{figure}
+
+Podstawową jej jednostką jest element autonomiczny (ang. \textit{Autonomic Element}). Składa się on z zarządzanego komponentu (np. serwera, bazy danych, aplikacji czy urządzenia sieciowego) oraz autonomicznego menadżera (ang. \textit{Autonomic Manager}), który steruje jego działaniem. Menedżer autonomiczny działa w cyklu MAPE-K (Monitor, Analyze, Plan, Execute, Knowledge). Faza "Monitor" zbiera dane o zarządzanym obiekcie, które to są analizowane i oceniane pod względem potencjalnych problemów w fazie "Analyze". "Plan" odpowiada za rozpisanie działań naprawczych lub optymalizacyjnych, które są przekazywane do "Execute" w celu wdrożenia w systemie zarządzanym. "Knowledge" nie jest fazą a repozytorium wiedzy, do której każdy z elementów cyklu ma dostęp. Tu gromadzona jest \hyperlink{def:wiedza}{\textit{wiedza}}. Elementy autonomiczne mogą ze sobą współpracować i wymieniać się wiedzą. Inteligencja społeczna (ang. \textit{social intelligence}) całego rozproszonego systemu rośnie wraz z liczbą interakcji pomiędzy elementami, podobnie jak w kolonii mrówek. Gdy przyjdzie nowy element, to zdobywa wiedzę od reszty populacji. Widzimy tu lekką inspirację \cite{minsky1986}.
+
+Następnie \cite{doyle2014} opisuje ewolucję architektury sieci telekomunikacyjnych w kierunku większej automatyzacji wymieniając czynniki umożliwiające (ang. \textit{enablers}) taki kierunek jako technologie: SDN (ang. \textit{Software Defined Networks}) oraz NFV (ang. \textit{Network Function Virtualization}).
+
+Należy w tym momencie rozróżnić pojęcia Automatyzacji i Autonomiczności. Pierwsze odnosi się do predefiniowanego i zaprogramowanego procesu, podczas gdy drugie do aspektów związanych z samozarządzaniem. Zazwyczaj proces automatyczny nie jest w stanie zaadaptować się do zmian środowiska bez interwencji człowieka, co z kolei potrafi proces autonomiczny \cite{ngmn2022}. Czynnikiem technologicznym (ang. \text{enabler}) pozwalającym na przejście z automatyzacji na autonomiczność jest sztuczna inteligencja. \cite{benzaid2020} dokonuje przeglądu kierunków rozwoju badań na temat systemów ZSM. Czyli bezobsługowych systemów zarządzania siecią i usługami (ang. \textit{Zero-touch network and Service Management}), gdzie sztuczna inteligencja odgrywa kluczową rolę. Artykuł wymienia projekty organizacji standaryzujących w tym kierunku:
+\begin{itemize}
+    \item \textbf{ETSI GS ZSM} - specyfikuje referencyjną architekturę zarządzania siecią i usługami end-to-end. Framework ZSM jest postrzegany jako system zarządzania nowej generacji, który ma na celu pełną autonomiczność wszystkich procesów - od planowania, projektowania, dostarczania i wdrażanie, po udostępnianie, monitorowanie i optymalizację. Docelowo, w idealnym przypadku, powinien on działać w 100\% samodzielnie bez ingerencji człowieka. 
+    \item \textbf{ETSI GR ENI} - specyfikuje referencyjną architekturę kognitywnych systemów zarządzania siecią używając zamkniętych pętli sterowania oraz świadomych kontekstu polityk. O ile ETSI GS ZSM skupia się na technikach automatyzacji zarządzania oraz udostępniania usług end-to-end, to ENI koncentruje się na technikach AI, zarządzaniu poprzez polityki oraz zamkniętych pętlach sterowania.
+    \item \textbf{TM FORUM} - specyfikuje referencyjną architekturę CLADRA (Closed Loop Anomaly Detection and Resolution Automation) opartej o AI, która umożliwia dostawcom usług komunikacyjnych (CSP - ang. \textit{Communication Service Providers} na szybkie wykrywanie i rozwiązywanie problemów sieciowych.
+\end{itemize}
+
+Powyższe architektury zostaną dokładniej opisane w dalszej części pracy (zwłaszcza w części badawczej). Istotne na ten moment jest to, ze każda z tych architektur opiera swoje działanie o zamknięte pętle sterowania, co przewidział z resztą artykuł \cite{fallon2019}. Wskazuje on, iż badanie oraz stosowanie zamkniętych pętli sterowania jest dosyć starą dyscypliną sięgającą aż od ery pary \footnote{\url{https://en.wikipedia.org/wiki/Age_of_Steam}} (Rysunek \ref{fig:24-his}). Stosowane są one z powodzeniem w systemach morskich, lotniczych, motoryzacyjnych, przemysłowych ale też mikroprocesorach, systemach wbudowanych czy sterownikach urządzeń. Mimo że tego typu systemy są często złożone, cechują się determinizmem i dobrze określonymi granicami, co sprawia, że świetnie nadają się do zastosowania teorii sterowania\footnote{\url{https://en.wikipedia.org/wiki/Control_theory}}. Systemy telekomunikacyjne natomiast są słabo określonymi, stochastycznymi systemami, co sprawia, że zastosowanie teorii sterowania do ich zarządzania okazuje się wyjątkowo trudne. Stąd duże opóźnienie w ich adaptacji w branży telekomunikacyjnej. Od czasu pojawienia się propozycji Autonomicznego Zarządzania \cite{kephart2003} w 00s oraz enablerów w postaci SDN\&NFV w 10s zaczęły się pojawiać implementacje zamkniętych pętli sterowania w telekomunikacji. Niestety są one bardzo pragramtyczne i sztywne, skupione jedynie na dowożeniu danej funkcjonalności. Dodatkową problematyczność zagadnienia sprawia konieczność integracji systemów od wielu różnorodnych dostawców.
+
+\begin{figure}[!htbp]
+    \centering \includegraphics[width=1.0\linewidth]{24-his.png}
+    \caption{Zestawienie lini czasu rozwoju systemów zarządzania siecią oraz pętli sterowania}\label{fig:24-his}
+\end{figure}
+
+\cite{fallon2019} wskazuje wyzwania jakim należy się przeciwstawić, aby umożliwić autonomiczność poprzez pętle sterowania w sieciach. Są to następujące kroki:
+\begin{itemize}
+    \item Potrzebny jest model opisujący pętle sterowania w standardowy sposób. Pozwoli to uchronić się przed pragramtycznością i niesystematycznością.
+    \item Potrzebny jest framework do wdrażania pętli sterowania umożliwiający ich zarządzanie oraz działanie (ang. \textit{runtime}) w jednym miejscu.
+    \item Potrzebne są (najlepiej) graficzne narzędzia do projektowania i symulacji pętli sterowania, tak aby ich wdrażanie nie wymagało specjalistycznych umiejętności technicznych.
+\end{itemize}
+
+Następnym punktem artykułu jest omówienie systemu zarządzania ONAP\footnote{\url{https://www.onap.org}} (Open Network Automation Platform) \cite{onap2018}. ONAP to open-source’owa platforma do orkiestracji, zarządzania i automatyzacji usług sieciowych, rozwijana przez Linux Foundation. ONAP składa się z \textbf{wielu modułów i API}, które umożliwiają pełne \textbf{zarządzanie cyklem życia usług sieciowych}, od ich projektowania, poprzez wdrażanie, aż po operacje eksploatacyjne. Jego kluczowe elementy to:
+\begin{itemize}
+    \item \textbf{Master Service Orchestrator (MSO)} – centralny komponent odpowiedzialny za orkiestrację.
+    \item \textbf{SDN Controllers (APPC, SDNC, VFC)} – kontrolery zarządzające różnymi warstwami sieci.
+    \item \textbf{A\&AI (Active and Available Inventory)} – komponent do zarządzania inwentaryzacją zasobów sieciowych.
+    \item \textbf{DCAE (Data Collection, Analytics and Events)} – moduł do analizy danych i obsługi pętli sterowania.
+    \item \textbf{CDS (Controller Design Studio)} – moduł do modelowania inteligentnych konfiguracji komponentów sieciowych
+    \item \textbf{CLAMP (Control Loop Automation Management Platform)} – zarządza zamkniętymi pętlami sterowania.
+\end{itemize}
+
+Komponentem odpowiedzialnym za pętle sterowania w ONAP jak i zarówno kandydatem na przeciwstawiennictwo wyzwaniom postawionym powyżej jest CLAMP\footnote{\url{https://docs.onap.org/projects/onap-policy-parent/en/istanbul/clamp/clamp/clamp-architecture.html}}. Ma on jednak swoje ograniczenia:
+\begin{itemize}
+    \item Wymaga stosowania architektury pętli zgodnej z MAPE-K, co ogranicza możliwość wdrożenia nietypowych pętli sterowania.
+    \item Wymaga ścisłej integracji z innymi modułami ONAP takimi jak DCAE, CDS, czy silniki polityk, co ogranicza możliwości tworzenia pętli niezależnych od ekosystemu ONAP.
+    \item Jest zoptymalizowany do prostych pętli sterowania. Brak natywnego wsparcia dla bardziej złożonych architektur jak pętle hierarchiczne, rozproszone lub współzależne.
+    \item Brak wsparcia AI/ML w swoich komponentów.
+    \item Ścisłe połączenie z wybranymi silnikami polityk takimi jak XACML \footnote{\url{https://docs.onap.org/projects/onap-policy-parent/en/istanbul/xacml/xacml.html}}, Drools\footnote{\url{https://docs.onap.org/projects/onap-policy-parent/en/istanbul/drools/drools.html}} czy APEX \footnote{\url{https://docs.onap.org/projects/onap-policy-parent/en/istanbul/apex/apex.html}} 
+    \item Ścisła specjalizacja w orkiestracji sieci SDN\&NFV. Ciężko jest rozwijać pętle, które nie są związane z tym zagadnieniem.
+\end{itemize}
+
+
+Niniejsza praca znajduję lukę, którą chce zapełnić w postaci platformy służącej do modelowania oraz uruchamiania zamkniętych pętli sterowania. Luka ta umotywowana jest wyzwaniami zdefiniowanymi przez \cite{fallon2019}, brakami w ONAP/CLAMP oraz zidentyfikowanie potrzeby takiej platformy w architekturach referencyjnych definiowanych przez ETSI GS ZSM oraz CLADRA, które to zostaną omówione dokładniej w dalszej części pracy w celu sformułowania wymagań na platformę. 
+
+Odnosząc się do architektury z \cite{kephart2003} proponowana w niniejszej pracy platforma polega na wyniesieniu autonomicznych menadżerów do jednego wspólnego miejsca (Rysunek \ref{fig:24-lupus}).
+
+\begin{figure}[!htbp]
+    \centering \includegraphics[width=1.0\linewidth]{24-lupus.png}
+    \caption{Koncepcja wyniesienia autonomicznych menadżerów na wspólną platformę (//TODO)}\label{fig:24-lupus}
+\end{figure}
