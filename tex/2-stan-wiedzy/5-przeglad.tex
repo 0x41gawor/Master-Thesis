@@ -62,7 +62,7 @@ Jest to pętla sekwencyjna, każdy element komunikuje się jedynie na dwóch pł
 \end{figure}
 
 \subsubsection{Focale}
-Architektura pętli FOCALE \cite{strassner2007} jest widoczna na Rysunku \ref{fig:25-focale}. Workflow pętli jest sekwencyjne, ale z drugiej strony za pomocą wspólnej szyny danych każdy element może komunikować się z każdym. Ważnym atrybutem szyny jest to, że natywnie wspiera ona model informacji DEN-ng \cite{strassner2003} oraz ontologii DENON-ng \cite{strassner2007}. Widzimy tu też podłączony do każdego elementu "Autonomic Manager", koncept z \cite{kephart2003}. FOCALE w każdej iteracji może przyjąć inny przebieg. Mówimy tu o pętli utrzymaniowej, czyli przebiegu, który zachodzi w przypadku gdy system zarządzany nie wymaga żadnych akcji naprawczych lub optymalizacyjnych. Kiedy stan aktualny nie zgadza się ze stanem pożądanym, pętla przybiera przebieg rekonfiguracyjny. 
+Architektura pętli Focale \cite{strassner2007} jest widoczna na Rysunku \ref{fig:25-focale}. Workflow pętli jest sekwencyjne, ale z drugiej strony za pomocą wspólnej szyny danych każdy element może komunikować się z każdym. Ważnym atrybutem szyny jest to, że natywnie wspiera ona model informacji DEN-ng \cite{strassner2003} oraz ontologii DENON-ng \cite{strassner2007}. Widzimy tu też podłączony do każdego elementu "Autonomic Manager", koncept z \cite{kephart2003}. Focale w każdej iteracji może przyjąć inny przebieg. Mówimy tu o pętli utrzymaniowej, czyli przebiegu, który zachodzi w przypadku gdy system zarządzany nie wymaga żadnych akcji naprawczych lub optymalizacyjnych. Kiedy stan aktualny nie zgadza się ze stanem pożądanym, pętla przybiera przebieg rekonfiguracyjny.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{25-focale.png}
