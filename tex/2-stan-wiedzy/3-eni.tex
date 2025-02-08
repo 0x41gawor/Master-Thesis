@@ -18,10 +18,3 @@ Polityki mogą płynąć od: aplikacji zarządzających siecią, użytkowników 
     \item zapewnienie zgodności z regulacjami (ang. \textit{regulatory compliance}) 
     \item i wiele innych.
 \end{itemize}
-
-\begin{figure}[!htbp]
-    \centering \includegraphics[width=1\linewidth]{23-eni-arch.png}
-    \caption{Wysokopoziomowa architektura funkcjonalna ENI}\label{fig:23-eni-arch}
-\end{figure}
-
-Wysokopoziomową architekturę funkcjonalną ENI pokazano na rysunku \ref{fig:23-eni-arch}. Jej działanie można opisać jako dwie zamknięte pętle sterowania. Za pomocą zewnętrznej, system zarządzania (użytkownik, OSS/BSS, orkiestrator) reguluje pracę sieci (infrastruktury). Dokonuje tego nie bezpośrednio, lecz za pomocą \hyperlink{def:system-eni}{Systemu ENI}, który sam wewnętrznie również posiada zamkniętą pętle sterowania. Wewnętrzna pętla podczas wnioskowania bierze pod uwagę nie tylko wiedzę płynącą bezpośrednio z sieci, ale również tę od orkiestratora. Wszystkie komponenty odpowiedzialne za sztuczną inteligencję są umieszczone na rysunku \ref{fig:23-eni-arch} w zielonym prostokącie i stanowią \hyperlink{def:workflow}{\textit{workflow}} wewnętrznej pętli. 
