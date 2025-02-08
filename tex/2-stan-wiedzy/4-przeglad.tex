@@ -1,6 +1,6 @@
 \subsection{Przegląd literatury}
 \subsubsection{Wstęp}
-Rozważania na temat inteligentnych systemów w kontekście niniejszej pracy należy zacząć od artykułu opublikowanego przez IBM w 2003 roku \cite{kephart2003}. Wskazuje on, iż ówczesne systemy informatyczne stają się coraz bardziej skomplikowane, co prowadzi do kryzysy zarządzania. Ręczna administracja przestaje być skalowalna, ponieważ systemy wymagają coraz większej liczby specjalistów do instalacji, konfiguracji oraz optymalizacji. IBM wskazuje, że jedyną opcją poradzenia sobie z tym problemem jest Autonomiczne Przetwarzanie (ang. \textit{Autonomic Computing}). Nawiązuje ono do autonomicznego układu nerwowego człowieka, który zarządza pracą naszego serca lub utrzymaniem temperatury ciała, zwalniając świadomą część mózgu z tych obowiązków. W kontekście systemów informatycznych człowiek zwolniony by był z konfiguracji, optymalizacji, naprawy oraz ochrony, gdyż powstałe system były by "Self-CHOP" (ang. \textit{Self-Configuration, Self-Optimization, Self-Healing, Self-Protection}). Jest to ważne pojęcie stanowiące podwaliny wielu dalszych badań. Architektura autonomicznych systemów przedstawiona jest na rysunku \ref{fig:25-ibm}.
+Rozważania na temat inteligentnych systemów w kontekście niniejszej pracy należy zacząć od artykułu opublikowanego przez IBM w 2003 roku \cite{kephart2003}. Wskazuje on, iż ówczesne systemy informatyczne stają się coraz bardziej skomplikowane, co prowadzi do kryzysy zarządzania. Ręczna administracja przestaje być skalowalna, ponieważ systemy wymagają coraz większej liczby specjalistów do instalacji, konfiguracji oraz optymalizacji. IBM wskazuje, że jedyną opcją poradzenia sobie z tym problemem jest Autonomiczne Przetwarzanie (ang. \textit{Autonomic Computing}). Nawiązuje ono do autonomicznego układu nerwowego człowieka, który zarządza pracą naszego serca lub utrzymaniem temperatury ciała, zwalniając świadomą część mózgu z tych obowiązków. W kontekście systemów informatycznych człowiek zwolniony by był z konfiguracji, optymalizacji, naprawy oraz ochrony, gdyż powstałe system były by "Self-CHOP" (ang. \textit{Self-Configuration, Self-Optimization, Self-Healing, Self-Protection}). Jest to ważne pojęcie stanowiące podwaliny wielu dalszych badań. Architektura autonomicznych systemów przedstawiona jest na rysunku \ref{fig:24-ibm}.
 
 \begin{figure}[!htbp]
     \centering \includegraphics[width=1.0\linewidth]{24-ibm.png}
@@ -138,11 +138,25 @@ Pełna tabela funkcjonalności proponowanych dla Menadżera Zamkniętych Pętli 
 
 \subsubsection{Achitektura referencyjna ETSI ENI}
 
+ENI rozwija specyfikacje w kierunku Kognitywnego Systemu Zarządzania, który będzie samodzielnie regulował działanie sieci poprzez wykorzystanie technik sztucznej inteligencji, takich jak \hyperlink{def:uczenie-maszynowe}{uczenie maszynowe (ang. \textit{machine learning})} oraz \hyperlink{def:wnioskowanie}{wnioskowanie (ang. \textit{reasoning})}. 
+
+Z poprzedniej sekcji wiemy, że aby \hyperlink{def:wnioskowanie}{\textit{wnioskować}} potrzebna jest \hyperlink{def:wiedza}{\textit{wiedza}}. Skąd taki system pozyskiwałby wiedzę? Otóż, dzieje się to poprzez proces \hyperlink{def:uczenie-maszynowe}{\textit{Uczenia Maszynowego}}. Pierwsza faza czyli tzw. "trening", odbywa się jeszcze przed wdrożeniem systemu. Ale system również może uczyć się "z doświadczenia" (ang. \textit{experience}), kiedy już jest w pełni operacyjny. Stąd mówimy o empirycznej inteligencji sieciowej (ang. \textit{experiential networked intelligence}). 
+
+Architekturę \cite{etsieni2023} ENI obrazuje Rysunek \ref{fig:24-eni-arch}. Fioletowe komponenty są zewnętrzne dla systemu ENI: górny stanowi jednostki zlecające mu zarządzanie, zaś dolny zarządzany obiekt (w tym przypadku zarządzana infrastruktura). Miedzy nimi występują pętle zarządzania end-to-end, co jest podobnym konceptem jak w przypadku ETSI ZSM. Oba komponenty zewnętrzne, z racji, że sieci telekomunikacyjne są środowiskiem z wieloma dostawcami (ang. \textit{multi-vendor environment}), muszą przejść normalizację formatu danych (lub/i interfejsów) na jeden ogólny format rozumiany przez ENI System (tzw. ENI Format). Odpowiedzialne za to są dwa czerwone komponenty. Prawdziwym punktem kluczowym architektury jest komponent zielony. To w nim dokonywane są operacje zarządzania oparte na sztucznej inteligencji. Całość cyklu zamknięta jest pętlą sterowania. 
+
+Podczas gdy ZSM specyfikuje framework do orkiestracji i egzekwowania działań w sieci, to ENI może działać jako warstwa kognitywna dla ZSM. ZSM realizuje zamknięte pętle sterowania, reagując na konkretne działa w czasie rzeczywistym. ENI analizuje długoterminowe trendy i dynamicznie dostosowuje polityki zarządzania w celu np. zapobiegania anomalii sieciowych. Kognitywność ENI również opiera się na zamkniętych pętlach sterowania i co ważne z punktu widzenia niniejszej pracy \cite{etsieni2024} dokonuje przeglądu różnych architektur zamkniętych pętli sterowania, które mogą zostać użyte w ENI System. Stanowi on świetne źródło wiedzy o charakterystykach zamkniętych pętli sterowania. Jego analiza znajduje się w \hyperlink{sec:25}{następnej podsekcji}.
+
+
+
+\begin{figure}[!h]
+    \centering \includegraphics[width=1\linewidth]{24-eni-arch.png}
+    \caption{Wysokopoziomowa architektura funkcjonalna ENI}\label{fig:24-eni-arch}
+\end{figure}
 
 
 \subsubsection{Podsumowanie}
 
-Niniejsza praca znajduję lukę, którą chce zapełnić w postaci platformy służącej do modelowania oraz uruchamiania zamkniętych pętli sterowania. Luka ta umotywowana jest \hyperlink{list:1}{wyzwaniami zdefiniowanymi przez \cite{fallon2019}}, brakami w ONAP/CLAMP oraz zidentyfikowanie potrzeby takiej platformy w architekturach referencyjnych definiowanych przez ETSI GS ZSM oraz CLADRA, które to zostaną omówione dokładniej w dalszej części pracy w celu sformułowania wymagań na platformę. 
+Niniejsza praca znajduję lukę, którą chce zapełnić w postaci platformy służącej do modelowania oraz uruchamiania zamkniętych pętli sterowania. Luka ta umotywowana jest \hyperlink{list:1}{wyzwaniami zdefiniowanymi przez \cite{fallon2019}}, brakami w ONAP/CLAMP oraz zidentyfikowanie potrzeby takiej platformy w architekturach referencyjnych definiowanych przez ETSI GS ZSM oraz CLADRA.
 
 Odnosząc się do architektury z \cite{kephart2003} proponowana w niniejszej pracy platforma polega na wyniesieniu autonomicznych menadżerów do jednego wspólnego miejsca (Rysunek \ref{fig:24-lupus}).
 
