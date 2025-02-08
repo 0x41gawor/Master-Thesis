@@ -1,0 +1,32 @@
+\appendix{Funkcje Menadżera Zamkniętych Pętli}\hypertarget{appendix:11}{}
+
+Załącznik specyfikuje funkcjonalności realizowane przez komponent architektury CLADRA o nazwie Menadżer Zamkniętych Pętli, który jest odpowiedzialny za ich zarządzanie. Tabela pozostała w języku angielskim w oryginalnej formie jak w \cite{tmforum2022ai}.
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.2} % Zwiększenie odstępów między wierszami
+\begin{tabular}{|p{2cm}|p{4cm}|p{9cm}|}
+\hline
+\textbf{\#} & \textbf{Function} & \textbf{Description} \\ \hline
+Fx.01 & Define Closed Loop & Provides the capability to define a closed loop based on a distinct name, goal, and detailed requirements (policies, actions required, impact entities, etc.). \\ \hline
+Fx.02 & Design Closed Loop & Enables the input of workflows, actions, and control flows that configure and realize a named closed loop for defined goals. Can be applied to existing or new loops. \\ \hline
+Fx.03 & Deploy Closed Loop & Registers a closed loop in a closed loop manager so that it can be controlled by a closed loop controller (instantiate, terminate, monitor, remove, secure). \\ \hline
+Fx.04 & Instantiate Closed Loop & Creates another instance of an existing closed loop at runtime, including initializing and starting it. \\ \hline
+Fx.05 & Monitor Closed Loops & Tracks a closed loop throughout its lifecycle. \\ \hline
+Fx.06 & Terminate Closed Loops & Stops or terminates a running closed loop instance, either abruptly or gracefully. Includes reporting on impact. \\ \hline
+Fx.07 & Remove Closed Loop & Decommissions a closed loop and nullifies its existence in a closed loop management system or platform. \\ \hline
+Fx.08 & Discover Closed Loop & Identifies and automatically discovers closed loops within the scope of a closed loop management system or platform. \\ \hline
+Fx.09 & Secure Closed Loop & Assigns security restrictions, such as access control, and manages security concerns, such as vulnerabilities. \\ \hline
+Fx.10 & Administer Closed Loop & Manages and applies changes to a closed loop, including policy assignments, modifications, and state alterations. \\ \hline
+Fx.11 & Validate Closed Loop & Ensures the validity or accuracy of the design, deployment, and security of closed loops by incorporating real-life data and environments. \\ \hline
+Fx.12 & Store Closed Loop & Stores closed loops to support design and other functions. \\ \hline
+Fx.13 & Control Closed Loop & Controls closed loops, including calling other functions and managing segment changes, monitoring, troubleshooting, and maintenance. \\ \hline
+Fx.14 & Configure Closed Loop & (Re)configures parameters of a closed loop instance. \\ \hline
+Fx.15 & Expose Closed Loop & Announces closed loops with information about dependencies. \\ \hline
+Fx.16 & Orchestrate Closed Loops & Plans and arranges the launch of closed loops. \\ \hline
+Fx.17 & Pause Closed Loop & Pauses a closed loop function due to scheduling, troubleshooting, etc. \\ \hline
+Fx.18 & Resume Closed Loop & Resumes a closed loop function after resolving scheduling conflicts or troubleshooting. \\ \hline
+\end{tabular}
+\caption{Funkcje Menadżera Zamkniętych Pętli}
+\label{tab:closed_loop_functions}
+\end{table}

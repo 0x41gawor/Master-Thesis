@@ -14,8 +14,8 @@ Następnie \cite{doyle2014} opisuje ewolucję architektury sieci telekomunikacyj
 Należy w tym momencie rozróżnić pojęcia Automatyzacji i Autonomiczności. Pierwsze odnosi się do predefiniowanego i zaprogramowanego procesu, podczas gdy drugie do aspektów związanych z samozarządzaniem. Zazwyczaj proces automatyczny nie jest w stanie zaadaptować się do zmian środowiska bez interwencji człowieka, co z kolei potrafi proces autonomiczny \cite{ngmn2022}. Czynnikiem technologicznym (ang. \text{enabler}) pozwalającym na przejście z automatyzacji na autonomiczność jest sztuczna inteligencja. \cite{benzaid2020} dokonuje przeglądu kierunków rozwoju badań na temat systemów ZSM. Czyli bezobsługowych systemów zarządzania siecią i usługami (ang. \textit{Zero-touch network and Service Management}), gdzie sztuczna inteligencja odgrywa kluczową rolę. Artykuł wymienia projekty organizacji standaryzujących w tym kierunku:
 \begin{itemize}
     \item \textbf{ETSI GS ZSM} - specyfikuje referencyjną architekturę zarządzania siecią i usługami end-to-end. Framework ZSM jest postrzegany jako system zarządzania nowej generacji, który ma na celu pełną autonomiczność wszystkich procesów - od planowania, projektowania, dostarczania i wdrażanie, po udostępnianie, monitorowanie i optymalizację. Docelowo, w idealnym przypadku, powinien on działać w 100\% samodzielnie bez ingerencji człowieka. 
-    \item \textbf{ETSI GR ENI} - specyfikuje referencyjną architekturę kognitywnych systemów zarządzania siecią używając zamkniętych pętli sterowania oraz świadomych kontekstu polityk. O ile ETSI GS ZSM skupia się na technikach automatyzacji zarządzania oraz udostępniania usług end-to-end, to ENI koncentruje się na technikach AI, zarządzaniu poprzez polityki oraz zamkniętych pętlach sterowania.
     \item \textbf{TM FORUM} - specyfikuje referencyjną architekturę CLADRA (Closed Loop Anomaly Detection and Resolution Automation) opartej o AI, która umożliwia dostawcom usług komunikacyjnych (CSP - ang. \textit{Communication Service Providers} na szybkie wykrywanie i rozwiązywanie problemów sieciowych.
+    \item \textbf{ETSI GR ENI} - specyfikuje referencyjną architekturę kognitywnych systemów zarządzania siecią używając zamkniętych pętli sterowania oraz świadomych kontekstu polityk. O ile ETSI GS ZSM skupia się na technikach automatyzacji zarządzania oraz udostępniania usług end-to-end, to ENI koncentruje się na technikach AI, zarządzaniu poprzez polityki oraz zamkniętych pętlach sterowania.
 \end{itemize}
 
 Powyższe architektury zostaną dokładniej opisane w dalszej części pracy (zwłaszcza w części badawczej). Istotne na ten moment jest to, ze każda z tych architektur opiera swoje działanie o zamknięte pętle sterowania, co przewidział z resztą artykuł \cite{fallon2019}. Wskazuje on, iż badanie oraz stosowanie zamkniętych pętli sterowania jest dosyć starą dyscypliną sięgającą aż od ery pary \footnote{\url{https://en.wikipedia.org/wiki/Age_of_Steam}} (Rysunek \ref{fig:24-his}). Stosowane są one z powodzeniem w systemach morskich, lotniczych, motoryzacyjnych, przemysłowych ale też mikroprocesorach, systemach wbudowanych czy sterownikach urządzeń. Mimo że tego typu systemy są często złożone, cechują się determinizmem i dobrze określonymi granicami, co sprawia, że świetnie nadają się do zastosowania teorii sterowania\footnote{\url{https://en.wikipedia.org/wiki/Control_theory}}. Systemy telekomunikacyjne natomiast są słabo określonymi, stochastycznymi systemami, co sprawia, że zastosowanie teorii sterowania do ich zarządzania okazuje się wyjątkowo trudne. Stąd duże opóźnienie w ich adaptacji w branży telekomunikacyjnej. Od czasu pojawienia się propozycji Autonomicznego Zarządzania \cite{kephart2003} w 00s oraz enablerów w postaci SDN\&NFV w 10s zaczęły się pojawiać implementacje zamkniętych pętli sterowania w telekomunikacji. Niestety są one bardzo pragramtyczne i sztywne, skupione jedynie na dowożeniu danej funkcjonalności. Dodatkową problematyczność zagadnienia sprawia konieczność integracji systemów od wielu różnorodnych dostawców.
@@ -114,8 +114,31 @@ Architektura ZSM również specyfikuje cykl życia zamkniętej pętli sterowania
 
 
 
-\subsubsection{Achitektura referencyjna ETSI ENI}
 \subsubsection{Architektura referencyjna CLADRA (TM Forum)}
+
+TM Forum specyfikuje architekturę referencyjną, która w oparciu o zamknięte pętle sterowania pomaga szybko wykrywać oraz rozwiązywać problemy występujące w sieciach. Podobnie jak architektura ETSI ZSM jest oparta o Open Digital Architecture (ODA) \cite{tmforum2018}. Nie jest to jednak specyfikacja techniczna tak jak w przypadku ETSI. 
+
+W \cite{tmforum2021} przedstawiono architekturę logiczną (Rysunek )
+
+\begin{figure}[!htbp]
+    \centering \includegraphics[width=1.0\linewidth]{24-tmforum-arch.png}
+    \caption{Architektura logiczna CLADRA}\label{fig:24-tmforum-arch}
+\end{figure}
+
+Opiera się ona na pętli OODA. Krok "Observe" jest odpowiedzialny za zbieranie danych z sieci, na podstawie których w drodze analizy budowana jest informacja w fazie "Orient". W kroku "Decide" podejmowane i modelowane są decyzje, które przekładają się na konkretne workflow do wykonania. Krok "Act" orkiestruje wykonaniem workflow na zarządzanych zasobach. Warto zwrócić tu uwagę na aspekt, iż workflow akcji rekoncylacyjnych do wykonania jest dopiero wnioskowane podczas iteracji pętli (w kontraście do workflow zdefiniowanego przed runtime danej iteracji). Jest to architektura na innym poziomie abstrakcji niż architektura ZSM. Konkretne jej implementacje przedstawione w \cite{tmforum2022} różnią się bardzo od siebie i tak jak wskazano w \cite{fallon2019} są bardzo sztywne i skierowane na dany use-case. Natomiast podobnie jak architektura ETSI ZSM przewidywane jest uruchamianie na jednej platformie wielu różnych instancji pętli jednocześnie. Celem tych pętli jest autonomiczne zarządzanie realizowane za pomocą komunikacji z zewnętrznymi względem tej platformy zasobami. 
+
+\cite{tmforum2022ai} prezentuje koncepcję Menedżera Zamkniętych Pętli (ang. \textit{Closed Loop Manager}), czyli komponentu architektury odpowiedzialnego za zarządzanie pętlami sterowania. Podobna kwestia poruszana jest również przez \cite{ngmn2022}. Taki menadżer w kontekście pętli sterowania jest odpowiedzialny za:
+\begin{itemize}
+    \item Zarządzanie ich cyklem życia 
+    \item Konfiguracji ich celów zarządzania
+    \item Monitorowanie ich stanu
+\end{itemize}
+
+Pełna tabela funkcjonalności proponowanych dla Menadżera Zamkniętych Pętli przez TM Forum znajduje się w \hyperlink{appendix:11}{Załączniku 11}.
+
+\subsubsection{Achitektura referencyjna ETSI ENI}
+
+
 
 \subsubsection{Podsumowanie}
 
