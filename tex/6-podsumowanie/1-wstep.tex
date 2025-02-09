@@ -1,9 +1,30 @@
 \subsection{Wstęp}
-//TODO ze świeżą głową
+Niniejsza sekcja prezentuje wyzwania z jakimi mierzono się podczas pracy, analizuje wyniki w odniesieniu do założeń i celów pracy, prezentuje możliwe ograniczenia uzyskanych wyników, porównuje je z istniejącymi rozwiązaniami oraz omawia możliwości rozwoju.
+
+\subsection{Wyzwania}
+
+Podczas projektu opisanego w niniejszej pracy napotkano szereg wyzwań, między innymi:
 \begin{itemize}
-    \item Wyzwania
-    \item Analiza wyników w odniesieniu do założeń i celów pracy.
-    \item Możliwe ograniczenia.
-    \item Porównanie uzyskanych rezultatów z literaturą lub istniejącymi rozwiązaniami.
-    \item Możliwości rozwoju i przyszłych badań.
+    \item Należało bardzo dobrze zapoznać się z platformą Kubernetes, nie tylko zrozumieć jej podstawy na poziomie operacyjno-użytkowym, ale też dokładnie zapoznać się ze sposobem działania warstwy sterowania. Tworzenie własnych operatorów jest uważane za bardzo zaawansowane zadanie w kontekście Kubernetes.
+    \item Wymyślenie w jaki sposób może działać operator, który nie ma zaszytej żadnej logiki pętli zajęło kilka iteracji implementacyjnych projektu. W każdej przybliżano się do celu od zaimplementowania konkretnej struktury pętli, gdzie każdy element był zasobem innego typu i posiadał oddzielny operator, poprzez stopniowe wynajdywanie części wspólnych operatorów, aż do stworzenia jednego typu elementu i interpretera akcji w operatorze
+    \item Bardzo ciężkim krokiem była implementacja obiektu \textbf{danych}. Ze względu na wsparcie nieznanej przed runtime struktury trudno jest reprezentować taki obiekt w Go, który jest silnie typowanym językiem. Po drugie, nawet jak już zareprezentuje się taki obiekt w pamięci, ciężko nim operować. Kwestie takie jak implementacja zagnieżdżania pól czy obsługa dzikiej karty (\texttt{*}) były bardzo czasochłonne.
+    \item Dużo pracy poświęcono wdrożeniu platformy Open5GS-k8s do testowania. Aspekt podłączenia zewnętrznego UE wymagał czasochłonnej analizy i edukacji rozszerzeń sieciowych używanych przez autora repozytorium\footnote{\url{https://github.com/niloysh/open5gs-k8s/issues/7}}.
+    \item Z racji skali projektu oraz jego naturze, gdzie efektem końcowym nie jest uzyskanie danej funkcjonalności, a zaproponowanie framework'u użytkownikom, czasochłonny był proces dokumentacji platformy
 \end{itemize}
+
+\subsection{Analiza w odniesieniu do założeń} 
+
+Jeśli chodzi o wymagania zdefiniowane w podsekcji \ref{sec:32}, udało się spełnić każde. Nie zaimplementowano jednak interfejsu graficznego, o którym mowa w wymaganiu \ref{req:13}. Uzyskano platformę za pomocą, której można modelować zamknięte pętle sterowania, czemu zresztą dowiodła sekcja \ref{sec:5}. 
+
+\subsection{Ograniczenia}
+
+Pierwszym rzucającym się w oczy ograniczeniem jest długość plików kodów LupN. Są one bardzo długie przez co trudno się je czyta. Następnym potencjalnym ograniczeniem może być zbytnia ogólność, bardzo dużo implementacji leży po stronie użytkownika platformy.
+
+\subsection{Porównanie z istniejącymi rozwiązaniami}
+
+Jedynym możliwym do porównania rozwiązaniem jest ONAP/CLAMP. Proponowana platforma oferuje dużo większą elastyczność modelowanych pętli oraz daje dowolność wyboru silnika polityk.
+
+\subsection{Możliwości rozwoju}
+
+Proponowana architektura w przypadku komercyjnej implementacji może stać się częścią systemów zarządzania specyfikowanych przez ETSI ENI, ETSI ZSM lub TM Forum. 
+
