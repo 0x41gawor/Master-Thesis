@@ -2,20 +2,20 @@
 
 \subsubsection{Wstęp}
 
-Podczas realizacji projektu zbadano wiele podejść oraz rozwiązano wiele problemów implementacyjnych, aby dojść do postawionej w rozdziale trzecim architektury. Każdy podrozdział omawia po jednym z aspektów – od wymagań do implementacji.
+Podczas realizacji projektu zbadano różne podejścia i rozwiązano liczne problemy implementacyjne, aby wdrożyć architekturę opisaną w rozdziale trzecim. Każdy podrozdział omawia po jednym z aspektów – od wymagań do implementacji.
 
 \subsubsection{Komunikacja pomiędzy Elementami Lupus}
 
-Pierwszym krokiem w implementacji było wymyślenie sposobu na komunikację pomiędzy \hyperlink{def:element-lupus}{\textbf{Elementami Lupus}}. Z racji, że \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} są \textit{Zasobami Własnymi}, wykorzystano tu natywne mechanizmy Kubernetes opisane w podrozdziałach 4.2 i 4.3. Ideą było to, że \textit{Operator} jednego zasobu dokonuje zmian w obiekcie API innego elementu, co z kolei wywoła ponownie Operator z innym obiektem wejściowym. \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} modyfikują nawzajem swój \texttt{Status}, a dokładniej jego pole \texttt{input}, przekazując tam swoją \hyperlink{def:finalne-dane}{\textbf{Finalną Postać Danych}}.
+Pierwszym krokiem w implementacji było wymyślenie sposobu na komunikację pomiędzy \hyperlink{def:element-lupus}{\textbf{Elementami Lupus}}. Z racji, że \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} są \textit{Zasobami Własnymi}, wykorzystano tu natywne mechanizmy Kubernetes opisane w podrozdziałach 4.2 i 4.3. Ideą było to, że \textit{Operator} jednego zasobu dokonuje zmian w obiekcie API innego elementu, co z kolei wywoła ponownie Operator z innym obiektem wejściowym. \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} modyfikują nawzajem swój \texttt{Status}, a dokładniej jego pole \texttt{input}, przekazując tam swoją \hyperlink{def:finalne-dane}{\textbf{finalną postać danych}}.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{43-komunikacja.png}
     \caption{Komunikacja pomiędzy Elementami Lupus}\label{fig:43-komunikacja}
 \end{figure}
 
-Działa to w sposób ukazany na rysunku \ref{fig:43-komunikacja}. Początkowo \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} mogły przyjąć postać jednego z 4 typów: Observe, Learn, Decide lub Execute\footnote{W myśl pętli ODA}. \hyperlink{def:agent-ingress}{\textbf{Agent Ingress}} modyfikował \texttt{Status} obiektu Observe, natomiast Operator Observe modyfikował \texttt{Statusy} obiektów Learn oraz Decide. Na koniec modyfikacje otrzymywał obiekt Execute, którego Operator przekazywał swoje \hyperlink{def:dane}{\textbf{Dane}} do \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}. 
+Działa to w sposób ukazany na rysunku \ref{fig:43-komunikacja}. Początkowo \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} mogły przyjąć postać jednego z czterech typów: Observe, Learn, Decide lub Execute\footnote{W myśl pętli ODA}. \hyperlink{def:agent-ingress}{\textbf{Agent Ingress}} modyfikował \texttt{Status} obiektu Observe, natomiast Operator Observe modyfikował \texttt{Statusy} obiektów Learn oraz Decide. Na koniec modyfikacje otrzymywał obiekt Execute, którego Operator przekazywał swoje \hyperlink{def:dane}{\textbf{Dane}} do \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}. 
 
-Z czasem jednak, aby nie narzucać konkretnej struktury pętli, zrezygnowano z 4 typów i stworzono jeden uniwersalny typ, którego Operator jest w stanie wykonać \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}}, co pozwalało na wyrażenie logiki dowolnego z 4 poprzednich typów. W ten sposób spełniono \hyperref[req:5]{Wymaganie 5}.
+Z czasem jednak, aby nie narzucać konkretnej struktury pętli, zrezygnowano z czterech typów i stworzono jeden uniwersalny typ, którego Operator jest w stanie wykonać \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}}, co pozwalało na wyrażenie logiki dowolnego z 4 poprzednich typów. W ten sposób spełniono \hyperref[req:5]{Wymaganie 5}.
 
 \subsubsection{Dane}
 
@@ -200,7 +200,7 @@ Porównanie zostało przedstawione w tabeli \ref{tab:431}
 \caption{Porównanie polimorfizmu przez wskaźniki i przez interfejsy w Go.}\label{tab:431}
 \end{table}
 
-Polimorfizm przez wskaźniki oferuje przejrzystą reprezentację danych, która może być łatwo serializowana i deserializowana (np. do formatu JSON lub YAML). Dodatkowo wspiera włączenie pola \texttt{type} jako części modelu danych, dzięki czemu może być ono również przechowywane lub przesyłane. Z drugiej strony polimorfizm przez interfejsy jest natywny dla Go, bardziej przejrzysty i gwarantuje silne sprawdzanie typów podczas kompilacji.
+Polimorfizm przez wskaźniki oferuje przejrzystą reprezentację danych, która jest łatwo serializowana i deserializowana do formatu JSON lub YAML. Dodatkowo wspiera włączenie pola \texttt{type} jako części modelu danych, dzięki czemu może być ono również przechowywane lub przesyłane. Z drugiej strony polimorfizm przez interfejsy jest natywny dla Go, bardziej czytelny i zapewnia silne sprawdzanie typów podczas kompilacji.
 
 \textbf{Podsumowanie:}
 

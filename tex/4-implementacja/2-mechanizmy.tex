@@ -2,14 +2,14 @@
 Niniejsza praca zakłada znajomość czytelnika platformy Kubernetes na podstawowym poziomie.
 
 \subsubsection{Kontroler}
-Działanie Kubernetes opiera się na zamkniętej pętli sterowania [odnośnik do artykułu]. \textbf{Aktualny Stan} systemu zapisany jest w bazie etcd. \textbf{Stan Pożądany} wyrażony jest poprzez pliki manifestacyjne. Każdy \textit{Obiekt API} posiada swoją sekcję $`spec`$, to ona definiuje pożądany stan danego obiektu. Każdy obiekt ma swój kontroler, który rekoncyluje jego aktualny stan do stan pożądanego. Kontroler jest to proces działający w warstwie sterowania Kubernetes. Każdy typ (ang. \textit{Kind}) wbudowanych zasobów (ang. \textit{buil-in resources}) ma swój kontroler stworzony przez zespół Kubernetes. Kontrolery każdego typu zasobu działają w podzie `kube-controller-manager'. 
+Działanie Kubernetes opiera się na zamkniętej pętli sterowania [odnośnik do artykułu]. \textbf{Aktualny Stan} systemu zapisany jest w bazie etcd. \textbf{Stan Pożądany} wyrażony jest poprzez pliki manifestacyjne. Każdy \textit{Obiekt API} posiada swoją sekcję $`spec`$, to ona definiuje pożądany stan danego obiektu. Każdy obiekt ma swój kontroler, który rekoncyliuję aktualny stan do stan pożądanego. Kontroler jest to proces działający w warstwie sterowania Kubernetes. Każdy typ (ang. \textit{Kind}) wbudowanych zasobów (ang. \textit{buil-in resources}) ma swój kontroler stworzony przez zespół Kubernetes. Kontrolery każdego typu zasobu działają w podzie \texttt{kube-controller-manager}. 
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{42-k8s-arch.png}
     \caption{Architektura Kubernetes}\label{fig:42-k8s-arch}
 \end{figure}
 
-Flow pracy kontrolera pokazano na rysunku \ref{fig:42-flow}. Gdy `kube-api-server' otrzyma żądanie zmiany danego obiektu API zanim `kube-api-server` zleci utrwalenie tych zmian wykona tzw. \textit{webhooki} do kontrolera danego obiektu. Webhooki nie są jednakże istotne z punktu widzenia niniejszej pracy dyplomowej \footnote{Dla zainteresowanych tematem: link}. Następnie, gdy doszło do zmian w obiekcie, kontroler zostaje o tym poinformowany. Jego misją jest rekoncylacja, czyli porównanie aktualnego stanu obiektu ze stanem pożądanym. Kontroler zawiera w sobie logikę rekoncylacji, która przybliży oba stany do siebie. Wykonanie logiki wiążę się często z przeprowadzeniem różnych akcji przez kontroler w innych częściach klastra. 
+Flow pracy kontrolera pokazano na rysunku \ref{fig:42-flow}. Gdy `kube-api-server' otrzyma żądanie zmiany danego obiektu API zanim `kube-api-server` zleci utrwalenie tych zmian wykona tzw. \textit{webhooki} do kontrolera danego obiektu. Webhooki nie są jednakże istotne z punktu widzenia niniejszej pracy dyplomowej \footnote{Dla zainteresowanych tematem: link}. Następnie, gdy doszło do zmian w obiekcie, kontroler zostaje o tym poinformowany. Jego misją jest rekoncyliacja, czyli porównanie aktualnego stanu obiektu ze stanem pożądanym. Kontroler zawiera w sobie logikę rekoncyliacji, która przybliży oba stany do siebie. Wykonanie logiki wiążę się często z przeprowadzeniem różnych akcji przez kontroler w innych częściach klastra. 
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{42-flow.png}

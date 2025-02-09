@@ -4,7 +4,7 @@ Rozdział opisuje użycie \hyperlink{def:lupus}{\textbf{Lupus}} jako \hyperlink{
 
 \subsubsection{Problem Zarządzania}
 
-Celem jest utrzymanie żądanych wartości zasobów dla funkcji płaszczyzny użytkownika (ang. \textit{User Plane Function, UPF}) na optymalnym poziomie. Optymalność oznacza zapewnienie wystarczających zasobów do obsługi obciążenia, ale jednocześnie unikanie ich nadmiernego przydziału, co pozwala na ograniczenie niepotrzebnych kosztów związanych z wynajmem zasobów chmurowych.
+Celem jest utrzymanie żądanych wartości zasobów dla funkcji płaszczyzny użytkownika (ang. \textit{User Plane Function, UPF}) na optymalnym poziomie. Optymalność oznacza zapewnienie wystarczających zasobów do obsługi obciążenia przy jednoczesnym unikaniu ich nadmiernego przydziału, co pozwala ograniczyć zbędne koszty wynajmu zasobów chmurowych.
 
 W ramach wdrożenia Open5GS, w tym dla komponentu UPF, istnieje kilka instancji uruchomieniowych (ang. \textit{Deployments}), jak pokazano na rysunku \ref{fig:53-depy}.
 
@@ -104,7 +104,7 @@ Kod agenta Ingress znajduje się w \hyperlink{appengix:7}{Załączniku 7}.
 
 \textbf{Agent Egress}
 
-Agent Egress udostępnia endpoint HTTP, który przyjmuje dane w postaci przedstawionej na rysunku \ref{fig:53-egress}
+Agent Egress udostępnia interfejs HTTP (endpoint), który przyjmuje dane w postaci przedstawionej na rysunku \ref{fig:53-egress}
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-egress.png}
@@ -115,7 +115,7 @@ Następnie dla wdrożenia (ang. \textit{deployment}) zadanego polem \texttt{name
 
 \subsubsection{Planowanie Logiki Pętli}
 
-Analizując dane wejściowe z listingu \ref{lst:521} można wyróżnić cztery możliwe stany pojedynczego wdrożenia UPF:
+Analizując dane wejściowe z listingu \ref{lst:521}, można wyróżnić cztery możliwe stany pojedynczego wdrożenia UPF:
 \begin{itemize}
     \item \textbf{NORMAL} – wartości \texttt{requests} i \texttt{limits} ustawione na wartości domyślne, rzeczywiste zużycie (\texttt{actual}) pozostaje poniżej wartości domyślnych.
     \item \textbf{NORMAL\_TO\_CRITICAL} – wartości \texttt{requests} i \texttt{limits} nadal są domyślne, ale rzeczywiste zużycie (\texttt{actual}) przekracza wartości domyślne.

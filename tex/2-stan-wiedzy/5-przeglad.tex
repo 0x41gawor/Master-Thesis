@@ -13,7 +13,7 @@ Większość architektur pętli sterowania dla systemów kognitywnych i adaptywn
 
 Te sygnały odgrywają kluczową rolę w stabilizowaniu systemu, ale też jego umiejętności empirycznego uczenia się. Pętlę, która wykorzystuje mechanizm feedbacku nazywamy \textbf{zamkniętą}.
 
-\textbf{Hierarchiczna} koordynacja (organizacja) pętli przypomina drzewo. Organizacja ta pozwala, aby różne decyzje podejmowane były przez rożne węzły drzewa. W ogólności, istnieje zestaw nadrzędnych (ang. \textit{supervisory}) pętli, które alokują zadania do pętli podwładnych (ang. \textit{subordinary}). Każda podrzędna pętla wykonuje swoje zadania i zwraca rezultaty do swojej pętli nadrzędnej. 
+\textbf{Hierarchiczna} koordynacja (organizacja) pętli ma strukturę drzewa. Organizacja ta pozwala, aby różne decyzje podejmowane były przez rożne węzły. W ogólności, istnieje zestaw nadrzędnych (ang. \textit{supervisory}) pętli, które alokują zadania do pętli podwładnych (ang. \textit{subordinary}). Każda podrzędna pętla wykonuje swoje zadania i zwraca rezultaty do swojej pętli nadrzędnej. 
 
 Zaawansowane zastosowania pozwalają jednej grupie dedykowanych pętli przejąć kontrolę nad hierarchią w zależności od celów i zmian w środowisku. 
 
@@ -27,7 +27,7 @@ Pętla \textbf{rozproszona} składa się z komponentów działających w różny
 
 \textbf{Adaptacyjność} pętli to dostosowywanie jej parametrów sterowania w czasie rzeczywistym albo na podstawie modelu, który definiuje pożądany efekt, albo używając analizy statystycznej do budowania modelu na podstawie mierzonych danych.
 
-\textbf{Federacją} nazywamy grupę pół autonomicznych pętli sterowania, które używają formalnych kontraktów, aby regulować ich wzajemną interakcję i zachowania. Kontrakty obejmują zasady przyjmowania nowych członków federacji, regulacje dotyczące widoczności i rodzaju informacji jakie mogę być udostępnianie innym członkom federacji. Każda pętla federacji operuje na swoich lokalnych danych. Następnie decyzje podjęte przez każdą z nich są agregowane i publikowane jako wspólna decyzja federacji.
+\textbf{Federacją} nazywamy grupę półautonomicznych pętli sterowania, które wykorzystują formalne kontrakty do regulowania wzajemnych interakcji i zachowania.. Kontrakty obejmują zasady przyjmowania nowych członków federacji, regulacje dotyczące widoczności i rodzaju informacji jakie mogę być udostępnianie innym członkom federacji. Każda pętla federacji operuje na swoich lokalnych danych. Następnie decyzje podjęte przez każdą z nich są agregowane i publikowane jako wspólna decyzja federacji.
 
 \textbf{Kognitywną} pętla sterowania nazywamy taką, która z pośród dostępnych jej danych jest w stanie wyrozumować nowe dane, informację i finalnie wiedzę, która pomoże jej osiągać cele zarządzania.
 
@@ -84,7 +84,7 @@ Architektura pętli COMPA (Control, Orchestration, Management, Policies, Analyti
 \end{figure}
 
 \subsubsection{Focale v3}
-Architektura pętli Focale v3 \cite{strassner2009} jest widoczna na Rysunku \ref{fig:25-focalev3}. Jest to kolejna wersja architektury Focale, która to zamiast używać dwóch alternatywnych pętli proponuje dwie nieustannie działające pętle. Jedna zewnętrzna, używana do rekoncylacji systemu zarządzanego na większą skale w ramach reagowanie na zmiany kontekstu środowiska. Druga wewnętrzna, do rekoncylacji w ramach jednego określone kontekstu (sytuacji) np. w jednej iteracji. Obie mają 3 alternatywne przebiegi inspirowane \cite{minsky1986}. Przebieg reaktywny używany jest w wypadku gdy zmiany kontekstu już kiedyś się wydarzyły i były przeanalizowane. Przebieg obradujący (ang. \textit{deliberative}) jest wykorzystywany gdy zmiana kontekstu jest zmiana, ale jej detale nie są jeszcze do końca zrozumiane, aby podjąć natychmiastową akcję. Przebieg refleksyjna ma miejsce, gdy zachodzą zupełnie nowe zmiany kontekstu i system musi się "nauczyć z nimi radzić. W kontekście komunikacji elementów wersja ta nie wnosi nic poza to co pętla FOCALE.
+Architektura pętli Focale v3 \cite{strassner2009} jest widoczna na Rysunku \ref{fig:25-focalev3}. Jest to kolejna wersja architektury Focale, która to zamiast używać dwóch alternatywnych pętli proponuje dwie nieustannie działające pętle. Jedna zewnętrzna, używana do rekoncyliacji systemu zarządzanego na większą skale w ramach reagowanie na zmiany kontekstu środowiska. Druga wewnętrzna, do rekoncyliacji w ramach jednego określone kontekstu (sytuacji) np. w jednej iteracji. Obie mają 3 alternatywne przebiegi inspirowane \cite{minsky1986}. Przebieg reaktywny używany jest w wypadku gdy zmiany kontekstu już kiedyś się wydarzyły i były przeanalizowane. Przebieg obradujący (ang. \textit{deliberative}) jest wykorzystywany gdy zmiana kontekstu jest zmiana, ale jej detale nie są jeszcze do końca zrozumiane, aby podjąć natychmiastową akcję. Przebieg refleksyjna ma miejsce, gdy zachodzą zupełnie nowe zmiany kontekstu i system musi się "nauczyć z nimi radzić. W kontekście komunikacji elementów wersja ta nie wnosi nic poza to co pętla FOCALE.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{25-focalev3.png}
