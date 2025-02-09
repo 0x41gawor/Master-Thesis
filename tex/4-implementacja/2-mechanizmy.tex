@@ -1,5 +1,5 @@
 \subsection{Mechanizmy Kubernetes stojące za Lupus}
-Niniejszy dokument zakłada znajomość czytelnika platformy Kubernetes na podstawowym poziomie.
+Niniejsza praca zakłada znajomość czytelnika platformy Kubernetes na podstawowym poziomie.
 
 \subsubsection{Kontroler}
 Działanie Kubernetes opiera się na zamkniętej pętli sterowania [odnośnik do artykułu]. \textbf{Aktualny Stan} systemu zapisany jest w bazie etcd. \textbf{Stan Pożądany} wyrażony jest poprzez pliki manifestacyjne. Każdy \textit{Obiekt API} posiada swoją sekcję $`spec`$, to ona definiuje pożądany stan danego obiektu. Każdy obiekt ma swój kontroler, który rekoncyluje jego aktualny stan do stan pożądanego. Kontroler jest to proces działający w warstwie sterowania Kubernetes. Każdy typ (ang. \textit{Kind}) wbudowanych zasobów (ang. \textit{buil-in resources}) ma swój kontroler stworzony przez zespół Kubernetes. Kontrolery każdego typu zasobu działają w podzie `kube-controller-manager'. 

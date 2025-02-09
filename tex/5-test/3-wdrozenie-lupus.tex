@@ -1,6 +1,6 @@
 \subsection{Wdrożenie Lupus}
 
-Sekcja opisuje użycie \hyperlink{def:lupus}{\textbf{Lupus}} jako \hyperlink{def:system-sterowania}{\textbf{Systemu Sterowania}} dla \hyperlink{def:problem-zarzadzania}{\textbf{Problemu Zarządzania}} opisanego w następnej podsekcji dla emulatora sieci 5G, który przyjmie z kolei rolę \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}. 
+Rozdział opisuje użycie \hyperlink{def:lupus}{\textbf{Lupus}} jako \hyperlink{def:system-sterowania}{\textbf{Systemu Sterowania}} dla \hyperlink{def:problem-zarzadzania}{\textbf{Problemu Zarządzania}} opisanego w następnym podrozdziale dla emulatora sieci 5G, który przyjmie z kolei rolę \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}. 
 
 \subsubsection{Problem Zarządzania}
 
@@ -169,7 +169,7 @@ Implementacje można znaleźć w \hyperlink{appendix:9}{Załączniku 9}.
     \caption{Workflow Pętli}\label{fig:53-workflow-petli}
 \end{figure}
 
-Element \texttt{demux} służy do rozdzielenia \hyperlink{def:dane}{\textbf{Danych}} na dwie części. Każde wdrożenie UPF ma swój dedykowany element \texttt{upf1} lub \texttt{upf2}, który obsługuje je według \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} przedstawionego w poprzedniej podsekcji. Elementy \texttt{upf1} oraz \texttt{upf2} niezależnie pobudzają endpoint \texttt{/api/data} \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}.
+Element \texttt{demux} służy do rozdzielenia \hyperlink{def:dane}{\textbf{Danych}} na dwie części. Każde wdrożenie UPF ma swój dedykowany element \texttt{upf1} lub \texttt{upf2}, który obsługuje je według \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} przedstawionego w poprzednim podrozdziale. Elementy \texttt{upf1} oraz \texttt{upf2} niezależnie pobudzają endpoint \texttt{/api/data} \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}.
 
 Kod \hyperlink{def:lupn}{\textbf{LupN}} znajduje się w \hyperlink{appendix:10}{Załączniku 10}. Ostatnim krokiem w celu uruchomienia pętli jest zaaplikowanie \hyperlink{def:plik-lupn}{\textbf{Pliku LupN}}.
 

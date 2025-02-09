@@ -2,11 +2,11 @@
 
 \subsubsection{Wstęp}
 
-W tym rozdziale objawia się badawcza natura pracy. Podczas realizacji projektu zbadano wiele podejść oraz rozwiązano wiele problemów implementacyjnych, aby dojść do postawionej w sekcji 3 architektury. Każda podsekcja omawia po jednym z aspektów – od wymagań do implementacji.
+Podczas realizacji projektu zbadano wiele podejść oraz rozwiązano wiele problemów implementacyjnych, aby dojść do postawionej w rozdziale trzecim architektury. Każdy podrozdział omawia po jednym z aspektów – od wymagań do implementacji.
 
 \subsubsection{Komunikacja pomiędzy Elementami Lupus}
 
-Pierwszym krokiem w implementacji było wymyślenie sposobu na komunikację pomiędzy \hyperlink{def:element-lupus}{\textbf{Elementami Lupus}}. Z racji, że \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} są \textit{Zasobami Własnymi}, wykorzystano tu natywne mechanizmy Kubernetes opisane w podsekcji 4.2 i 4.3. Ideą było to, że \textit{Operator} jednego zasobu dokonuje zmian w obiekcie API innego elementu, co z kolei wywoła ponownie Operator z innym obiektem wejściowym. \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} modyfikują nawzajem swój \texttt{Status}, a dokładniej jego pole \texttt{input}, przekazując tam swoją \hyperlink{def:finalne-dane}{\textbf{Finalną Postać Danych}}.
+Pierwszym krokiem w implementacji było wymyślenie sposobu na komunikację pomiędzy \hyperlink{def:element-lupus}{\textbf{Elementami Lupus}}. Z racji, że \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} są \textit{Zasobami Własnymi}, wykorzystano tu natywne mechanizmy Kubernetes opisane w podrozdziałach 4.2 i 4.3. Ideą było to, że \textit{Operator} jednego zasobu dokonuje zmian w obiekcie API innego elementu, co z kolei wywoła ponownie Operator z innym obiektem wejściowym. \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} modyfikują nawzajem swój \texttt{Status}, a dokładniej jego pole \texttt{input}, przekazując tam swoją \hyperlink{def:finalne-dane}{\textbf{Finalną Postać Danych}}.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{43-komunikacja.png}
@@ -264,7 +264,7 @@ var FunctionRegistry = map[string]func(input interface{}) (interface{}, error){}
 
 Następnie, z pomocą biblioteki \texttt{reflect}\footnote{\url{https://pkg.go.dev/reflect}} można zaimplementować funkcję, która iteruje po metodach struktury \texttt{UserFunctions} i zapisuje je do powyższej mapy jako wartości, dla których kluczami są nazwy funkcji. 
 
-\begin{lstlisting}[language=go, caption={\emph{Funkcja zapełniająca mapę funkcji użytkownika}}\label{lst:439}]
+\begin{lstlisting}[language=go, basicstyle=\ttfamily\tiny, caption={\emph{Funkcja zapełniająca mapę funkcji użytkownika}}\label{lst:439}]
 // RegisterFunctions dynamically registers user-defined functions
 func RegisterFunctions(target interface{}) {
 	t := reflect.TypeOf(target)
@@ -302,7 +302,8 @@ Funkcja widoczna na listingu \ref{lst:439} jest wywoływana podczas inicjalizacj
 
 \begin{lstlisting}[language=go, caption={\emph{Inicjaliza mapy}}\label{lst:4310}]
 func init() {
-    // Fill in the FunctionRegistry map with functions defined as a method of UserFunctions{}
+	// Fill in the FunctionRegistry map 
+	// with functions defined as a method of UserFunctions{}
 	RegisterFunctions(UserFunctions{})
 }
 \end{lstlisting}
