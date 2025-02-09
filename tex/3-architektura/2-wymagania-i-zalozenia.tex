@@ -8,21 +8,21 @@ Niniejsza sekcja opisuje proces formułowania wymagań i założeń na platform�
 
 Obie architektury referencyjne \hyperlink{sec:zsm}{ETSI ZSM} oraz \hyperlink{sec:cladra}{CLADRA} definiują je jako frameworki umożliwiające budowanie zamkniętych pętli sterowania składających się z innych komponentów. Przewidują one wiele instancji zamkniętych pętli sterowania działających jednocześnie. Niniejsza praca proponuje architekturę platformy, która umożliwi budowanie oraz uruchamianie takich pętli. Z racji pełnienia tych dwóch ról, powinna również wcielić się w Menadżera Zamkniętych Pętli znanego z architektury CLADRA, który zarządza pętlami. Wnioskujemy z tego 3 główne grupy wymagań funkcjonalnych:
 \begin{itemize}
-    \item wymagania na środowisko działania (ang. \textit{runtime}), //cloud
+    \item wymagania na środowisko wykonawcze (ang. \textit{runtime environment}), 
     \item wymagania mówiące o tym jakie pętle powinno dać się modelować,
-    \item wymagania mówiące o tym jakie funkcje zarządzania pętlami trzeba zapewnić
+    \item wymagania mówiące o tym jakie funkcje zarządzania pętlami należy zapewnić
 \end{itemize}
 
 Z racji, iż pętle sterowania wykorzystywane są w wielu branżach, już w tym momencie można postawić wymaganie na to, aby platforma była skierowana do branży teleinformatycznej. 
 
-\subsubsection{Wymagania na środowisko działania}
+\subsubsection{Wymagania na środowisko wykonawcze}
 
 Platforma musi się wpisać w architekturę referencyjna ETSI ZSM oraz CLADRA, dlatego powinna również być kompatybilna z ich architekturą wyjściową - ODA \cite{tmforum2018} oraz wspierać \hyperlink{sec:zsm}{12 pryncypiów architektury ZSM}. Dodatkowo, wpisując się w aktualne trendy inżynierii oprogramowania platforma powinna być natywna dla chmur obliczeniowych (ang. cloud-native). Chcemy oprzeć platformę o już istniejące środowisko, tak aby nie trzeba było rozwijać własnego. Dużym atutem platformy byłoby znalezienie by środowiska dobrze znanego w branży teleinformatycznej, tak aby zmaksymalizować szansy jej adaptacji w społeczności.  Stąd formułujemy następujące wymagania:
 
 \begin{enumerate}
     \setcounter{enumi}{0} 
-    \item \label{req:1} Środowisko działania powinno być dobrze znane w branży teleinformatycznej
-    \item \label{req:2} Środowisko powinno wspierać 12 pryncypiów architektury ZSM
+    \item \label{req:1} Środowisko wykonawcze powinno być dobrze znane w branży teleinformatycznej
+    \item \label{req:2} Środowisko powinno wspierać \hyperlink{list:2}{12 pryncypiów architektury ZSM}
     \item \label{req:3} Środowisko powinno być \textit{cloud-native}
 \end{enumerate}
 
@@ -49,10 +49,41 @@ Z powyższych rozważań zdefiniowano następujące wymagania:
     \item \label{req:15} Pętla komunikując się ze środowiskiem zewnętrznym powinna to robić za pośrednictwem komponentu pozwalającego na translacje formatów danych oraz integrację.
 \end{enumerate}
 
-Należy wyjaśnić pojęcia środowiska zewnętrznego oraz komponentów zewnętrznych. Komponenty zewnętrze są zewnętrzne względem platformy, ale działają w obrębie lub na rzecz systemu zarządzania (ENI, ZSM lub CLADRA). Środowisko zewnętrzne, zaś jest również zewnętrzne dla samego systemu zarządzania specyfikowanego przez ETSI lub TM Forum i oznacza najczęściej infrastrukturę sieciową. 
+Należy wyjaśnić pojęcia środowiska zewnętrznego oraz komponentów zewnętrznych. Komponenty zewnętrze są zewnętrzne względem platformy, ale działają w obrębie lub na rzecz systemu zarządzania (ENI, ZSM lub CLADRA). Środowisko zewnętrzne zaś jest również zewnętrzne dla samego systemu zarządzania specyfikowanego przez ETSI lub TM Forum i oznacza najczęściej infrastrukturę sieciową. 
 
 \subsubsection{Wymagania na zarządzanie pętlami}
 
+Wymagania w tej kategorii są bardzo jasno określone i nie wymagają żadnych rozważań, bowiem aspekt zarządzania pętlami został wyczerpująco opisany w architekturze CLADRA jako zestaw funkcjonalności Menadżera Zamkniętych Pętli. Funkcjonalności przedstawiono w formie tabeli w \hyperlink{appendix:11}{Załączniku 11}. Podsekcja definiuje tylko jedno zbiorcze wymaganie, które zawiera w sobie zapewnienie wszystkich funkcjonalności Menadżera Zamkniętych Pętli architektury CLADRA:
+
+\begin{enumerate}
+    \setcounter{enumi}{15} 
+    \item \label{req:16} Platforma zapewnia wszystkie funkcje zarządzania pętlami zdefiniowane w \hyperlink{appendix:11}{Załączniku 11}.
+\end{enumerate}
+
 \subsubsection{Dyskusja}
 
+Pracę rozpoczęto od wyboru środowiska wykonawczego, które spełniałoby postawione mu wymagania (\ref{req:1}, \ref{req:2}, \ref{req:3}). Oprogramowaniem, które od razu przychodzi na myśli w zgodzie z hasłem cloud-native jest Kubernetes\footnote{\url{https://kubernetes.io}}. Jest on stworzony w celu wdrażania oprogramowania, które jest modularne oraz skalowalne co świetnie wpasowuje się w pryncypia architektury ZSM oraz, z racji szerokiej adopcji w systemach wielu dostawców, jest to platforma dobrze znana w branży. Dodatkowo Kubernetes swoim wbudowanym zasobom (ang. \textit{built-in resources}) takim jak Pody czy Wdrożenia (ang. \textit{deployments}) zapewnia funkcjonalności definiowane przez Wymaganie \ref{req:16}, co nasuwa pewien trop. Postawiono hipotezę, że gdyby pętle jako byt mogły występować tak samo jak zasoby wbudowane Kubernetes i podlegać dokładnie takiemu samemu cyklowi zarządzania pokryto by zestaw wymagań \ref{req:1}-\ref{req:3} oraz wymaganie \ref{req:16}. Krótka analiza pokazała, że jest to możliwe, bowiem Kubernetes pozwala definiować tak zwane zasoby własne\footnote{\url{https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/}} (ang. \textit{Custom Resources}), które można rejestrować w swoim klastrze Kubernetes i korzystać dokładnie w ten sam sposób jak z zasobów wbudowanych. Zapoznano się dokładnie z tym konceptem. Każdy zasób wbudowany w Kubernetes ma swój kontroler, które reguluje jego działanie. Dla zasobów własnych możliwe jest ich rozwijanie za pomocą Wzorca Operatora\footnote{\url{https://kubernetes.io/docs/concepts/extend-kubernetes/operator/}} (ang. \textit{Operator Pattern}). Kontrolery dla zasobów własnych nazywamy operatorami. Operatory można tworzyć za pomocą framework'u Kubebuilder\footnote{\url{https://book.kubebuilder.io}}.
 
+
+Zmaterializowanie zamknietej pęli sterowania jako zasób Kubernetes spełnia wymaganie \ref{16} w następujący sposób:
+
+\begin{enumerate}[label=Fx.\arabic*] % Dodajemy prefix "Fx." przed numerem
+    \item Pętla może być zdefiniowana jako zasób Kubernetes poprzez plik manifestowy YAML. Parametry w nim zdefiniowane mogą zawierać nazwę oraz opis celu.
+    \item Workflow pętli może być być również zdefiniowane w pliku YAML.
+    \item Wdrożenie pętli polega na zdefiniowaniu jej pliku YAML
+    \item Stworzenie instancji polega na zaaplikowaniu jej pliku YAML (poprzez \texttt{kubectl apply -f <filename>}). Od tej pory jej cyklem życia zarządza Kubernetes
+    \item Monitorowanie odbywa się za pomocą komendy \texttt{kubectl describe} lub monitorowaniu logów operatora
+    \item Zakończenie działania pętli możliwe jest za pomocą komendy \texttt{kubectl delete}
+    \item Usunięcie pętli polega na usunięciu jej pliku YAML
+    \item Odkrywanie pętli polega na wyszukaniu określonego typu zasobów w kubernetes (np. \texttt{kubectl get loops})
+    \item Ochrona pętli polega na ochronie samego klastra Kubernetes
+    \item Zmiana pętli polega na modyfikacji jej pliku YAML i ponownym zaaplikowaniu 
+    \item Walidacja pętli polega na sprawdzeniu składni użytej w pliku YAML i możliwe jest przez odpowiednie przygotowanie zasobu własnego w Kubebuilder
+    \item Przechowywanie pętli polega na przechowywaniu plików YAML w systemie plików (ang. \textit{filesystem})
+    \item Kontrola pętli polega na działań utrzymaniowych takich samych jak w przypadku zasobów wbudowanych Kubernetes
+    \item Rekonfiguracja polega na modyfikacja pliku YAML lub rekonfiguracji komponentów pętli, która odbywa się poza Kubernetes
+    \item Ekspozycja jest możliwa poprzez API Kubernetes
+    \item Orkiestracja jest możliwa poprzez narzędzia oferowane jako dodatki do Kubernetes
+    \item Wstrzymanie pętli polega by na usunięciu instancji jej zasobu (\texttt{kubectl delete}) co jest akceptowalne z racji jej bezstanowości lub zapisywaniu stanu w komponentach zewnętrznych
+    \item Przywrócenie pętli do polega na reaplikowaniu jej pliku YAML
+\end{enumerate}

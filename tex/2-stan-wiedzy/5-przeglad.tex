@@ -2,8 +2,7 @@
 
 \subsubsection{Wstęp}
 
-Niniejsze pętle zostały przedstawione w kontekście późniejszej analizy, która będzie miała na celu wywiedzenie wymagań na platformę. Opis powstał na podstawie \cite{etsieni2024}, który analizuje architektury zamkniętych pętli sterowania w celu wykorzystania ich w swojej modularnej architekturze. //TODO to jest jednak już ta analiza
-
+Niniejsze pętle zostały przedstawione w kontekście późniejszej analizy, która będzie miała na celu wywiedzenie wymagań na platformę. Opis powstał na podstawie \cite{etsieni2024}, który analizuje architektury zamkniętych pętli sterowania w celu wykorzystania ich w swojej modularnej architekturze. 
 \subsubsection{Typy pętli sterowania}
 
 Większość architektur pętli sterowania dla systemów kognitywnych i adaptywnych używa mechanizmów:
@@ -42,9 +41,8 @@ Widoczne jest iż, każdy element posiada komunikację na trzech płaszczyznach:
     \item Przekazanie danych do następnego elementu lub środowiska zewnętrznego
 \end{itemize}
 
-Dodatkowo element "Orient" może przekazywać swoje dane do elementów "Observe" oraz "Act". Ze środowiskiem zewnętrznym komunikować mogą się jedynie elementy "Observe" oraz "Act", z czego każdy w innym kierunku. Mimo, iż pętla wydaje się być sekwencyjna, jest to złudzenie. Każdy element działa nieustannie a pobudzanie go do działania działa na zasadzie otrzymania danych.
+Dodatkowo element "Orient" może przekazywać swoje dane do elementów "Observe" oraz "Act". Ze środowiskiem zewnętrznym komunikować mogą się jedynie elementy "Observe" oraz "Act", z czego każdy w innym kierunku. Mimo, iż pętla wydaje się być sekwencyjna, jest to złudzenie. Każdy element działa nieustannie a pobudzanie go do działania oparte jest na zasadzie otrzymania danych.
 
-//TODO Teraz to zdanie należy przerobić na wymaganie w sekcji badawczej
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{25-ooda.png}
