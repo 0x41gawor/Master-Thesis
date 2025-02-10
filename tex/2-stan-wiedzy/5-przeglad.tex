@@ -2,7 +2,8 @@
 
 \subsubsection{Wstęp}
 
-Niniejsze pętle zostały przedstawione w kontekście późniejszej analizy, która będzie miała na celu wywiedzenie wymagań na platformę. Opis powstał na podstawie \cite{etsieni2024}, który analizuje architektury zamkniętych pętli sterowania w celu wykorzystania ich w swojej modularnej architekturze. 
+Pętle sterowania przedstawione w tej sekcji stanowią punkt odniesienia dla późniejszej analizy, której celem jest sformułowanie wymagań dla platformy. Opis bazuje na \cite{etsieni2024}, gdzie dokonano przeglądu architektur zamkniętych pętli sterowania w kontekście ich integracji z modularną architekturą ENI.
+
 \subsubsection{Typy pętli sterowania}
 
 Większość architektur pętli sterowania dla systemów kognitywnych i adaptywnych używa mechanizmów:
@@ -27,7 +28,7 @@ Pętla \textbf{rozproszona} składa się z komponentów działających w różny
 
 \textbf{Adaptacyjność} pętli to dostosowywanie jej parametrów sterowania w czasie rzeczywistym albo na podstawie modelu, który definiuje pożądany efekt, albo używając analizy statystycznej do budowania modelu na podstawie mierzonych danych.
 
-\textbf{Federacją} nazywamy grupę półautonomicznych pętli sterowania, które wykorzystują formalne kontrakty do regulowania wzajemnych interakcji i zachowania.. Kontrakty obejmują zasady przyjmowania nowych członków federacji, regulacje dotyczące widoczności i rodzaju informacji jakie mogę być udostępnianie innym członkom federacji. Każda pętla federacji operuje na swoich lokalnych danych. Następnie decyzje podjęte przez każdą z nich są agregowane i publikowane jako wspólna decyzja federacji.
+\textbf{Federacją} nazywamy grupę półautonomicznych pętli sterowania, które wykorzystują formalne kontrakty do regulowania wzajemnych interakcji i zachowania. Kontrakty obejmują zasady przyjmowania nowych członków federacji, regulacje dotyczące widoczności i rodzaju informacji jakie mogę być udostępnianie innym członkom federacji. Każda pętla federacji operuje na swoich lokalnych danych. Następnie decyzje podjęte przez każdą z nich są agregowane i publikowane jako wspólna decyzja federacji.
 
 \textbf{Kognitywną} pętla sterowania nazywamy taką, która z pośród dostępnych jej danych jest w stanie wyrozumować nowe dane, informację i finalnie wiedzę, która pomoże jej osiągać cele zarządzania.
 
@@ -36,12 +37,12 @@ Architektura pętli OODA \cite{boyd1995} jest widoczna na Rysunku \ref{fig:25-oo
 
 Widoczne jest iż, każdy element posiada komunikację na trzech płaszczyznach:
 \begin{itemize}
-    \item Otrzymanie danych od poprzedniego elementu lub środowiska zewnętrznego
-    \item Przekazanie feedbacku do elementu "Observe" (za wyjątkiem "Orient")
-    \item Przekazanie danych do następnego elementu lub środowiska zewnętrznego
+    \item Otrzymywanie danych od poprzedniego elementu lub ze środowiska zewnętrznego.
+    \item Przekazywanie feedbacku do elementu „Observe” (z wyjątkiem „Orient”).
+    \item Przekazywanie danych do następnego elementu lub do środowiska zewnętrznego.
 \end{itemize}
 
-Dodatkowo element "Orient" może przekazywać swoje dane do elementów "Observe" oraz "Act". Ze środowiskiem zewnętrznym komunikować mogą się jedynie elementy "Observe" oraz "Act", z czego każdy w innym kierunku. Mimo, iż pętla wydaje się być sekwencyjna, jest to złudzenie. Każdy element działa nieustannie a pobudzanie go do działania oparte jest na zasadzie otrzymania danych.
+Dodatkowo, element „Orient” może przekazywać swoje dane zarówno do „Observe”, jak i do „Act”. Ze środowiskiem zewnętrznym mogą komunikować się jedynie elementy „Observe” oraz „Act”, przy czym każdy z nich realizuje komunikację w innym kierunku. Mimo że pętla OODA może wydawać się sekwencyjna, w rzeczywistości każdy element działa w sposób ciągły, a jego aktywacja (pobudzenie) następuje na zasadzie otrzymania danych.
 
 
 \begin{figure}[!h]
@@ -52,15 +53,26 @@ Dodatkowo element "Orient" może przekazywać swoje dane do elementów "Observe"
 \subsubsection{MAPE-K}
 Architektura pętli MAPE-K \cite{kephart2003} jest widoczna na Rysunku \ref{fig:25-mapek}.
 
-Jest to pętla sekwencyjna, każdy element komunikuje się jedynie na dwóch płaszczyznach otrzymując dane od poprzedniego (lub środowiska zewnętrznego w przypadku "Monitor") i przekazując dane następnemu elementowi (lub do środowiska zewnętrznego w przypadku "Execute"). Dodatkowo każdy element podłączony jest do "Knowledge", które stanowi wspólne repozytorium wiedzy. Generowanie oraz konsumpcja wiedzy stanowi oddzielną komunikację i nie wpisuje się w \hyperlink{def:workflow}{\textit{workflow pętli}}. 
+Jest to pętla sekwencyjna, w której każdy element komunikuje się jedynie na dwóch płaszczyznach:
+\begin{itemize}
+    \item Otrzymuje dane od poprzedniego elementu (lub ze środowiska zewnętrznego, jeśli jest to moduł „Monitor”).
+    \item Przekazuje dane następnemu elementowi (lub do środowiska zewnętrznego, jeśli jest to moduł „Execute”).
+\end{itemize}
+
+Dodatkowo, każdy element jest podłączony do „Knowledge”, które pełni funkcję wspólnego repozytorium wiedzy. Generowanie oraz konsumpcja wiedzy stanowią osobny proces komunikacyjny i nie są częścią \hyperlink{def:workflow}{\textit{workflow}} pętli sterowania.
 
 \begin{figure}[!h]
-    \centering \includegraphics[width=1\linewidth]{25-mapek.png}
+    \centering \includegraphics[width=0.5\linewidth]{25-mapek.png}
     \caption{Architektura pętli MAPE-K. Źródło: \cite{etsieni2024}.}\label{fig:25-mapek}
 \end{figure}
 
 \subsubsection{Focale}
-Architektura pętli Focale \cite{strassner2007} jest widoczna na Rysunku \ref{fig:25-focale}. Workflow pętli jest sekwencyjne, ale z drugiej strony za pomocą wspólnej szyny danych każdy element może komunikować się z każdym. Ważnym atrybutem szyny jest to, że natywnie wspiera ona model informacji DEN-ng \cite{strassner2003} oraz ontologii DENON-ng \cite{strassner2007}. Widzimy tu też podłączony do każdego elementu "Autonomic Manager", koncept z \cite{kephart2003}. Focale w każdej iteracji może przyjąć inny przebieg. Mówimy tu o pętli utrzymaniowej, czyli przebiegu, który zachodzi w przypadku gdy system zarządzany nie wymaga żadnych akcji naprawczych lub optymalizacyjnych. Kiedy stan aktualny nie zgadza się ze stanem pożądanym, pętla przybiera przebieg rekonfiguracyjny.
+
+Architektura pętli Focale \cite{strassner2007} jest przedstawiona na Rysunku \ref{fig:25-focale}. Workflow tej pętli jest sekwencyjne, jednak dzięki wspólnej szynie danych każdy element może komunikować się bezpośrednio z innymi komponentami. Istotnym atrybutem tej szyny jest natywna obsługa modelu informacji DEN-ng \cite{strassner2003} oraz ontologii DENON-ng \cite{strassner2007}. Dodatkowo, każdy element pętli jest połączony z „Autonomic Managerem”, koncepcją zaczerpniętą z \cite{kephart2003}. Pętla Focale może przybierać różne przebiegi w kolejnych iteracjach, w zależności od stanu systemu zarządzanego. Wyróżnia się:
+\begin{itemize}
+    \item Pętlę utrzymaniową – występuje, gdy system nie wymaga akcji naprawczych ani optymalizacyjnych.
+    \item Pętlę rekonfiguracyjną – uruchamianą, gdy stan aktualny systemu różni się od stanu pożądanego, co wymaga podjęcia działań korygujących.
+\end{itemize}
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{25-focale.png}
@@ -68,7 +80,7 @@ Architektura pętli Focale \cite{strassner2007} jest widoczna na Rysunku \ref{fi
 \end{figure}
 
 \subsubsection{GANA}
-Architektura GANA (Generic Autonomic Network Architecture) \cite{etsigana2018} jest widoczna na Rysunku \ref{fig:25-gana}. Nie jest to konkretna pętla a raczej zestaw wielu hierarchicznych pętli sterowania. Pętle najniższego poziomu implementują tzw. szybkie pętle sterowania, które korzystają z kognitywności w najmniejszym stopniu (lub wcale). Idąc w górę hierarchi, stopień wykorzystania podejścia kognitywnego rośnie, a co za tym idzie pętle stają się coraz wolniejsze. 
+Architektura GANA (Generic Autonomic Network Architecture) \cite{etsigana2018} jest przedstawiona na Rysunku \ref{fig:25-gana}. Nie definiuje ona pojedynczej pętli sterowania, lecz stanowi zbiór hierarchicznie powiązanych pętli sterowania. Pętle najniższego poziomu implementują tzw. szybkie pętle sterowania, które wykorzystują minimalny poziom kognitywności lub nie stosują jej wcale. W miarę przechodzenia na wyższe poziomy hierarchii, stopień zastosowania mechanizmów kognitywnych wzrasta, co sprawia, że procesy sterowania stają się bardziej złożone, ale również wolniejsze.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{25-gana.png}
@@ -76,15 +88,15 @@ Architektura GANA (Generic Autonomic Network Architecture) \cite{etsigana2018} j
 \end{figure}
 
 \subsubsection{COMPA}
-Architektura pętli COMPA (Control, Orchestration, Management, Policies, Analytics) \cite{doyle2014} jest widoczna na Rysunku \ref{fig:25-compa}. Samo workflow pętli nie przynosi nic nowego ponadto co w poprzednich pętlach. Wartym uwagi jest jednak to, że systemem zarządzanym (tu "automation target") jednej pętli COMPA, może być inna instancja pętli COMPA, co wprowadza rekurencję. 
+Architektura COMPA (Control, Orchestration, Management, Policies, Analytics) \cite{doyle2014} jest przedstawiona na Rysunku \ref{fig:25-compa}. Samo workflow pętli nie wnosi istotnych nowości w porównaniu do wcześniej opisanych modeli pętli sterowania. Jednak warto zauważyć, że system zarządzany (automation target) w jednej instancji pętli COMPA może być inną instancją tej samej pętli, co wprowadza rekurencyjną strukturę sterowania.
 
 \begin{figure}[!h]
-    \centering \includegraphics[width=1\linewidth]{25-compa.png}
+    \centering \includegraphics[width=0.5\linewidth]{25-compa.png}
     \caption{Architektura pętli COMPA. Źródło: \cite{etsieni2024}.}\label{fig:25-compa}
 \end{figure}
 
 \subsubsection{Focale v3}
-Architektura pętli Focale v3 \cite{strassner2009} jest widoczna na Rysunku \ref{fig:25-focalev3}. Jest to kolejna wersja architektury Focale, która to zamiast używać dwóch alternatywnych pętli proponuje dwie nieustannie działające pętle. Jedna zewnętrzna, używana do rekoncyliacji systemu zarządzanego na większą skale w ramach reagowanie na zmiany kontekstu środowiska. Druga wewnętrzna, do rekoncyliacji w ramach jednego określone kontekstu (sytuacji) np. w jednej iteracji. Obie mają 3 alternatywne przebiegi inspirowane \cite{minsky1986}. Przebieg reaktywny używany jest w wypadku gdy zmiany kontekstu już kiedyś się wydarzyły i były przeanalizowane. Przebieg obradujący (ang. \textit{deliberative}) jest wykorzystywany gdy zmiana kontekstu jest zmiana, ale jej detale nie są jeszcze do końca zrozumiane, aby podjąć natychmiastową akcję. Przebieg refleksyjna ma miejsce, gdy zachodzą zupełnie nowe zmiany kontekstu i system musi się "nauczyć z nimi radzić. W kontekście komunikacji elementów wersja ta nie wnosi nic poza to co pętla FOCALE.
+Architektura pętli Focale v3 \cite{strassner2009} jest widoczna na Rysunku \ref{fig:25-focalev3}. Jest to kolejna wersja architektury Focale, która to zamiast używać dwóch alternatywnych pętli proponuje dwie nieustannie działające pętle. Jedna zewnętrzna, używana do rekoncyliacji systemu zarządzanego na większą skale w ramach reagowanie na zmiany kontekstu środowiska. Druga wewnętrzna, do rekoncyliacji w ramach jednego określone kontekstu (sytuacji) np. w jednej iteracji. Obie mają 3 alternatywne przebiegi inspirowane \cite{minsky1986}. Przebieg reaktywny używany jest w wypadku gdy zmiany kontekstu już kiedyś się wydarzyły i były przeanalizowane. Przebieg obradujący (ang. \textit{deliberative}) jest wykorzystywany gdy zmiana kontekstu jest znana, ale jej detale nie są jeszcze zrozumiane na tyle, aby móc podjąć natychmiastową akcję. Przebieg refleksyjny ma miejsce, gdy zachodzą zupełnie nowe zmiany kontekstu i system musi się dopiero nauczyć jak sobie z nimi radzić. W kontekście komunikacji elementów wersja ta nie wnosi nic poza to co pętla FOCALE.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{25-focalev3.png}

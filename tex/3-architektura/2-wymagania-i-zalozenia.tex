@@ -2,22 +2,22 @@
 
 \subsubsection{Wstęp}
 
-Niniejszy rozdział opisuje proces formułowania wymagań i założeń na platformę Lupus, przedstawiając przy tym aspekt badawczy pracy, który w całości został zebrany w jedno miejsce w celu łatwiejszego zobrazowania tego zagadnienia. Następne podrozdziały tego rozdziału przedstawiają architekturę w stanie końcowym, abstrahując od poniższej dyskusji. Taki podział ma nadzieję przynieść łatwiejszy odbiór czytelnikowi. Opis w tym podrozdziale opiera się na analizach architektur systemów zarządzania i pętli sterowania przeprowadzonym w rozdziale poprzednim.
+Niniejszy rozdział opisuje proces formułowania wymagań i założeń dotyczących platformy Lupus, przedstawiając przy tym aspekt badawczy pracy, który został zebrany w jednym miejscu dla lepszego zobrazowania zagadnienia. Kolejne podrozdziały przedstawiają docelową architekturę, abstrahując od poniższej dyskusji. Taki podział ma na celu ułatwienie odbioru treści przez czytelnika. Opis w tym podrozdziale opiera się na analizach architektur systemów zarządzania i pętli sterowania, przeprowadzonych w poprzednim rozdziale.
 
 \subsubsection{Wymagania ogólne}
 
-Obie architektury referencyjne \hyperlink{sec:zsm}{ETSI ZSM} oraz \hyperlink{sec:cladra}{CLADRA} definiują je jako frameworki umożliwiające budowanie zamkniętych pętli sterowania składających się z innych komponentów. Przewidują one wiele instancji zamkniętych pętli sterowania działających jednocześnie. Niniejsza praca proponuje architekturę platformy, która umożliwi budowanie oraz uruchamianie takich pętli. Z racji pełnienia tych dwóch ról, powinna również wcielić się w Menadżera Zamkniętych Pętli znanego z architektury CLADRA, który zarządza pętlami. Wnioskujemy z tego 3 główne grupy wymagań funkcjonalnych:
+Obie architektury referencyjne \hyperlink{sec:zsm}{ETSI ZSM} oraz \hyperlink{sec:cladra}{CLADRA} definiują je jako frameworki umożliwiające tworzenie zamkniętych pętli sterowania złożonych z różnych komponentów. Zakładają one możliwość równoczesnego działania wielu instancji zamkniętych pętli sterowania. Niniejsza praca proponuje architekturę platformy umożliwiającą tworzenie i uruchamianie takich pętli. ZPełniąc te dwie role, platforma powinna również pełnić funkcję Menedżera Zamkniętych Pętli, znanego z architektury CLADRA, który zarządza pętlami. Na tej podstawie można wyróżnić trzy główne grupy wymagań funkcjonalnych:
 \begin{itemize}
-    \item wymagania na środowisko wykonawcze (ang. \textit{runtime environment}), 
-    \item wymagania mówiące o tym jakie pętle powinno dać się modelować,
-    \item wymagania mówiące o tym jakie funkcje zarządzania pętlami należy zapewnić
+    \item wymagania dotyczące środowiska wykonawczego (ang. \textit{runtime environment}), 
+    \item wymagania określające, jakie architektury pętli powinny być możliwe do modelowania,
+    \item wymagania określające funkcje zarządzania pętlami, które należy zapewnić
 \end{itemize}
 
-Z racji, iż pętle sterowania wykorzystywane są w wielu branżach, już w tym momencie można postawić wymaganie na to, aby platforma była skierowana do branży teleinformatycznej. 
+Ponieważ pętle sterowania wykorzystywane są w wielu branżach, już na tym etapie można określić wymaganie, aby platforma była dedykowana branży teleinformatycznej.
 
 \subsubsection{Wymagania na środowisko wykonawcze}
 
-Platforma musi się wpisać w architekturę referencyjna ETSI ZSM oraz CLADRA, dlatego powinna również być kompatybilna z ich architekturą wyjściową - ODA \cite{tmforum2018} oraz wspierać \hyperlink{sec:zsm}{12 pryncypiów architektury ZSM}. Dodatkowo, wpisując się w aktualne trendy inżynierii oprogramowania platforma powinna być natywna dla chmur obliczeniowych (ang. cloud-native). Chcemy oprzeć platformę o już istniejące środowisko, tak aby nie trzeba było rozwijać własnego. Dużym atutem platformy byłoby znalezienie by środowiska dobrze znanego w branży teleinformatycznej, tak aby zmaksymalizować szansy jej adaptacji w społeczności.  Stąd formułujemy następujące wymagania:
+Platforma musi być zgodna z architekturą referencyjną ETSI ZSM oraz CLADRA, a co za tym idzie – kompatybilna z ich architekturą bazową, Open Digital Architecture (ODA) \cite{tmforum2018}, oraz wspierać \hyperlink{sec:zsm}{dwanaście pryncypiów architektury ZSM}. Ponadto, aby wpisać się w aktualne trendy inżynierii oprogramowania, platforma powinna być gotowa do wdrożenia w środowisku chmur obliczeniowych (ang. cloud-native). Zamiast budować własne środowisko, platforma powinna bazować na już istniejących rozwiązaniach, co pozwoli uniknąć dodatkowych kosztów i zwiększy efektywność wdrożenia. Istotnym atutem byłoby wykorzystanie środowiska dobrze znanego w branży teleinformatycznej, co zwiększyłoby szanse na szeroką adopcję w społeczności. Na tej podstawie formułujemy następujące wymagania:
 
 \begin{enumerate}
     \setcounter{enumi}{0} 
@@ -28,94 +28,169 @@ Platforma musi się wpisać w architekturę referencyjna ETSI ZSM oraz CLADRA, d
 
 \subsubsection{Wymagania na modelowanie pętli}
 
-Punktem wyjścia jest możliwość zamodelowania dowolnej zamkniętej pętli sterowania przeanalizowanej w \hyperlink{sec:25}{podrozdziale 2.4}. Przede wszystkim wymagane jest, aby zapewnić  mechanizmów feedback'u i feedforward, co oznacza po prostu komunikacje pomiędzy elemetami. Wymagane jest też wsparcie wszystkich opisanych typów pętli takich jak hierarchiczne, rozproszone czy federacyjne. Cechy adaptywności oraz kognitywności pętli nie tyczą się samej platformy, a raczej są implementowane w komponentach pętli wykonujących jej logikę obliczeniową (np. komponenty sztucznej inteligencji). Przykładowo w architekturze ETSI ZSM, te aspekty będą odzwierciedlone w serwisach zarządzania. Należy, więc w tym momencie zaznaczyć, iż cześć obliczeniowa logiki pętli jest delegowana przez platformę do komponentów zewnętrznych, które logicznie uruchomione są w innym miejscu, tak jak definiują to architektury referencyjne ETSI ZSM oraz CLADRA. Porównanie pętli OODA z MAPE-K pokazuje nam, że modelowane pętle mogą być zarówno sekwencyjne jak i nie. Sekwencyjność polega na wykonaniu operacji danego elementu jeden po drugim, brak sekwencyjność oznacza współbieżność elementów. W projekcie platformy przyjmujemy, iż współbieżność jest bardziej ogólna i na jej podstawie da się zaimplementować sekwencyjność. Sekwencyjność w współbieżnie działających elementach można osiągać poprzez pobudzanie ich w ustanowionej kolejności. Z kolei pętle niesekwencyjne działają cały czas w oczekiwaniu na otrzymanie jednego z sygnałów: feedback, feedforward lub sygnału ze środowiska zewnętrznego. Dlatego definiujemy wymaganie, iż element jest "pobudzany" danymi, co również wpisuje się w pryncypia architektury ZSM. Jak widzimy w pętli OODA, dany element pętli może pobudzać wiele innych elementów, niekoniecznie jeden, a w przypadku niektórych elementów możliwa też jest komunikacja ze środowiskiem zewnętrznym. Wnętrze elementu "Orient" pętli OODA posiada wewnętrzną skomplikowaną strukturę, może wykonywać wiele operacji (w tym wewnętrzną pętle). Wewnątrz elementu "Decide" widać podjęcie decyzji, które zmienia przebieg pętli. Każda iteracja pętli może mieć inny przebieg. 
+Punktem wyjścia jest możliwość zamodelowania dowolnej zamkniętej pętli sterowania, przeanalizowanej w \hyperlink{sec:25}{podrozdziale 2.4}. Kluczowym wymaganiem jest zapewnienie mechanizmów feedback i feedforward, co oznacza konieczność obsługi komunikacji pomiędzy elementami pętli. Ponadto, platforma musi wspierać wszystkie opisane typy pętli, takie jak hierarchiczne, rozproszone oraz federacyjne.
 
-Tak jak wskazuje \cite{fallon2019} wyrażanie modelu pętli powinno być zestandaryzowane i ujednolicone, tak aby zapoznanie się z jedną notacją lub językiem pozwalało na jej wielokrotne użycie w celu modelowania wielu różnych pętli sterowania. Użycie notacji nie powinno wymagać wyspecjalizowanej wiedzy technicznej, aby zwiększyć potencjalne grono użytkowników platformy. W idealnym przypadku platforma oferuje interfejs graficzny w celu łatwiejszego modelowania pętli, który pod spodem dokonuje translacji na zestandaryzowaną notację. Element wykonawczy, interpretujący notację, w której wyrażone jest workflow pętli powinien oraz sama notacji powinny być ogólne, nie narzucać żadnej logiki lub schematu pętli. Jedna pętla sterowania zazwyczaj dedykowana jest dla jednej funkcji zarządzania, jednego systemu zarządzanego lub domeny zarządzania, należy uogólnić to pojęcie. Z racji, że architektury ZSM oraz CLADRA przystosowane są do działania w środowisku wielu dostawców (ang. \textit{multi-vendor environment}) oraz zgodnie z tym co proponuje pętla Focale v3, czyli konwersja danych pobieranych na jednolity wewnętrznie rozumiany model Platforma Lupus również powinna wspierać taką funkcjonalność, z tą różnicą że nie nastawia się na żaden konkretny model. Dodatkowo, systemy zarządzane w celu integracji z Lupus nie powinny być modyfikowane. Należy wprowadzić komponent, który zarówno integruje system zarządzany z Lupus bez jego modyfikacji oraz dokonuje translacji zbieranych danych na format wewnętrzny.
+Warto zaznaczyć, że cechy adaptacyjności i kognitywności pętli nie są bezpośrednią funkcjonalnością platformy, lecz są implementowane w komponentach pętli wykonujących jej logikę obliczeniową, takich jak moduły sztucznej inteligencji. Na przykład w architekturze ETSI ZSM te aspekty są odzwierciedlone w serwisach zarządzania. Dlatego platforma nie przetwarza logiki pętli bezpośrednio, lecz deleguje obliczenia do zewnętrznych komponentów, które zgodnie z referencyjnymi architekturami ETSI ZSM oraz CLADRA mogą być uruchamiane w innych środowiskach.
 
+Porównanie pętli OODA z MAPE-K pokazuje, że modelowane pętle mogą być sekwencyjne lub współbieżne. Sekwencyjność oznacza wykonanie operacji poszczególnych elementów w określonej kolejności, natomiast brak sekwencyjności wskazuje na współbieżne działanie elementów. W projekcie platformy przyjmujemy, że współbieżność jest bardziej ogólnym przypadkiem, na którego podstawie można implementować sekwencyjność. Sekwencyjność w środowisku współbieżnym może być osiągana poprzez pobudzanie elementów w ustalonej kolejności.
+
+Z kolei pętle niesekwencyjne działają w sposób ciągły, oczekując na jeden z trzech sygnałów: feedback, feedforward lub sygnał ze środowiska zewnętrznego. Dlatego definiujemy wymaganie, że element pętli jest aktywowany przez dane wejściowe, co wpisuje się w pryncypia architektury ETSI ZSM. Jak pokazuje model OODA, element pętli może pobudzać wiele innych elementów, a nie tylko jeden, a w niektórych przypadkach komunikacja może obejmować także środowisko zewnętrzne.
+
+Struktura wewnętrzna elementu „Orient” w modelu OODA może być skomplikowana i wielowarstwowa, obejmując wewnętrzne operacje, a nawet dodatkowe pętle sterowania. Z kolei element „Decide” może zmieniać przebieg iteracji pętli, co oznacza, że każda iteracja może wyglądać inaczej, w zależności od podjętych decyzji.
+
+Tak jak wskazuje \cite{fallon2019}, modelowanie pętli sterowania powinno być ustandaryzowane i ujednolicone, tak aby zapoznanie się z jedną notacją lub językiem umożliwiało jej wielokrotne użycie w różnych scenariuszach. Notacja powinna być intuicyjna i niewymagająca wyspecjalizowanej wiedzy technicznej, co zwiększyłoby potencjalne grono użytkowników platformy.
+
+W idealnym przypadku platforma powinna oferować graficzny interfejs użytkownika umożliwiający łatwe modelowanie pętli, który w tle dokonywałby translacji na ustandaryzowaną notację. Element wykonawczy, odpowiedzialny za interpretację notacji opisującej workflow pętli, jak i sama notacja, powinny być neutralne technologicznie, nie narzucając żadnej konkretnej logiki ani schematu działania pętli.
+
+Jedna pętla sterowania zazwyczaj obsługuje określoną funkcję zarządzania, konkretny system zarządzany lub domenę zarządzania. Konieczne jest jednak uogólnienie tego pojęcia, aby zapewnić większą elastyczność w definiowaniu zakresu działania poszczególnych pętli.
+
+Ponieważ architektury ZSM oraz CLADRA są przystosowane do pracy w środowisku wielodostawczym (multi-vendor environment), platforma Lupus powinna wspierać konwersję danych wejściowych na jednolity model wewnętrzny, podobnie jak proponuje to pętla FOCALE v3 \cite{strassner2009}. Istotne jest jednak to, aby nie narzucać żadnego konkretnego modelu.
+
+Dodatkowo, aby systemy zarządzane przez z Lupus nie musiały być modyfikowane, konieczne jest wprowadzenie komponentu pośredniczącego, który będzie pełnił dwie kluczowe funkcje:
+\begin{itemize}
+    \item Integracja systemu zarządzanego z Lupus bez konieczności jego modyfikacji.
+    \item Translacja zbieranych danych na format wewnętrzny platformy.
+\end{itemize}
 Z powyższych rozważań zdefiniowano następujące wymagania:
 \begin{enumerate}
-    \setcounter{enumi}{3} 
-    \item \label{req:4} Platforma wspiera komunikacje między elementami pętli poprzez "pobudzanie" ich danymi.
-    \item \label{req:5} Platforma wspiera koordynację pomiędzy pętlami w sposób hierarchiczny, federacyjny oraz rekurencyjny.
+    \setcounter{enumi}{3}
+    \item \label{req:4} Platforma musi wspierać komunikację między elementami pętli poprzez ich „pobudzanie” danymi.
+    \item \label{req:5} Platforma musi umożliwiać koordynację pomiędzy pętlami w sposób hierarchiczny, federacyjny oraz rekurencyjny.
     \item \label{req:6} Elementy pętli działają współbieżnie.
-    \item \label{req:7} Część obliczeniowa logiki pętli delegowana jest do komponentów zewnętrznych.
-    \item \label{req:8} Element może pobudzać wiele elementów pętli lub komunikować się ze środowiskiem zewnętrznym.
-    \item \label{req:9} Wewnętrznie element może posiadać własne workflow pozwalające np. na podejmowanie decyzji zmieniających przebieg pętli.
-    \item \label{req:10} Element jest sterowany danymi (ang. \textit{data-driven}) i nie powinna być narzucona żadna struktura pętli
-    \item \label{req:11} Wyrażanie modelu pętli powinno być zestandaryzowane i ujednolicone poprzez określoną notację lub język.
-    \item \label{req:12} Proponowana notacja nie powinna wymagać specjalistycznych umiejętności technicznych.
-    \item \label{req:13} Kod notacji powinno dać utworzyć się za pomocą interfejsu graficznego.
-    \item \label{req:14} Notacja powinna w jednolity sposób rozpatrywać zarządzany przez siebie byt.
-    \item \label{req:15} Pętla komunikując się ze środowiskiem zewnętrznym powinna to robić za pośrednictwem komponentu pozwalającego na translacje formatów danych oraz integrację.
+    \item \label{req:7} Część obliczeniowa logiki pętli musi być delegowana do komponentów zewnętrznych.
+    \item \label{req:8} Element pętli może pobudzać wiele innych elementów lub komunikować się ze środowiskiem zewnętrznym.
+    \item \label{req:9} Element pętli może zawierać wewnętrzne workflow, umożliwiające m.in. podejmowanie decyzji zmieniających przebieg pętli w danej iteracji.
+    \item \label{req:10} Elementy pętli są sterowane danymi (data-driven) i nie powinny mieć narzuconej struktury działania.
+    \item \label{req:11} Modelowanie pętli powinno być ustandaryzowane i ujednolicone poprzez określoną notację lub język.
+    \item \label{req:12} Zastosowana notacja nie powinna wymagać specjalistycznych umiejętności technicznych.
+    \item \label{req:13} Kod w notacji powinien móc być generowany za pomocą interfejsu graficznego.
+    \item \label{req:14} Notacja powinna w jednolity sposób definiować zarządzany przez siebie byt.
+    \item \label{req:15} Pętla komunikująca się ze środowiskiem zewnętrznym powinna wykorzystywać komponent pośredniczący, który umożliwia translację formatów danych oraz integrację.
 \end{enumerate}
 
-Należy wyjaśnić pojęcia środowiska zewnętrznego oraz komponentów zewnętrznych. Komponenty zewnętrze są zewnętrzne względem platformy, ale działają w obrębie lub na rzecz systemu zarządzania (ENI, ZSM lub CLADRA). Środowisko zewnętrzne zaś jest również zewnętrzne dla samego systemu zarządzania specyfikowanego przez ETSI lub TM Forum i oznacza najczęściej infrastrukturę sieciową. 
+Należy doprecyzować pojęcia środowiska zewnętrznego oraz komponentów zewnętrznych.
+\begin{itemize}
+    \item Komponenty zewnętrzne to elementy nienależące bezpośrednio do platformy, lecz funkcjonujące w obrębie lub na rzecz systemu zarządzania, takiego jak ENI, ZSM czy CLADRA. Mogą one realizować określone funkcje obliczeniowe, analityczne lub decyzyjne, wspierając działanie platformy w kontekście zarządzania siecią.
+    \item Środowisko zewnętrzne odnosi się do systemów spoza samego systemu zarządzania, specyfikowanego przez ETSI lub TM Forum, i obejmuje zazwyczaj infrastrukturę sieciową oraz inne elementy teleinformatyczne, którymi zarządza platforma. W odróżnieniu od komponentów zewnętrznych, środowisko zewnętrzne nie jest częścią systemu zarządzania, lecz stanowi jego obiekt operacyjny.
+\end{itemize}
 
 \subsubsection{Wymagania na zarządzanie pętlami}
 
-Wymagania w tej kategorii są bardzo jasno określone i nie wymagają żadnych rozważań, bowiem aspekt zarządzania pętlami został wyczerpująco opisany w architekturze CLADRA jako zestaw funkcjonalności Menadżera Zamkniętych Pętli. Funkcjonalności przedstawiono w formie tabeli w \hyperlink{appendix:11}{Załączniku 11}. Podrozdział definiuje tylko jedno zbiorcze wymaganie, które zawiera w sobie zapewnienie wszystkich funkcjonalności Menadżera Zamkniętych Pętli architektury CLADRA:
+Wymagania w tej kategorii są jednoznacznie określone i nie wymagają dodatkowych rozważań, ponieważ aspekt zarządzania pętlami został kompleksowo opisany w architekturze CLADRA jako zestaw funkcjonalności Menedżera Zamkniętych Pętli. Pełen zakres tych funkcjonalności został przedstawiony w formie tabeli w \hyperlink{appendix:11}{Załączniku 11}.
+
+W związku z tym, niniejszy podrozdział definiuje jedno zbiorcze wymaganie, obejmujące zapewnienie wszystkich funkcjonalności Menedżera Zamkniętych Pętli zgodnie z architekturą CLADRA:
 
 \begin{enumerate}
     \setcounter{enumi}{15} 
-    \item \label{req:16} Platforma zapewnia wszystkie funkcje zarządzania pętlami zdefiniowane w \hyperlink{appendix:11}{Załączniku 11}.
+    \item \label{req:16} Platforma powinna zapewniać wszystkie funkcje zarządzania pętlami zdefiniowane w \hyperlink{appendix:11}{Załączniku 11}.
 \end{enumerate}
 
 \subsubsection{Dyskusja}
 
-Pracę rozpoczęto od wyboru środowiska wykonawczego, które spełniałoby postawione mu wymagania (\ref{req:1}, \ref{req:2}, \ref{req:3}). Oprogramowaniem, które od razu przychodzi na myśli w zgodzie z hasłem cloud-native jest Kubernetes\footnote{\url{https://kubernetes.io}}. Jest on stworzony w celu wdrażania oprogramowania, które jest modularne oraz skalowalne co świetnie wpisuje się w pryncypia architektury ZSM oraz, z racji szerokiej adopcji w systemach wielu dostawców, jest to platforma dobrze znana w branży. Dodatkowo, Kubernetes swoim wbudowanym zasobom (ang. \textit{built-in resources}) takim jak Pody czy Wdrożenia (ang. \textit{deployments}) zapewnia funkcjonalności definiowane przez Wymaganie \ref{req:16}, co nasuwa pewien trop. Postawiono hipotezę, że gdyby pętle jako byt mogły występować tak samo jak zasoby wbudowane Kubernetes i podlegać dokładnie takiemu samemu cyklowi zarządzania, to wtedy wyborem Kuberenetes pokryto by zestaw wymagań \ref{req:1}-\ref{req:3} oraz wymaganie \ref{req:16}. Krótka analiza pokazała, że jest to możliwe, bowiem Kubernetes pozwala definiować tak zwane zasoby własne\footnote{\url{https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/}} (ang. \textit{Custom Resources}), które można rejestrować w swoim klastrze i korzystać z nich w dokładnie w ten sam sposób jak z zasobów wbudowanych. Zapoznano się dokładnie z tym konceptem. Każdy zasób wbudowany w Kubernetes ma swój kontroler, który reguluje jego działanie\footnote{\url{https://kubernetes.io/docs/concepts/architecture/controller/}}. Dla zasobów własnych możliwe jest ich rozwijanie za pomocą Wzorca Operatora\footnote{\url{https://kubernetes.io/docs/concepts/extend-kubernetes/operator/}} (ang. \textit{Operator Pattern}). Kontrolery dla zasobów własnych nazywamy operatorami. Operatory można tworzyć za pomocą framework'u Kubebuilder\footnote{\url{https://book.kubebuilder.io}}.
+Pracę rozpoczęto od wyboru środowiska wykonawczego, które spełniałoby postawione wymagania (\ref{req:1}, \ref{req:2}, \ref{req:3}). Oprogramowaniem, które od razu przychodzi na myśli w zgodzie z hasłem cloud-native jest Kubernetes\footnote{\url{https://kubernetes.io}}. Jego architektura została zaprojektowana z myślą o modularności i skalowalności, co doskonale wpisuje się w pryncypia architektury ZSM. Ponadto, ze względu na szeroką adopcję w systemach wielu dostawców, Kubernetes jest platformą dobrze znaną w branży teleinformatycznej. 
+
+Dodatkowo, Kubernetes swoim wbudowanym zasobom (ang. \textit{built-in resources}) takim jak Pody czy Wdrożenia (ang. \textit{deployments}) zapewnia funkcjonalności definiowane przez Wymaganie \ref{req:16}. To skłoniło do postawienia hipotezy, że jeśli pętle jako byt mogły występować tak samo jak zasoby wbudowane Kubernetes i podlegać dokładnie takiemu samemu cyklowi zarządzania, wybór Kuberenetes  jako środowiska wykonawczego pozwoliłby również spełnić wymagania \ref{req:1}-\ref{req:3}. 
+
+Krótka analiza wykazała, że jest to możliwe, ponieważ Kubernetes umożliwia definiowanie tzw. zasobów własnych (Custom Resources)\footnote{\url{https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/}}, które można rejestrować w klastrze i używać w taki sam sposób jak zasoby wbudowane. W ramach dalszych badań dokładnie przeanalizowano ten koncept.
+
+Każdy zasób wbudowany w Kubernetes ma przypisany kontroler, który reguluje jego działanie\footnote{\url{https://kubernetes.io/docs/concepts/architecture/controller/}}. W przypadku zasobów własnych możliwe jest ich rozwijanie za pomocą Wzorca Operatora\footnote{\url{https://kubernetes.io/docs/concepts/extend-kubernetes/operator/}} (ang. \textit{Operator Pattern}). Kontrolery dla zasobów własnych nazywamy operatorami, a ich tworzenie umożliwia framework Kubebuilder\footnote{\url{https://book.kubebuilder.io}}.
 
 Zmaterializowanie zamknietej pęli sterowania jako zasób Kubernetes spełnia wymaganie \ref{req:16} w następujący sposób:
 \begin{enumerate}[label=Fx.\arabic*] % Dodajemy prefix "Fx." przed numerem
-    \item Pętla może być zdefiniowana jako zasób Kubernetes poprzez plik manifestowy YAML. Parametry w nim zdefiniowane mogą zawierać nazwę oraz opis celu.
-    \item Workflow pętli może być być również zdefiniowane w pliku YAML.
-    \item Wdrożenie pętli polega na zdefiniowaniu jej pliku YAML
-    \item Stworzenie instancji polega na zaaplikowaniu jej pliku YAML (poprzez \texttt{kubectl apply -f <filename>}). Od tej pory jej cyklem życia zarządza Kubernetes
-    \item Monitorowanie odbywa się za pomocą komendy \texttt{kubectl describe} lub monitorowaniu logów operatora
-    \item Zakończenie działania pętli możliwe jest za pomocą komendy \texttt{kubectl delete}
-    \item Usunięcie pętli polega na usunięciu jej pliku YAML
-    \item Odkrywanie pętli polega na wyszukaniu określonego typu zasobów w kubernetes (np. \texttt{kubectl get loops})
-    \item Ochrona pętli polega na ochronie samego klastra Kubernetes
-    \item Zmiana pętli polega na modyfikacji jej pliku YAML i ponownym zaaplikowaniu 
-    \item Walidacja pętli polega na sprawdzeniu składni użytej w pliku YAML i możliwe jest przez odpowiednie przygotowanie zasobu własnego w Kubebuilder
-    \item Przechowywanie pętli polega na przechowywaniu plików YAML w systemie plików (ang. \textit{filesystem})
-    \item Kontrola pętli polega na działań utrzymaniowych takich samych jak w przypadku zasobów wbudowanych Kubernetes
+    \item Pętla może być zdefiniowana jako zasób Kubernetes poprzez plik manifestowy YAML, zawierającym m.in. nazwę oraz opis celu.
+    \item Workflow pętli może być również zdefiniowany w pliku YAML.
+    \item Proces wdrażania pętli polega na utworzeniu jej pliku YAML.
+    \item Instancja pętli jest tworzona poprzez zaaplikowanie pliku YAML (kubectl apply -f <filename>), po czym jej cyklem życia zarządza Kubernetes.
+    \item Monitorowanie możliwe jest poprzez komendę \texttt{kubectl describe} lub śledzenie logów operatora.
+    \item Zakończenie działania pętli możliwe jest za pomocą komendy \texttt{kubectl delete}.
+    \item Usunięcie pętli polega na usunięciu jej pliku YAML.
+    \item Odkrywanie pętli polega na wyszukaniu określonego typu zasobów w kubernetes (np. \texttt{kubectl get loops}).
+    \item Ochrona pętli realizowana poprzez zabezpieczenie klastra Kubernetes.
+    \item Zmiana pętli polega na modyfikacji jej pliku YAML i ponownym zaaplikowaniu. 
+    \item Walidacja polega na sprawdzeniu składni pliku YAML, co może być realizowane poprzez odpowiednie mechanizmy walidacyjne zasobów własnych w Kubebuilderze.
+    \item Przechowywanie pętli polega na przechowywaniu plików YAML w systemie plików (ang. \textit{filesystem}).
+    \item Kontrola pętli polega na działaniach utrzymaniowych analogicznych jak w przypadku zasobów wbudowanych Kubernetes.
     \item Rekonfiguracja polega na modyfikacja pliku YAML lub rekonfiguracji komponentów pętli, która odbywa się poza Kubernetes
     \item Ekspozycja jest możliwa poprzez API Kubernetes
     \item Orkiestracja jest możliwa poprzez narzędzia oferowane jako dodatki do Kubernetes
-    \item Wstrzymanie pętli polega by na usunięciu instancji jej zasobu (\texttt{kubectl delete}) co jest akceptowalne z racji jej bezstanowości lub zapisywaniu stanu w komponentach zewnętrznych
-    \item Przywrócenie pętli do polega na reaplikowaniu jej pliku YAML
+    \item Wstrzymanie pętli polega by na usunięciu instancji jej zasobu (\texttt{kubectl delete}). Jest to akceptowalne ze względu na bezstanowość pętli lub możliwość zapisu stanu w komponentach zewnętrznych.
+    \item Przywrócenie pętli osiągane jest poprzez ponowne zaaplikowanie pliku YAML.
 \end{enumerate}
+ 
+W ten sposób pokryto dwie kluczowe grupy wymagań: na środowisko wykonawcze oraz na zarządzanie pętlami.
 
-W ten sposób pokryto dwie grupy wymagań: na środowisko wykonawcze oraz na zarządzanie pętlami. Dalsza część pracy skupiała się na eksploracji możliwości pokrycia wymagań na modelowanie pętli. Z racji wyboru Kubernetes oraz Wzorca Operatora, modelowanie pętli oraz urzeczywistnienie tego modelowania, czyli wykonanie jej logiki (workflow) polega na zaproponowaniu notacji używanej w pliku YAML wraz z odpowiednim zaprojektowaniu operatora. 
+Dalsza część pracy koncentruje się na eksploracji możliwości spełnienia wymagań dotyczących modelowania pętli. W związku z wyborem Kubernetes oraz Wzorca Operatora, modelowanie pętli oraz urzeczywistnienie tego modelowania, czyli wykonanie logiki (workflow) pętli opiera się na propozycji odpowiedniej notacji w plikach YAML oraz zaprojektowaniu operatora odpowiedzialnego za jej interpretację.
 
-Kontrolery w Kubernetes działają na zasadzie zamkniętej pętli sterowania. Gdy w zarządzanym przez nich obiekcie dojdzie do jakichś zmian, zostają one o tym poinformowane. Misją kontrolera jest sprawdzić wtedy rozbieżności między stanem aktualnym, a stanem pożądanym i jeśli takowa występuje wykonać operacje doprowadzające stan aktualny do postaci pożądanego. Taki proces nazywamy rekoncyliacją. Oznacza on pogodzenie ze sobą dwóch chwilowo rozbieżnych stanów. Stan aktualny wyrażony jest jako \texttt{status} danego zasobu i zapisany w bazie etcd\footnote{\url{https://bulldogjob.pl/readme/etcd-czyli-mozg-klastra-kubernetes}}, zaś stan pożądany zdefiniowany jest w pliku YAML jako pole \texttt{spec} jak i również przechowywany w bazie etcd. Gdy z jakiegoś powodu dojdzie do zmiany jednego z tych pól warstwa sterowania Kubernetes pobudza kontroler żądaniem o ę. Mechanizm ten nasuwa pomysł na spełnienie wymagania \ref{req:4}. Komunikacja elementów mogła by polegać na wzajemnym pobudzaniu się zmianami pola \texttt{status} w obiektach ich reprezentujących. Dlatego podjęto decyzję, iż każdy element pętli będzie reprezentowany poprzez obiekt Kubernetes\footnote{url{https://kubernetes.io/docs/concepts/overview/working-with-objects/}} typu własnego o nazwie \texttt{Element}.
+Kontrolery w Kubernetes działają na zasadzie zamkniętej pętli sterowania. Gdy w zarządzanym przez nie obiekcie zachodzi zmiana, kontrolery zostają o tym poinformowane. Ich zadaniem jest porównanie aktualnego stanu obiektu ze stanem pożądanym, a jeśli występują rozbieżności, wykonanie operacji mających na celu doprowadzenie systemu do stanu zgodnego z oczekiwanym. Proces ten nazywany jest rekoncyliacją (reconciliation) i oznacza on pogodzenie ze sobą dwóch chwilowo rozbieżnych stanów.
 
-Dane, którymi ma być zrealizowane pobudzanie wpisywane by były do pola \texttt{status}, które operator może odczytać w trakcie rekoncyliacji obiektu. Zasób własny reprezentujący całą pętle nazwany został dla rozróżnienia \texttt{Master}. Uczynienie elementu pętli obiektem Kubernetes spełnia wymaganie \ref{req:6}, albowiem obiekty te istnieją nieustannie w klastrze, a ich kontrolery mogą zostać wywołane w dowolnym momencie poprzez zażądanie rekoncyliacji. W momencie gdy zasób \texttt{Element} reprezentuje pojedynczy element pętli, \texttt{Master} odpowiedzialny jest za instancjonowanie oraz zarządzanie cyklem życia elementów. Operator zasobu \texttt{Master} uruchamiany jest raz w momencie instancjonowania jego obiektu. Czyta on wtedy plik YAML, który mówi mu jakie elementy ma utworzyć. Z racji, że elementy specyfikują model pętli to jego notacja powinna być zestandaryzowana i ujednolicona (zgodnie z wymaganiem \ref{req:11}). Notacje nazwano LupN. 
+Stan aktualny wyrażony jest jako pole status danego zasobu i przechowywany w bazie etcd\footnote{\url{https://bulldogjob.pl/readme/etcd-czyli-mozg-klastra-kubernetes}}. Natomiast stan pożądany definiowany jest w pliku YAML w polu spec i również zapisywany w etcd. Gdy którykolwiek z tych stanów ulegnie zmianie, warstwa sterowania Kubernetes pobudza kontroler, przekazując mu żądanie rekoncyliacji.
+
+Mechanizm ten sugeruje możliwość realizacji wymagania \ref{req:4} dotyczącego komunikacji elementów pętli. Komunikacja mogłaby polegać na wzajemnym pobudzaniu się elementów poprzez modyfikację pola status w ich reprezentacjach Kubernetes. W związku z tym podjęto decyzję, że każdy element pętli będzie reprezentowany jako obiekt Kubernetes\footnote{\url{https://kubernetes.io/docs/concepts/overview/working-with-objects/}} typu własnego o nazwie Element.
+
+Dane wykorzystywane do pobudzania elementów pętli byłyby wpisywane do pola \texttt{status}, które operator może odczytać podczas rekoncyliacji obiektu. W celu odróżnienia od pojedynczych elementów pętli, zasób własny reprezentujący całą pętlę nazwano \texttt{Master}.
+
+Przekształcenie elementu pętli w obiekt Kubernetes pozwala spełnić wymaganie \ref{req:6}, ponieważ obiekty Kubernetes istnieją stale w klastrze, a ich kontrolery mogą zostać wywołane w dowolnym momencie poprzez żądanie rekoncyliacji.
+
+Zasób \texttt{Element} reprezentuje pojedynczy element pętli.
+Zasób \texttt{Master} odpowiada za instancjonowanie elementów oraz zarządzanie ich cyklem życia.
+Operator zasobu \texttt{Master} jest uruchamiany raz podczas instancjonowania obiektu. W tym momencie odczytuje on plik YAML, który zawiera definicję pętli i określa, jakie elementy należy utworzyć.
+
+Ponieważ elementy pętli specyfikują jej model, notacja używana do ich definiowania powinna być zestandaryzowana i ujednolicona, zgodnie z wymaganiem \ref{req:11}. Notację tę nazwano LupN.
 
 Notacja LupN opisuje elementy pętli oraz komunikacje między nimi. Opiera się ona na obiektach, które podczas pobudzenia danego elementu są interpretowane przez operator. Każdy element posiada obiekt akcji, który definiuje jego wewnętrzne workflow (w celu spełnienia wymagania \ref{req:9}) oraz obiekt o nazwie \texttt{next} reprezentujący komponenty, do których należy przekazać swoje dane wyjściowe. W celu spełnienia wymagania \ref{req:8} obiekt \texttt{next} może reprezentować albo inne elementy danej pętli albo komponenty systemu zarządzania odpowiedzialne za część obliczeniową logiki pętli. W przypadku elementów końcowych może to być też środowisko zewnętrze. Komponenty odpowiedzialne za część obliczeniową logiki pętli oraz środowisko zewnętrzne jest reprezentowane przez obiekt Destynacji, który specyfikuje komunikację za pośrednictwem protokołu HTTP. Wybór wsparcia tego protokołu jest podyktowany jest szeroką adaptacją w systemach rozproszonych korzystających z architektur mikroserwisowych.
 
-Jeśli chodzi o wewnętrzne workflow elementu to specyfikuje ono komunikacje z komponentami zewnętrznymi oraz podejmowanie decyzji dotyczących rozgałęziania (ang. \textit{fork}) przebiegu pętli. Specyfikacja ta wyrażana jest za pomocą łańcucha obiektów \textbf{akcji} (\texttt{actions}), które ściśle współpracują z \textbf{danymi}. Zgodnie z wymaganiem \ref{req:10} operator elementu musi być ogólny i posiadać interpreter akcji, które mają pozwolić na elastyczną i opartą o dane orkiestrację wykonywanych operacji zarządzania. 
+Notacja LupN opisuje elementy pętli sterowania oraz komunikację między nimi. Opiera się na obiektach, które są interpretowane przez operator podczas pobudzenia danego elementu.
 
-Dane pojawiają się w elemencie jako wartość wpisana przez poprzedni element polu \texttt{status}. Jako format, który umożliwia reprezentacje jakichkolwiek danych wybrano JSON. Elementy współpracują z danymi poprzez obiekty akcji. Akcje posiadają różne typy, które wspólnie stanowią zestaw operacji jakie można przeprowadzać na danych. Kluczowym typem akcji jest \texttt{send}, która pozwala na komunikacje z komponentami zewnętrznymi (spełniając wymaganie \ref{req:7}) poprzez protokół HTTP. Akcja \texttt{send} specyfikuje, które pole JSON należy wysłać w żądaniu HTTP, oraz w którym polu należy zapisać odpowiedź. Inne typy akcji służą do odpowiedniej organizacji danych. Pola danych można łączyć, usuwać, zmieniać im nazwy, duplikować. Dane zazwyczaj służą do zapisywania parametrów wysyłanych do komponentów zewnętrznych i zapisywania otrzymanych odpowiedzi. Akcje posiadają specjalny typ o nazwie \texttt{switch}, który pozwala wykonać wyrażenie warunkowe na danych i na jego podstawie uzależnić wybór następnej akcji do wykonania (wymaganie \ref{req:10}). Podczas projektowania typów akcji postawiono na atomowość i elastyczność.
+Każdy element pętli składa się z dwóch kluczowych obiektów:
+\begin{itemize}
+    \item Obiekt akcji – definiuje wewnętrzne workflow elementu, co pozwala spełnić wymaganie \ref{req:9}.
+    \item Obiekt \texttt{next} – reprezentuje komponenty, do których element przekazuje swoje dane wyjściowe.
+\end{itemize}
 
-Pozostaje jeszcze kwestia komunikacji elementów pętli ze środowiskiem zewnętrznym. Z racji wymagania \ref{req:15} zdefiniowano komponenty, które nazwano agentami translacji. zdecydowano, że tylko użytkownik platformy zna specyfiki swojego środowiska zewnętrznego dlatego to jemu pozostawiono implementacje agentów translacji. zdefiniowano jednakże dwa interfejsy (wejściowy i wyjściowy), z których to specyfikacją dany agent translacji musi być zgodny. 
+Aby spełnić wymaganie \ref{req:8}, obiekt \texttt{next} może wskazywać na:
+\begin{itemize}
+    \item inne elementy pętli,
+    \item komponenty systemu zarządzania, które odpowiadają za część obliczeniową logiki pętli,
+    \item środowisko zewnętrzne (w przypadku elementów końcowych pętli).
+\end{itemize}
 
-Warto też wspomnieć o tym, że obecne w wielu architekturach pętli repozytorium wiedzy może być komponentem zewnętrznym, z którym współpracuje element pętli.
+Komponenty odpowiedzialne za przetwarzanie logiki pętli oraz środowisko zewnętrzne są reprezentowane przez obiekt Destynacji, który specyfikuje komunikację za pośrednictwem protokołu HTTP. Wybór wsparcia dla HTTP wynika z jego szerokiej adopcji w systemach rozproszonych opartych na architekturze mikroserwisowej. Zakładamy więc, że powłoka integracyjna architektur ZSM znajdzie swoje implementacje w oparciu o komunikacje HTTP.
 
-Wprowadzone w niniejsyzym podrozdziale pojęcia są szerzej omówione w dalszej części pracy. 
+Wewnętrzne workflow elementu specyfikuje komunikację z komponentami zewnętrznymi oraz podejmowanie decyzji dotyczących rozgałęziania (fork) przebiegu pętli sterowania. Specyfikacja ta wyrażana jest za pomocą łańcucha obiektów \textbf{akcji} (\texttt{actions}), które ściśle współpracują z \textbf{danymi}. Zgodnie z wymaganiem \ref{req:10} operator elementu musi być ogólny i posiadać interpreter akcji, które mają pozwolić na elastyczną i opartą o dane orkiestrację wykonywanych operacji zarządzania. 
+
+Dane pojawiają się w elemencie jako wartość wpisana przez poprzedni element w polu \texttt{status}. Jako format umożliwiający reprezentację dowolnych danych wybrano JSON, który zapewnia elastyczność i powszechną kompatybilność w systemach rozproszonych.
+
+Elementy współpracują z danymi poprzez obiekty akcji. Akcje występują w różnych typach, które razem tworzą zestaw operacji manipulujących danymi. Kluczową akcją jest \texttt{send}, która umożliwia komunikację z komponentami zewnętrznymi poprzez protokół HTTP, spełniając wymaganie \ref{req:7}. Akcja \texttt{send} specyfikuje:
+\begin{itemize}
+    \item endpoint, na który należy wysłać żądanie HTTP,
+    \item które pole JSON należy wysłać w żądaniu HTTP,
+    \item w którym polu należy zapisać odpowiedź.
+\end{itemize}
+
+
+Inne typy akcji służą do odpowiedniej organizacji danych. Pola danych można łączyć, usuwać, zmieniać ich nazwy oraz duplikować. Dane są wykorzystywane głównie do zapisywania parametrów wysyłanych do komponentów zewnętrznych oraz przechowywania otrzymanych odpowiedzi. Specjalnym typem akcji jest \texttt{switch}, który pozwala wykonać wyrażenie warunkowe na danych i na jego podstawie uzależnić wybór następnej akcji do wykonania, co spełnia wymaganie \ref{req:10}). Podczas projektowania typów akcji postawiono na atomowość i elastyczność.
+
+
+Pozostaje jeszcze kwestia komunikacji elementów pętli ze środowiskiem zewnętrznym. W celu spełnienia wymagania \ref{req:15} zdefiniowano komponenty, które nazwano agentami translacji Zdecydowano, że to użytkownik platformy najlepiej zna specyfikę swojego środowiska zewnętrznego, dlatego odpowiedzialność za implementację agentów translacji pozostaje po jego stronie. Zostały jednakże zdefiniowane interfejsy, które musi spełniać agent translacji w celu komunikacji z Lupus.
+
+Pozostaje jeszcze kwestia komunikacji elementów pętli ze środowiskiem zewnętrznym. Z racji wymagania \ref{req:15} zdefiniowano komponenty, które nazwano agentami translacji. zdecydowano, że tylko użytkownik platformy zna specyfiki swojego środowiska zewnętrznego dlatego to jemu pozostawiono implementacje agentów translacji. zdefiniowano jednakże dwa interfejsy (wejściowy i wyjściowy), z których to specyfikacją dany agent translacji musi być zgodny. Dzięki temu platforma umożliwia elastyczną integrację z dowolnym środowiskiem zewnętrznym, jednocześnie zapewniając standardowy mechanizm komunikacji między elementami pętli a systemami zarządzanymi.
+
+Wprowadzone w niniejszym podrozdziale pojęcia są szerzej omówione w dalszej części pracy. 
 
 Poniżej prezentowane jest spełnienie wymagań dotyczących modelowania pętli:
 \begin{enumerate}
     \setcounter{enumi}{15}
-    \item Elementy są pobudzane poprzez zmianę statusu obiektu Kubernetes.
-    \item Dowolna koordynacja pracy pętli jest możliwa poprzez odpowiednią implementację wejściowych agenta translacji. Jeśli ich serwer HTTP udostępni możliwość pobudzania pętli z zewnątrz, nic nie stoi na przeszkodzie, aby jedna pętla mogła aktywować drugą.
+    \item Elementy pętli są pobudzane poprzez zmianę statusu obiektu Kubernetes.
+    \item Dowolna koordynacja pracy pętli jest możliwa poprzez odpowiednią implementację wejściowego agenta translacji. Jeśli jego serwer HTTP umożliwia aktywowanie pętli z zewnątrz, nic nie stoi na przeszkodzie, aby jedna pętla mogła uruchomić inną.
     \item Wymaganie spełnione poprzez implementacje elementów jako obiekty Kubernetes.
-    \item Operator elementu może używać akcji typu \texttt{send} w celu komunikacji z komponentem zewnętrznym za pomocą protokołu HTTP, posiada również nośnik danych, pozwalający na zapisanie .
-    \item Obiekt notacji LupN wskazujący następny komponent pętli pozwala na zdefiniowanie liczby większej od jeden. Następnym komponentem może być albo element pętli albo dowolny serwer HTTP (np. ze środowiska zewnętrznego).
-    \item Obiekt notacji LupN opisujący wnętrze elementu jest łańcuchem akcji, które stanowią jego wewnętrzne workflow. Pozwala ono sterować przebiegiem pętli za pomocą akcji typu \texttt{switch}. 
-    \item Operator elementu posiada interpreter akcji.
+    \item Operator elementu może używać akcji typu \texttt{send} do komunikacji z komponentem zewnętrznym za pomocą protokołu HTTP. Ponadto posiada mechanizm przechowywania danych, umożliwiający zapis wyników operacji.
+    \item Obiekt notacji LupN wskazujący następny komponent pętli pozwala na definiowanie wielu odbiorców. Kolejny komponent może być innym elementem pętli lub dowolnym serwerem HTTP, zwłaszcza należącym do środowiska zewnętrznego.
+    \item Obiekt notacji LupN opisujący wnętrze elementu zawiera łańcuch akcji, które stanowią jego wewnętrzne workflow. Pozwala ono sterować przebiegiem pętli za pomocą akcji typu \texttt{switch}. 
+    \item Operator elementu posiada interpreter akcji, co pozwala na elastyczność.
     \item Modelowanie pętli odbywa się w notacji LupN, której specyfikacja znajduje się w dalszej części pracy.
-    \item Kod notacji LupN jest zbiorem obiektów YAML i jest prosty do nauczenia się.
-    \item Możliwa jest implementacja programu, który zamieniał by obiekty graficznie zdefiniowane przez użytkownika na kod LupN.
-    \item Architektura definiuje komponenty zwane Agentami Translacji, które spełniają to wymaganie.
+    \item Kod notacji LupN jest oparty na obiektach YAML i charakteryzuje się prostą składnią, łatwą do przyswojenia.
+    \item Możliwa jest implementacja narzędzia umożliwiającego konwersję modeli graficznych na kod LupN.
+    \item Architektura definiuje komponenty zwane Agentami Translacji, które zapewniają zgodność ze środowiskiem zewnętrznym.
 \end{enumerate}
+
+Z uwagi na fakt, że warstwa sterowania Kubernetes nie działa w czasie rzeczywistym, zamknięte pętle sterowania implementowane na platformie również nie będą działały w ten sposób. Pętle sterowania wymagające operacji w czasie rzeczywistym nie należą do domeny zarządzania, lecz są częścią mechanizmów automatyzacji implementowanych bezpośrednio w elementach sieciowych. W takich przypadkach decyzje są podejmowane lokalnie, bez udziału systemów nadrzędnych.
