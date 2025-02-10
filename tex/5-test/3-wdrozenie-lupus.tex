@@ -10,7 +10,7 @@ W ramach wdrożenia Open5GS, w tym dla komponentu UPF, istnieje kilka instancji 
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-depy.png}
-    \caption{Wdrożenia Open5GS, w tym instancje UPF}\label{fig:53-depy}
+    \caption{Wdrożenia Open5GS, w tym instancje UPF. Źródło: Opracowanie własne.}\label{fig:53-depy}
 \end{figure}
 
 Każdy \textit{pod} w klastrze Kubernetes posiada zdefiniowane wartości dotyczące przydziału zasobów:
@@ -108,7 +108,7 @@ Agent Egress udostępnia interfejs HTTP (endpoint), który przyjmuje dane w post
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-egress.png}
-    \caption{Endpoint Egress Agent przyjmujący finalne dane}\label{fig:53-egress}
+    \caption{Endpoint Egress Agent przyjmujący finalne dane. Źródło: Opracowanie własne.}\label{fig:53-egress}
 \end{figure}
 
 Następnie dla wdrożenia (ang. \textit{deployment}) zadanego polem \texttt{name} zmodyfikuje zdefiniowane wartości \texttt{requests} oraz \texttt{limits} według pola \texttt{spec}. Opcjonalne jest pole \texttt{interval}, które określa z jakim interwałem czasowym (w sekundach) raportować aktualne zużycie zasobów. Agent Egress odpowiednio wysteruje tym polem Agenta Ingress. Kod Agenta Egress znajduje się w \hyperlink{appendix:8}{Załączniku 8}.
@@ -151,7 +151,7 @@ A \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} dla \hyperlink{def:ele
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-workflow-akcji.png}
-    \caption{Workflow Akcji Elementu Lupus}\label{fig:53-workflow-akcji}
+    \caption{Workflow Akcji Elementu Lupus. Źródło: Opracowanie własne.}\label{fig:53-workflow-akcji}
 \end{figure}
 
 \subsubsection{Przygotowanie Elementów Zewnętrznych}
@@ -166,7 +166,7 @@ Implementacje można znaleźć w \hyperlink{appendix:9}{Załączniku 9}.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-workflow-petli.png}
-    \caption{Workflow Pętli}\label{fig:53-workflow-petli}
+    \caption{Workflow Pętli. Źródło: Opracowanie własne.}\label{fig:53-workflow-petli}
 \end{figure}
 
 Element \texttt{demux} służy do rozdzielenia \hyperlink{def:dane}{\textbf{Danych}} na dwie części. Każde wdrożenie UPF ma swój dedykowany element \texttt{upf1} lub \texttt{upf2}, który obsługuje je według \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} przedstawionego w poprzednim podrozdziale. Elementy \texttt{upf1} oraz \texttt{upf2} niezależnie pobudzają endpoint \texttt{/api/data} \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}.
@@ -180,44 +180,44 @@ Iterację rozpoczyna \hyperlink{def:agent-ingress}{\textbf{Agent Ingress}}, któ
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-scr-1.png}
-    \caption{Logi Agenta Ingress}\label{fig:53-scr-1}
+    \caption{Logi Agenta Ingress. Źródło: Opracowanie własne.}\label{fig:53-scr-1}
 \end{figure}
 
 \begin{figure}[!h]
     \centering \includegraphics[width=0.5\linewidth]{53-scr-2.png}
-    \caption{Status obiektu API "lola-demux"}\label{fig:53-scr-2}
+    \caption{Status obiektu API "lola-demux". Źródło: Opracowanie własne.}\label{fig:53-scr-2}
 \end{figure}
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-scr-3.png}
-    \caption{Logi operatora element rekoncylującego obiekt API "lola-demux"}\label{fig:53-scr-3}
+    \caption{Logi operatora element rekoncylującego obiekt API "lola-demux". Źródło: Opracowanie własne.}\label{fig:53-scr-3}
 \end{figure}
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-scr-6.png}
-    \caption{Statusy obiektów API "lola-upf1" oraz "lola-upf2"}\label{fig:53-scr-6}
+    \caption{Statusy obiektów API "lola-upf1" oraz "lola-upf2". Źródło: Opracowanie własne.}\label{fig:53-scr-6}
 \end{figure}
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-scr-4.png}
-    \caption{Logi operatora element rekoncylującego obiekt API "lola-upf1"}\label{fig:53-scr-4}
+    \caption{Logi operatora element rekoncylującego obiekt API "lola-upf1". Źródło: Opracowanie własne.}\label{fig:53-scr-4}
 \end{figure}
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-scr-5.png}
-    \caption{Logi Agenta Egress}\label{fig:53-scr-5}
+    \caption{Logi Agenta Egress. Źródło: Opracowanie własne.}\label{fig:53-scr-5}
 \end{figure}
 
 Gdy pobudzimy funkcję UPF do większej pracy ruchem z UE, widzimy raportowane większe zużycie zasobów przez odpowiednie wdrożenie (rys. \ref{fig:53-scr-7}). Aktualne zużycie przekraczające zdefiniowany punkt pracy powoduje otrzymanie od elementu zewnętrznego \texttt{opa-point} punkt \texttt{NORMAL\_TO\_CRITICAL}, co z kolei wpływa na workflow akcji (rys. \ref{fig:53-scr-8}). W kolejnych iteracjach w logach Agenta Ingress widzimy błąd spowodowany tym, ze Pod UPF1 chwilowo nie istnieje, stało się tak dlatego iż Agent Egress w poprzedniej iteracji zmienił jego wartość \texttt{requests} oraz \texttt{limits}, co poskutkowało restartem Poda. Po restarcie widzimy iż Agent Ingress raportuje nowe wartości \texttt{requests} i \texttt{limits} dla Poda UPF1.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-scr-7.png}
-    \caption{Logi Agenta Ingress przy pobudzeniu ruchem}\label{fig:53-scr-7}
+    \caption{Logi Agenta Ingress przy pobudzeniu ruchem. Źródło: Opracowanie własne.}\label{fig:53-scr-7}
 \end{figure}
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-scr-8.png}
-    \caption{Logi z workflow akcji elementu "upf1" przy pobudzeniu ruchem}\label{fig:53-scr-8}
+    \caption{Logi z workflow akcji elementu "upf1" przy pobudzeniu ruchem. Źródło: Opracowanie własne.}\label{fig:53-scr-8}
 \end{figure}
 
 Dokmuntacja elektroniczna całego procesu wraz z instrukcją uruchomienia na własnym środowisku znaduje się pod linkiem: \url{https://github.com/0x41gawor/lupus/tree/master/examples/open5gs}.

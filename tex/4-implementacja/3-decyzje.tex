@@ -1,4 +1,4 @@
-\subsection{Decyzje podjęte podczas developmentu}
+\subsection{Decyzje podjęte podczas implementacji}
 
 \subsubsection{Wstęp}
 
@@ -10,12 +10,12 @@ Pierwszym krokiem w implementacji było wymyślenie sposobu na komunikację pomi
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{43-komunikacja.png}
-    \caption{Komunikacja pomiędzy Elementami Lupus}\label{fig:43-komunikacja}
+    \caption{Komunikacja pomiędzy Elementami Lupus. Źródło: Opracowanie własne.}\label{fig:43-komunikacja}
 \end{figure}
 
-Działa to w sposób ukazany na rysunku \ref{fig:43-komunikacja}. Początkowo \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} mogły przyjąć postać jednego z czterech typów: Observe, Learn, Decide lub Execute\footnote{W myśl pętli ODA}. \hyperlink{def:agent-ingress}{\textbf{Agent Ingress}} modyfikował \texttt{Status} obiektu Observe, natomiast Operator Observe modyfikował \texttt{Statusy} obiektów Learn oraz Decide. Na koniec modyfikacje otrzymywał obiekt Execute, którego Operator przekazywał swoje \hyperlink{def:dane}{\textbf{Dane}} do \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}. 
+Sposób działania został ukazany na rysunku \ref{fig:43-komunikacja}. Początkowo \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} mogły przyjąć postać jednego z trzech typów: Observe, Decide lub Execute\footnote{W myśl pętli ODA}. \hyperlink{def:agent-ingress}{\textbf{Agent Ingress}} modyfikował \texttt{Status} obiektu Observe, natomiast Operator Observe modyfikował \texttt{Status} obiektu Decide. Na koniec modyfikacje otrzymywał obiekt Execute, którego Operator przekazywał swoje \hyperlink{def:dane}{\textbf{Dane}} do \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}. 
 
-Z czasem jednak, aby nie narzucać konkretnej struktury pętli, zrezygnowano z czterech typów i stworzono jeden uniwersalny typ, którego Operator jest w stanie wykonać \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}}, co pozwalało na wyrażenie logiki dowolnego z 4 poprzednich typów. W ten sposób spełniono \hyperref[req:5]{Wymaganie 5}.
+Z czasem jednak, aby nie narzucać konkretnej struktury pętli, zrezygnowano z trzech typów i stworzono jeden uniwersalny typ, którego Operator jest w stanie wykonać \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}}, co pozwalało na wyrażenie logiki dowolnego z 3 poprzednich typów. W ten sposób spełniono \hyperref[req:10]{Wymaganie 10}.
 
 \subsubsection{Dane}
 
@@ -44,7 +44,7 @@ type RawExtension struct {
 }
 \end{lstlisting}
 
-Zamierzonym celem \texttt{RawExtension} według deweloperów Kubernetes jest umożliwienie deserializacji do określonej, znanej struktury. Jednak ze względu na \hyperref[req:5]{Wymaganie 5} taka struktura nie istnieje. Potrzebujemy więc natywnej struktury Go, która jest w stanie reprezentować dowolny obiekt JSON. Pierwszym pomysłem, który się nasuwa, jest użycie typu Go \texttt{interface{}}, ponieważ może on reprezentować dowolne dane. Problem z \texttt{interface{}} polega jednak na tym, że nie można na nim operować – nie udostępnia żadnego interfejsu do interakcji. Jest to typ podstawowy.
+Zamierzonym celem \texttt{RawExtension} według deweloperów Kubernetes jest umożliwienie deserializacji do określonej, znanej struktury. Jednak ze względu na \hyperref[req:10]{Wymaganie 10} taka struktura nie istnieje. Potrzebujemy więc natywnej struktury Go, która jest w stanie reprezentować dowolny obiekt JSON. Pierwszym pomysłem, który się nasuwa, jest użycie typu Go \texttt{interface{}}, ponieważ może on reprezentować dowolne dane. Problem z \texttt{interface{}} polega jednak na tym, że nie można na nim operować – nie udostępnia żadnego interfejsu do interakcji. Jest to typ podstawowy.
 
 Drugim pomysłem na reprezentację JSON-a było użycie \texttt{map[string]interface{}}, ponieważ większość instancji JSON-a to faktycznie obiekty klucz-wartość. Klucze w tym przypadku są typu \texttt{string}, a wartości mogą być dowolne (stąd użycie \texttt{interface{}}) w Go. W większości przypadków obiekty JSON zawierają kilka głównych pól (ang. \textit{top-level fields}), co idealnie pasuje do reprezentacji \texttt{map[string]interface{}}.
 
@@ -224,7 +224,7 @@ Różnice są widoczne w specyfikacji LupN w \hyperlink{appendix:3}{Załączniku
 
 \subsubsection{Funkcje użytkownika}\label{sec:funkcje-uzytkownika}
 
-Zgodnie z \hyperref[req:6]{Wymaganiem 6}, \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} nie wykonują \hyperlink{def:czesc-obliczeniowa}{\textbf{Części Obliczeniowej Logiki Pętli}}. Zamiast tego, jest ona delegowana do \hyperlink{def:element-zewnetrzny}{\textbf{Elementów Zewnętrznych}}.
+Zgodnie z \hyperref[req:7]{Wymaganiem 7}, \hyperlink{def:element-lupus}{\textbf{Elementy Lupus}} nie wykonują \hyperlink{def:czesc-obliczeniowa}{\textbf{Części Obliczeniowej Logiki Pętli}}. Zamiast tego, jest ona delegowana do \hyperlink{def:element-zewnetrzny}{\textbf{Elementów Zewnętrznych}}.
 
 Pojawiają się tutaj dwa aspekty:
 \begin{itemize}

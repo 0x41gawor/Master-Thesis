@@ -46,7 +46,7 @@ Jest to punkt wyjściowy dla naszej architektury referencyjnej (rys. \ref{fig:33
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{33-arch.png}
-    \caption{Architektura referencyjna dla Lupus}\label{fig:33-arch}
+    \caption{Architektura referencyjna dla Lupus. Źródło: Opracowanie własne.}\label{fig:33-arch}
 \end{figure}
 
 Architekturę (rys. \ref{fig:33-arch}) należy czytać, mając na uwadze następujące definicje:
@@ -62,7 +62,7 @@ W powyższej architekturze \hyperlink{def:lupus}{\textbf{Lupus}} pełni rolę \h
 
 
 \subsubsection{Agenci Translacyjni}
-Z racji, że każdy system, bez żadnych modyfikacji (\hyperref[req:7]{Wymaganie 7}) może wejść w rolę \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}, potrzebujemy warstwy integracji między \hyperlink{def:system-zarzadzany}{\textbf{Systemem Zarządzanym}} a \hyperlink{def:lupus}{\textbf{Lupus}}, podobnej do koncepcji "API Broker" w architekturze \hyperlink{def:eni}{ENI} (rys. \ref{fig:23-eni-arch}). Tak narodziła się koncepcja \hyperlink{def:agent-translacji}{\textbf{Agentów Translacji}} (ang. \textit{Translation Agents}). 
+Z racji, że każdy system, bez żadnych modyfikacji (\hyperref[req:15]{Wymaganie 15}) może wejść w rolę \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}, potrzebujemy warstwy integracji między \hyperlink{def:system-zarzadzany}{\textbf{Systemem Zarządzanym}} a \hyperlink{def:lupus}{\textbf{Lupus}}, podobnej do koncepcji "API Broker" w architekturze \hyperlink{def:eni}{ENI} (rys. \ref{fig:23-eni-arch}). Tak narodziła się koncepcja \hyperlink{def:agent-translacji}{\textbf{Agentów Translacji}} (ang. \textit{Translation Agents}). 
 
 W każdym \hyperlink{def:wdrozenie-lupus}{\textbf{wdrożeniu Lupus}}, \hyperlink{def:uzytkownik}{\textbf{Użytkownik}} musi stworzyć \hyperlink{def:agent-translacji}{\textbf{Agentów Translacyjnych}}. 
 
@@ -80,7 +80,7 @@ Architektura wraz z wprowadzeniem \hyperlink{def:agent-translacji}{\textbf{Agent
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{33-arch2.png}
-    \caption{Architektura referencyjna z agentami translacji}\label{fig:33-arch2}
+    \caption{Architektura referencyjna z agentami translacji. Źródło: Opracowanie własne.}\label{fig:33-arch2}
 \end{figure}
 
 Specyfikacja interfejsów \hyperlink{def:interfejs-lupin}{\textbf{Lupin}} oraz \hyperlink{def:interfejs-lupout}{\textbf{Lupout}} zawarta jest w \hyperref[appendix:4]{Załączniku 4}.
@@ -101,7 +101,7 @@ Przykładowe \hyperlink{def:workflow-petli}{\textbf{Workflow Pętli}} pokazano n
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{33-workflow.png}
-    \caption{Przykładowe workflow pętli}\label{fig:33-workflow}
+    \caption{Przykładowe workflow pętli. Źródło: Opracowanie własne.}\label{fig:33-workflow}
 \end{figure}
 
 \begin{itemize}
@@ -123,7 +123,7 @@ Działanie pojedynczego \hyperlink{def:element-lupus}{\textbf{Elementu Lupus}} j
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{33-workflow-akcji.png}
-    \caption{Przykładowe workflow akcji}\label{fig:33-workflow-akcji}
+    \caption{Przykładowe workflow akcji. Źródło: Opracowanie własne.}\label{fig:33-workflow-akcji}
 \end{figure}
 
 Pełna specyfikacja \hyperlink{def:dane}{\textbf{Danych}} znajduje się w \hyperref[appendix:5]{Załączniku 5}, zaś pełna specyfikacja \hyperlink{def:akcja}{\textbf{Akcji}} w \hyperref[appendix:6]{Załączniku 6}.

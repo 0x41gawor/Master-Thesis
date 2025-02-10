@@ -4,7 +4,7 @@ Rozważania na temat inteligentnych systemów w kontekście niniejszej pracy nal
 
 \begin{figure}[!htbp]
     \centering \includegraphics[width=1.0\linewidth]{24-ibm.png}
-    \caption{Architektura autonomicznych systemów IBM}\label{fig:24-ibm}
+    \caption{Architektura autonomicznych systemów IBM. Źródło \cite{kephart2003}.}\label{fig:24-ibm}
 \end{figure}
 
 Podstawową jej jednostką jest element autonomiczny (ang. \textit{Autonomic Element}). Składa się on z zarządzanego komponentu (np. serwera, bazy danych, aplikacji czy urządzenia sieciowego) oraz autonomicznego menadżera (ang. \textit{Autonomic Manager}), który steruje jego działaniem. Menedżer autonomiczny działa w cyklu MAPE-K (Monitor, Analyze, Plan, Execute, Knowledge). Faza "Monitor" zbiera dane o zarządzanym obiekcie, które to są analizowane i oceniane pod względem potencjalnych problemów w fazie "Analyze". "Plan" odpowiada za rozpisanie działań naprawczych lub optymalizacyjnych, które są przekazywane do "Execute" w celu wdrożenia w systemie zarządzanym. "Knowledge" nie jest fazą a repozytorium wiedzy, do której każdy z elementów cyklu ma dostęp. Tu gromadzona jest \hyperlink{def:wiedza}{\textit{wiedza}}. Elementy autonomiczne mogą ze sobą współpracować i wymieniać się wiedzą. Inteligencja społeczna (ang. \textit{social intelligence}) całego rozproszonego systemu rośnie wraz z liczbą interakcji pomiędzy elementami, podobnie jak w kolonii mrówek. Gdy przyjdzie nowy element, to zdobywa wiedzę od reszty populacji. Widzimy tu lekką inspirację \cite{minsky1986}.
@@ -22,7 +22,7 @@ Powyższe architektury zostaną dokładniej opisane w dalszej części pracy (zw
 
 \begin{figure}[!htbp]
     \centering \includegraphics[width=1.0\linewidth]{24-his.png}
-    \caption{Zestawienie lini czasu rozwoju systemów zarządzania siecią oraz pętli sterowania}\label{fig:24-his}
+    \caption{Zestawienie lini czasu rozwoju systemów zarządzania siecią oraz pętli sterowania. Źródło: \cite{fallon2019}.}\label{fig:24-his}
 \end{figure}
 
 \cite{fallon2019} wskazuje wyzwania jakim należy się przeciwstawić, aby umożliwić autonomiczność poprzez pętle sterowania w sieciach. Są to następujące kroki:
@@ -83,7 +83,7 @@ Architektura referencyjna zapewnia środki do budowania i komponowania luźno po
 
 \begin{figure}[!htbp]
     \centering \includegraphics[width=1.0\linewidth]{24-zsm-arch.png}
-    \caption{Architektura referencyjna ZSM}\label{fig:24-zsm-arch}
+    \caption{Architektura referencyjna ZSM. Źródło: \cite{etsizsm2018}.}\label{fig:24-zsm-arch}
 \end{figure}
 
 Na rysunku \ref{fig:24-zsm-arch} przedstawiono architekturę referencyjną. Poniżej krótkie omówienie jej elementów:
@@ -100,7 +100,7 @@ Pętle zarządzania komponowane są z funkcji zarządzania w sposób pokazany na
 
 \begin{figure}[!htbp]
     \centering \includegraphics[width=1.0\linewidth]{24-zsm-loop.png}
-    \caption{Mapowanie pomiędzy elementami składowymi architektury ZSM a zamkniętą pętlą sterowania}\label{fig:24-zsm-loop}
+    \caption{Mapowanie pomiędzy elementami składowymi architektury ZSM a zamkniętą pętlą sterowania. Źródło: Opracowanie własne na postawie \cite{etsizsm2019}.}\label{fig:24-zsm-loop}
 \end{figure}
 
 
@@ -108,7 +108,7 @@ Architektura ZSM również specyfikuje cykl życia zamkniętej pętli sterowania
 
 \begin{figure}[!htbp]
     \centering \includegraphics[width=1.0\linewidth]{24-zsm-lifecycle.png}
-    \caption{Fazy cyklu życia oraz aktywności zamkniętej pętli sterowania}\label{fig:24-zsm-lifecycle}
+    \caption{Fazy cyklu życia oraz aktywności zamkniętej pętli sterowania. Źródło: \cite{etsizsm2019}.}\label{fig:24-zsm-lifecycle}
 \end{figure}
 
 
@@ -122,7 +122,7 @@ W \cite{tmforum2021} przedstawiono architekturę logiczną (Rysunek )
 
 \begin{figure}[!htbp]
     \centering \includegraphics[width=1.0\linewidth]{24-tmforum-arch.png}
-    \caption{Architektura logiczna CLADRA}\label{fig:24-tmforum-arch}
+    \caption{Architektura logiczna CLADRA. Źródło: \cite{tmforum2021}.}\label{fig:24-tmforum-arch}
 \end{figure}
 
 Opiera się ona na pętli OODA. Krok "Observe" jest odpowiedzialny za zbieranie danych z sieci, na podstawie których w drodze analizy budowana jest informacja w fazie "Orient". W kroku "Decide" podejmowane i modelowane są decyzje, które przekładają się na konkretne workflow do wykonania. Krok "Act" orkiestruje wykonaniem workflow na zarządzanych zasobach. Warto zwrócić tu uwagę na aspekt, iż workflow akcji rekoncyliacyjnych do wykonania jest dopiero wnioskowane podczas iteracji pętli (w kontraście do workflow zdefiniowanego przed runtime danej iteracji). Jest to architektura na innym poziomie abstrakcji niż architektura ZSM. Konkretne jej implementacje przedstawione w \cite{tmforum2022} różnią się bardzo od siebie i tak jak wskazano w \cite{fallon2019} są bardzo sztywne i skierowane na dany use-case. Natomiast podobnie jak architektura ETSI ZSM przewidywane jest uruchamianie na jednej platformie wielu różnych instancji pętli jednocześnie. Celem tych pętli jest autonomiczne zarządzanie realizowane za pomocą komunikacji z zewnętrznymi względem tej platformy zasobami. 
@@ -150,7 +150,7 @@ Podczas gdy ZSM specyfikuje framework do orkiestracji i egzekwowania działań w
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{24-eni-arch.png}
-    \caption{Wysokopoziomowa architektura funkcjonalna ENI}\label{fig:24-eni-arch}
+    \caption{Wysokopoziomowa architektura funkcjonalna ENI. Źródło: \cite{etsieni2023}.}\label{fig:24-eni-arch}
 \end{figure}
 
 
@@ -162,5 +162,5 @@ Odnosząc się do architektury z \cite{kephart2003} proponowana w niniejszej pra
 
 \begin{figure}[!htbp]
     \centering \includegraphics[width=1.0\linewidth]{24-lupus.png}
-    \caption{Koncepcja wyniesienia autonomicznych menadżerów na wspólną platformę (//TODO)}\label{fig:24-lupus}
+    \caption{Koncepcja wyniesienia autonomicznych menadżerów na wspólną platformę. Źródło: Opracowanie własne na podstawie: \cite{kephart2003}.}\label{fig:24-lupus}
 \end{figure}

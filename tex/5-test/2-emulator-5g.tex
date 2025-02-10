@@ -6,7 +6,7 @@ Pierwszym komponentem emulatora jest otwartoźródłowe oprogramowanie Open5GS. 
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{52-open5gs.png}
-    \caption{Architektura Open5GS}\label{fig:52-open5gs}
+    \caption{Architektura Open5GS. Źródło: Opracowanie własne na podstawie \url{https://open5gs.org/open5gs/docs/guide/01-quickstart/}}\label{fig:52-open5gs}
 \end{figure}
 
 \subsubsection{UERANSIM}
@@ -15,7 +15,7 @@ Drugim komponentem emulatora jest otwartoźródłowe oprogramowanie UERANSIM. Of
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{52-ueransim.png}
-    \caption{Architektura UERANSIM}\label{fig:52-ueransim}
+    \caption{Architektura UERANSIM. Źródło: Opracowanie własne.}\label{fig:52-ueransim}
 \end{figure}
 
 \subsubsection{Wdrożenie na Kubernetes}
@@ -24,7 +24,7 @@ Emulator sieci 5G złożony z Open5GS oraz UERANSIM wdrożono na klastrze Kubern
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{52-pody.png}
-    \caption{Stan podów w klastrze}\label{fig:52-pody}
+    \caption{Stan podów w klastrze. Źródło: Opracowanie własne.}\label{fig:52-pody}
 \end{figure}
 
 Programy UERANSIM typu \texttt{nr-ue} będą uruchamiane poza klastrem. Tej decyzji dokonano z prostego powodu. System operacyjny hostujący klaster (Ubuntu 22.04 LTS) posiada dużo większe możliwości, jeśli chodzi o narzędzia generowania ruchu, niż okrojony system operacyjny użyty w podach UERANSIM.
