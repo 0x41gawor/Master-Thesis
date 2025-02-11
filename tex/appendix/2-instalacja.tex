@@ -8,7 +8,7 @@ Instalacja \hyperlink{def:lupus}{\textbf{Lupus}} wymaga umiejętności techniczn
 
 \hyperlink{def:lupus}{\textbf{Lupus}} jest zaimplementowany jako projekt Kubebuilder\footnote{\url{https://book.kubebuilder.io}}. Zalecanym sposobem instalacji \hyperlink{def:lupus}{\textbf{Lupus}} jest sklonowanie tego repozytorium i przyjęcie roli dewelopera tego projektu.
 
-Nie istnieje coś takiego jak instalacja \hyperlink{def:lupus}{\textbf{Lupus}} (np. w systemie operacyjnym). Można zainstalować \hyperlink{def:zasoby-wlasne}{\textbf{Zasoby Własne}} dla \hyperlink{def:element-lupus}{\textbf{Elementów Lupus}} w klastrze Kubernetes i uruchomić dla nich \hyperlink{def:operator-zasobu-element}{\textbf{Kontrolery}}. Niniejszy załącznik opisuje właśnie taki proces.
+Nie istnieje coś takiego jak instalacja \hyperlink{def:lupus}{\textbf{Lupus}} w tradycyjnym rozumieniu, np. jako pakiet systemowy w systemie operacyjnym. Możliwe jest natomiast zarejestrowanie \hyperlink{def:zasoby-wlasne}{\textbf{Zasobów Własnych}} dla \hyperlink{def:element-lupus}{\textbf{Elementów Lupus}} w klastrze Kubernetes i uruchomienie dla nich \hyperlink{def:operator-zasobu-element}{\textbf{Kontrolerów}}. Niniejszy załącznik opisuje właśnie taki proces.
 
 \subsection{Wymagania wstępne}
 
@@ -27,7 +27,7 @@ cd lupus
 
 \subsection{Instalacja CRD w klastrze}
 
-To polecenie zastosuje \hyperlink{def:crd}{\textbf{CRD}} (pl. Definicje \hyperlink{def:zasoby-wlasne}{\textbf{Zasobów Własnych}}) dla \hyperlink{def:master}{\textbf{Master}} i \hyperlink{def:element}{\textbf{Element}}, umożliwiając ich użycie.
+Niniejsze polecenie zastosuje \hyperlink{def:crd}{\textbf{CRD}} (pl. Definicje \hyperlink{def:zasoby-wlasne}{\textbf{Zasobów Własnych}}) dla \hyperlink{def:master}{\textbf{Master}} i \hyperlink{def:element}{\textbf{Element}}, umożliwiając ich użycie.
 
 \begin{lstlisting}[language=bash, caption={Instalacja CRD}]
 make install
@@ -35,7 +35,7 @@ make install
 
 \subsection{Uruchomienie kontrolerów }
 
-To polecenie uruchomi \textit{kontrolery} dla \textit{zasobów własnych} \hyperlink{def:master}{\textbf{master}} i \hyperlink{def:element}{\textbf{element}}.
+Niniejsze polecenie uruchomi \textit{kontrolery} dla \textit{zasobów własnych} \hyperlink{def:master}{\textbf{master}} i \hyperlink{def:element}{\textbf{element}}.
 
 \begin{lstlisting}[language=bash, caption={Uruchomienie kontrolerów}]
 make run
