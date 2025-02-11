@@ -219,3 +219,33 @@ spec:
               method: POST
           keys: ["*"]
 \end{lstlisting}
+
+
+\textbf{Krótki opis powyższego pliku}
+
+Kod LupN w rzeczywistości jest plikiem manifestowym YAML zasobu \textbf{Master}. Specyfikacje obiektu tego typu zasobu w całości opisuje modelowaną pętle sterowania, dlatego analizę należy rozpocząć od linii 8. W lini 9 widzimy nazwę pętli. W lini 10 zdefiniowany jest obiekt elementów jakie należą do pętli. Omawiana w tym przykładzie pętla ma trzy elementy a ich obiekty znajdziemy odpowiednio w liniach: 11, 40 oraz 128. Skupmy się na elemencie pierwszym o nazwie "demux", którego celem jest rozdzielenie danych na dwie części i przekazanie odpowiednich części do następnych elementów pętli. Jego opis znajduje się między liniami 11 a 39. Linia 13 rozpoczyna opis workflow akcji. Mamy zdefiniowane tu trzy akcje (linie: 14, 20 i 26). Pierwsza akcja dodaje do danych pole \texttt{\{name: "open5gs-upf1"\}} w odpowiedniej sekcji struktury danych (przedstawionej w listingu \ref{lst:521}). Analogiczna akcja jest wykonywana dla drugiej części danych. Celem tej operacji jest nazwanie obu sekcji danych, aby później Agent Egress mógł rozpoznać na rzecz, którego wdrożenia UPF wykonuje akcje sterującą. Ostatnią akcją elementu "demux" jest wyświetlenie zawartości danych w logach operatorach. 
+
+Kiedy workflow akcji dobiegnie końca, dane wysyłane są do destynacji zdefiniowanych przez obiekt specyfikowany w linii 31. Posiada on dwa obiekty next. Oba typu element. Każdemu elementowi przekazywana jest inna sekcja danych, specyfikowana poprzez klucz wskazujący na odpowiednie pole danych.
+
+Kolejny element - "upf1" - odpowiedzialny jest za rekoncyliację wdrożenia UPF 1. Jego workflow akcji jest następujące:
+\begin{itemize}
+  \item Linia 43: Wyświetlenie zawartości danych
+  \item Linia 48: Wysłanie wszystkich danych (operator \texttt{*}) do elementu zewnętrznego jakim jest "POINT"
+  \item Linia 58: Ponowne wyświetlenie zawartości danych
+  \item Linia 63: Decyzja na podstawie otrzymanej odpowiedzi od elementu zewnętrznego "POINT". Jeśli stan jest normalny, następuje natychmiastowe przejście do końca workflow akcji.
+  \item Linia 74: Wysłanie rzeczywistego zużycia zasobów do elementu zewnętrznego "SPEC".
+  \item Linia 84: Ponowne wyświetlenie zawartości danych
+  \item Linia 89: Decyzja na podstawie pola "point", jeśli jest ono równe "CRITIAL" następuje natychmiastowe przejście do końca workflow akcji
+  \item Linia 100: Ponowne wyświetlenie zawartości danych
+  \item Linia 105: Wysłanie żądania HTTP z body w postaci pola JSON "point" na adres \texttt{http://192.168.56.112:9500/v1/data/policy/interval}
+\end{itemize}
+
+Pomijając akcje logujące stan danych, workflow elementu składa się z:
+\begin{enumerate}
+  \item trzech akcji typu \texttt{send}, które mimo różnych opisów powyżej różnią się jedynie parametrami wywołania.
+  \item dwóch akcji typu \texttt{switch}, które decydują czy następne akcje są istotne w danej iteracji pętli
+\end{enumerate} 
+
+Kiedy workflow akcji dobiegnie końca, dane wysyłane są do destynacji zdefiniowanych przez obiekt specyfikowany w linii 120. Tym razem jest ono jednoelementowy i reprezentuje Agenta Egress.
+
+Opis elementu "upf2" zawarty w liniach 128 do 215 jest analogiczny jak w przypadku elementu "upf1".
