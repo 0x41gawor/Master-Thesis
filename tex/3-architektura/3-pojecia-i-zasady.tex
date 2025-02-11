@@ -1,32 +1,33 @@
 \subsection{Pojęcia i zasady}
 
 \subsubsection{Wstęp}
-Ten rozdział dokumentuje \hyperlink{def:lupus}{\textbf{Lupus}} w formie wyjaśniania zdefiniowanych na jego potrzeby pojęć, konceptów i zasad. Są one punktem wyjścia do dokładniejszych specyfikacji i zarazem zrozumienia architektury systemu. Rozdział ten zawiera wiele odnośników do definicji znajdujących się w załącznikach i nie wszystkie pojęcia tłumaczone są w tym rozdziale.
+Niniejszy rozdział dokumentuje \hyperlink{def:lupus}{\textbf{Lupus}}, przedstawiając kluczowe pojęcia, koncepcje i zasady, które zostały zdefiniowane na potrzeby jego architektury. Stanowią one punkt wyjścia zarówno do dalszej specyfikacji systemu, jak i zrozumienia jego struktury.
+
+Rozdział zawiera liczne odnośniki do definicji zamieszczonych w załącznikach, dlatego nie wszystkie pojęcia są wyjaśniane bezpośrednio w tej sekcji.
 
 \subsubsection{Problem zarządzania}
 
-W rzeczywistym świecie często napotkamy sytuacje, w których byłoby dobrze, gdyby praca jakiegoś systemu mogła być stale regulowana. Na przykład:
-
+W rzeczywistym świecie często napotkamy sytuacje, w których stała regulacja pracy systemu byłaby pożądana. Na przykład:
 \begin{itemize}
     \item chcielibyśmy, aby samochody miały funkcję regulującą pracę silnika w celu utrzymania stałej prędkości,
     \item przydałoby się, gdyby lodówka mogła utrzymywać chłodną, ale nie ujemną temperaturę, niezależnie od tego, jak często otwierane są drzwi lub jaka jest temperatura na zewnątrz,
     \item byłoby korzystne, gdyby serwer w chmurze mógł zagwarantować, że aplikacja z wystarczającymi zasobami do pokrycia potrzeb użytkowników będzie uruchomiona i działała.
 \end{itemize}
 
-Problemy wymienione powyżej można traktować jako \hyperlink{def:problem-zarzadzania}{\textbf{problemy zarządzania}} (ang. \textit{management problems}). Nazwa bierze się stąd, że nie ma żadnych technicznych ograniczeń uniemożliwiających osiągnięcie tych celów. Wszystkie wymienione systemy są odpowiednio wyposażone; np. możemy dodać więcej paliwa do silnika lub dostarczyć więcej mocy do sprężarki w lodówce. Problem leży w faktycznym wykonaniu tych czynności w odpowiednich momentach np. dodanie więcej paliwa, gdy auto zwalnia lub dostarczenie większej mocy, gdy temperatura w lodówce wzrasta. Dlatego jest to problem czystego zarządzania.
+Problemy wymienione powyżej można traktować jako \hyperlink{def:problem-zarzadzania}{\textbf{problemy zarządzania}} (ang. \textit{management problems}). Nazwa ta wynika z faktu, że nie istnieją techniczne ograniczenia uniemożliwiające osiągnięcie tych celów – wszystkie wymienione systemy są wyposażone w odpowiednie mechanizmy. Na przykład: możemy dodać więcej paliwa do silnika lub dostarczyć więcej mocy do sprężarki w lodówce. Problem leży w faktycznym wykonaniu tych czynności w odpowiednich momentach. Na przykład: zwiększenie dawki paliwa, gdy pojazd zwalnia lub dostarczenie większej mocy, gdy temperatura w lodówce wzrasta. Dlatego, jest to kwestia czysto zarządzania.
 
 Systemem, którym chcemy zarządzać, nazywamy \hyperlink{def:system-zarzadzany}{\textbf{System Zarządzany}} (ang. \textit{managed system}).
 
 \subsubsection{System Sterowania}
 
-\hyperlink{def:system-sterowania}{\textbf{System Sterowania}} (ang. \textit{Control System\footnote{innym tłumaczeniem na polski jest "regulator"}}) to system, który reguluje pracą \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}. Przykładowo jest to:
+\hyperlink{def:system-sterowania}{\textbf{System Sterowania}} (ang. \textit{Control System\footnote{innym tłumaczeniem na polski jest "regulator"}}) to system, który reguluje pracą \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}. Przykładem takiemu systemu może być:
 \begin{itemize}
     \item tempomat, który reguluje pracą silnika w celu utrzymania stałej prędkości,
     \item lodówka, która reguluje pracą sprężarki w celu utrzymania stałej, chłodnej temperatury,
     \item Kubernetes, który reguluje liczbę działających Podów, aby utrzymać pożądaną dostępność aplikacji.
 \end{itemize}
 
-Innymi słowy mówiąc, \hyperlink{def:system-sterowania}{\textbf{System Sterowania}} rozwiązuje \hyperlink{def:problem-zarzadzania}{\textbf{Problem Zarządzania}}.
+Innymi słowy, \hyperlink{def:system-sterowania}{\textbf{System Sterowania}} rozwiązuje \hyperlink{def:problem-zarzadzania}{\textbf{Problem Zarządzania}}.
 
 \subsubsection{Pętla Sterowania}
 
@@ -41,8 +42,7 @@ Pętle sterowania są klasyfikowane w zależności od tego, czy wykorzystują me
 W \hyperlink{def:lupus}{\textbf{Lupus}} bierzemy pod uwagę wyłącznie \hyperlink{def:zamknieta-petla-sterowania}{\textbf{Zamknięte Pętle Sterowania}}.
 
 \subsubsection{Zamknięta Pętla Sterowania}
-
-Jest to punkt wyjściowy dla naszej architektury referencyjnej (rys. \ref{fig:33-arch}).
+Zamkniętą pętlą sterowania nazywamy sposób w jaki pracuje architektura Lupus (rys. \ref{fig:33-arch}).
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{33-arch.png}
@@ -52,31 +52,31 @@ Jest to punkt wyjściowy dla naszej architektury referencyjnej (rys. \ref{fig:33
 Architekturę (rys. \ref{fig:33-arch}) należy czytać, mając na uwadze następujące definicje:
 
 \begin{itemize}
-    \item \hyperlink{def:system-sterowania}{\textbf{System Sterowania}} (ang. \textit{Control System}) - system, który rozwiązuje \hyperlink{def:problem-zarzadzania}{\textbf{Problem Zarządzania}} występujący w \hyperlink{def:system-zarzadzany}{\textbf{Systemie Zarządzanym}} za pomocą \hyperlink{def:zamknieta-petla-sterowania}{\textbf{Zamkniętej Pętli Sterowania}}. W każdej iteracji \hyperlink{def:system-sterowania}{\textbf{System Sterowania}} analizuje \hyperlink{def:sprzezenie-zwrotne}{\textbf{Sprzężenie Zwrotne}} (ang. \textit{Control Feedback}) i \textit{wnioskuje} \hyperlink{def:akcja-sterujaca}{\textbf{Akcję Sterującą}}.
+    \item \hyperlink{def:system-sterowania}{\textbf{System Sterowania}} (ang. \textit{Control System}) - system, który rozwiązuje \hyperlink{def:problem-zarzadzania}{\textbf{Problem Zarządzania}} występujący w \hyperlink{def:system-zarzadzany}{\textbf{Systemie Zarządzanym}} za pomocą \hyperlink{def:zamknieta-petla-sterowania}{\textbf{Zamkniętej Pętli Sterowania}}. W każdej iteracji \hyperlink{def:system-sterowania}{\textbf{System Sterowania}} analizuje \hyperlink{def:sprzezenie-zwrotne}{\textbf{Sprzężenie Zwrotne}} (ang. \textit{Control Feedback}) i \hyperlink{def:wnioskowanie}{\textit{wnioskuje}} \hyperlink{def:akcja-sterujaca}{\textbf{Akcje Sterującą}}.
     \item \hyperlink{def:zamknieta-petla-sterowania}{\textbf{Zamknięta Pętla Sterowania}} - nieskończona pętla, która reguluje stan \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}, iteracyjnie zbliżając jego \hyperlink{def:stan-aktualny}{\textbf{Stan Aktualny}} do \hyperlink{def:stan-pozadany}{\textbf{Stanu Pożądanego}}. 
     \item \hyperlink{def:akcja-sterujaca}{\textbf{Akcja Sterująca}} (ang. \textit{Control Action}) - akcja wykonywana na \hyperlink{def:system-zarzadzany}{\textbf{Systemie Zarządzanym}}, która ma na celu przybliżenie go do \hyperlink{def:stan-pozadany}{\textbf{Stanu Pożądanego}}.
     \item \hyperlink{def:sprzezenie-zwrotne}{\textbf{Sprzężenie Zwrotne}} (ang. \textit{Control Feedback}) - reprezentacja \hyperlink{def:stan-aktualny}{\textbf{Stanu Aktualnego}} wysyłana z (odbierana od) \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}.
 \end{itemize}
 
-W powyższej architekturze \hyperlink{def:lupus}{\textbf{Lupus}} pełni rolę \hyperlink{def:system-sterowania}{\textbf{Systemu Sterowania}}.
+W powyższej architekturze, \hyperlink{def:lupus}{\textbf{Lupus}} pełni rolę \hyperlink{def:system-sterowania}{\textbf{Systemu Sterowania}}.
 
 
-\subsubsection{Agenci Translacyjni}
-Z racji, że każdy system, bez żadnych modyfikacji (\hyperref[req:15]{Wymaganie 15}) może wejść w rolę \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}, potrzebujemy warstwy integracji między \hyperlink{def:system-zarzadzany}{\textbf{Systemem Zarządzanym}} a \hyperlink{def:lupus}{\textbf{Lupus}}, podobnej do koncepcji "API Broker" w architekturze \hyperlink{def:eni}{ENI} (rys. \ref{fig:23-eni-arch}). Tak narodziła się koncepcja \hyperlink{def:agent-translacji}{\textbf{Agentów Translacji}} (ang. \textit{Translation Agents}). 
+\subsubsection{Agenci Translacji}
+Z racji, że każdy system, bez żadnych modyfikacji (\hyperref[req:15]{Wymaganie 15}) może wejść w rolę \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}, potrzebujemy warstwy integracji między \hyperlink{def:system-zarzadzany}{\textbf{Systemem Zarządzanym}} a \hyperlink{def:lupus}{\textbf{Lupus}}. Tak narodziła się koncepcja \hyperlink{def:agent-translacji}{\textbf{Agentów Translacji}} (ang. \textit{Translation Agents}). 
 
-W każdym \hyperlink{def:wdrozenie-lupus}{\textbf{wdrożeniu Lupus}}, \hyperlink{def:uzytkownik}{\textbf{Użytkownik}} musi stworzyć \hyperlink{def:agent-translacji}{\textbf{Agentów Translacyjnych}}. 
+W każdym \hyperlink{def:wdrozenie-lupus}{\textbf{wdrożeniu Lupus}}, \hyperlink{def:uzytkownik}{\textbf{Użytkownik}} musi zaimplementować dwa programy będące \hyperlink{def:agent-translacji}{\textbf{Agentami Translacji}}. 
 
-Z punktu widzenia komunikacji, każdego \hyperlink{def:agent-translacji}{\textbf{Agenta Translacyjnego}} możemy podzielić na dwie części:
+Z punktu widzenia komunikacji, każdy \hyperlink{def:agent-translacji}{\textbf{Agent Translacji}} możemy zostać podzielony dwie części:
 \begin{itemize}
     \item Część komunikująca się z \hyperlink{def:system-zarzadzany}{\textbf{Systemem Zarządzanym}}. Jest zewnętrzna względem \hyperlink{def:lupus}{\textbf{Lupus}} i nie podlega żadnej specyfikacji.
     \item Część komunikująca się z \hyperlink{def:lupus}{\textbf{Lupus}}. Musi być zgodna z jednym z \hyperlink{def:interfejsy-lupus}{\textbf{Interfejsów Lupus}}: \hyperlink{def:interfejs-lupin}{\textbf{Lupin}} lub \hyperlink{def:interfejs-lupout}{\textbf{Lupout}}.
 \end{itemize}
 
-Mamy dwóch \hyperlink{def:agent-translacji}{\textbf{Agentów Translacji}}, jednego do komunikacji przychodzącej (ang. \textit{Ingress}) i jednego do wychodzącej (ang. \textit{Egress}). 
+zdefiniowano dwoje \hyperlink{def:agent-translacji}{\textbf{Agentów Translacji}}. Jednego do komunikacji przychodzącej (ang. \textit{Ingress}) i jednego do wychodzącej (ang. \textit{Egress}). 
 
-W każdej iteracji pętli zadaniem \hyperlink{def:agent-ingress}{\textbf{Agenta Ingress}} jest odbieranie/zbieranie \hyperlink{def:sprzezenie-zwrotne}{\textbf{Sprzężenia Zwrotnego}} z \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}} i translacja go na format zrozumiały przez \hyperlink{def:lupus}{\textbf{Lupus}} za pomocą \hyperlink{def:interfejs-lupin}{\textbf{Interfejsu Lupin}}. Z kolei zadaniem \hyperlink{def:agent-egress}{\textbf{Agenta Egress}} jest odbieranie \hyperlink{def:finalne-dane}{\textbf{Finalnych Danych}} i translacja ich na \hyperlink{def:akcja-sterujaca}{\textbf{Akcję Sterującą}}, która później zostaje wysłana do (lub przeprowadzona na) \hyperlink{def:system-zarzadzany}{\textbf{Systemie Zarządzanym}}.
+W każdej iteracji pętli zadaniem \hyperlink{def:agent-ingress}{\textbf{Agenta Ingress}} jest odbieranie/zbieranie \hyperlink{def:sprzezenie-zwrotne}{\textbf{Sprzężenia Zwrotnego}} z \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}} i translacja na format zrozumiały przez \hyperlink{def:lupus}{\textbf{Lupus}} za pomocą \hyperlink{def:interfejs-lupin}{\textbf{Interfejsu Lupin}}. Z kolei zadaniem \hyperlink{def:agent-egress}{\textbf{Agenta Egress}} jest odbieranie \hyperlink{def:finalne-dane}{\textbf{Finalnych Danych}} i translacja ich na \hyperlink{def:akcja-sterujaca}{\textbf{Akcję Sterującą}}, która później zostaje wysłana do (lub przeprowadzona na) \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}.
 
-Architektura wraz z wprowadzeniem \hyperlink{def:agent-translacji}{\textbf{Agentów Translacji}} ukazana jest na rysunku \ref{fig:33-arch2}.
+Architektura po wprowadzeniu \hyperlink{def:agent-translacji}{\textbf{Agentów Translacji}} ukazana jest na rysunku \ref{fig:33-arch2}.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{33-arch2.png}
@@ -119,7 +119,7 @@ Jeden \hyperlink{def:element-lupus}{\textbf{Element Lupus}} może komunikować s
 
 \hyperlink{def:dane}{\textbf{Dane}} (ang. \textit{data}) to nośnik informacji w ramach jednej iteracji pętli w formacie JSON. Na wejściu \hyperlink{def:element-ingres}{\textbf{Elementu Ingress}} reprezentują one \hyperlink{def:stan-aktualny}{\textbf{Stan Aktualny}} \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}. Następnie, w trakcie iteracji pętli, \hyperlink{def:projektant}{\textbf{Projektant}} decyduje, jakie informacje będą przenosić. Zazwyczaj są to informacje związane z \hyperlink{def:logika-petli}{\textbf{Logiką Pętli}}, takie jak wejścia (ang. \textit{inputs}) do \hyperlink{def:element-zewnetrzny}{\textbf{Elementów Zewnętrznych}} oraz ich odpowiedzi. Na końcu iteracji, gdy \hyperlink{def:dane}{\textbf{Dane}} trafiają do \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}, muszą reprezentować \hyperlink{def:akcja-sterujaca}{\textbf{Akcję Sterowania}}. 
 
-Działanie pojedynczego \hyperlink{def:element-lupus}{\textbf{Elementu Lupus}} jest opisane poprzez \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}}. \hyperlink{def:akcja}{\textbf{Akcje}} wykonują różne operacje na \hyperlink{def:dane}{\textbf{Danych}}. Istnieje wiele rodzajów akcji, a kluczowym typem akcji jest "Send", która pozwala komunikować się \hyperlink{def:element-lupus}{\textbf{Elementowi Lupus}} z \hyperlink{def:element-zewnetrzny}{\textbf{Elementem Zewnętrznym}}. Inne typy akcji służą organizacji danych.
+Działanie pojedynczego \hyperlink{def:element-lupus}{\textbf{Elementu Lupus}} jest opisane poprzez \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}}. \hyperlink{def:akcja}{\textbf{Akcje}} wykonują różne operacje na \hyperlink{def:dane}{\textbf{Danych}}. Istnieje wiele rodzajów akcji, a kluczowym jest "Send", który pozwala komunikować się \hyperlink{def:element-lupus}{\textbf{Elementowi Lupus}} z \hyperlink{def:element-zewnetrzny}{\textbf{Elementem Zewnętrznym}}. Inne typy akcji służą organizacji danych lub sterują przepływem danego przebiegu pętli.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{33-workflow-akcji.png}
@@ -145,4 +145,4 @@ allow {
 }
 \end{lstlisting}
 
-\hyperlink{def:opa}{\textbf{Open Policy Agent}} jest rekomendowanym \hyperlink{def:element-zewnetrzny}{\textbf{Elementem Zewnętrznym}} dla \hyperlink{def:lupus}{\textbf{Lupus}}.
+\hyperlink{def:opa}{\textbf{Open Policy Agent}} jest rekomendowanym \hyperlink{def:element-zewnetrzny}{\textbf{Elementem Zewnętrznym}} dla \hyperlink{def:lupus}{\textbf{Lupus}} do wyrażania polityk.

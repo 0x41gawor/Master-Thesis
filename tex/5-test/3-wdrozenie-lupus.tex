@@ -1,6 +1,6 @@
 \subsection{Wdrożenie Lupus}
 
-Rozdział opisuje użycie \hyperlink{def:lupus}{\textbf{Lupus}} jako \hyperlink{def:system-sterowania}{\textbf{Systemu Sterowania}} dla \hyperlink{def:problem-zarzadzania}{\textbf{Problemu Zarządzania}} opisanego w następnym podrozdziale dla emulatora sieci 5G, który przyjmie z kolei rolę \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}. 
+Rozdział opisuje użycie \hyperlink{def:lupus}{\textbf{Lupus}} jako \hyperlink{def:system-sterowania}{\textbf{Systemu Sterowania}} dla \hyperlink{def:problem-zarzadzania}{\textbf{Problemu Zarządzania}} opisanego poniżej. Rolę \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}} przyjmuje opisany w poprzednim podrozdziale emulatora sieci 5G.
 
 \subsubsection{Problem Zarządzania}
 
@@ -17,10 +17,10 @@ Każdy \textit{pod} w klastrze Kubernetes posiada zdefiniowane wartości dotycz�
 
 \begin{itemize}
     \item \textbf{\texttt{requests}} – określa ilość zasobów CPU oraz pamięci operacyjnej (RAM), jaką dany pod żąda od środowiska chmurowego. Kubernetes zapewnia, że \textit{węzeł} posiada wystarczające zasoby, aby spełnić te wymagania przed przydzieleniem poda do \textit{węzła}.
-    \item \textbf{\texttt{limits}} – maksymalna ilość zasobów, jaką pod może zużyć. Przekroczenie tych wartości skutkuje zakończeniem procesu (np. jego ubiciem w celu ochrony środowiska).
+    \item \textbf{\texttt{limits}} – maksymalna ilość zasobów, jaką pod może zużyć. Przekroczenie tych wartości skutkuje zakończeniem procesu.
 \end{itemize}
 
-Dodatkowo możliwe jest monitorowanie rzeczywistego (aktualnego, chwilowego) wykorzystania procesora i pamięci operacyjnej.
+Dodatkowo, możliwe jest monitorowanie rzeczywistego (aktualnego, chwilowego) wykorzystania procesora i pamięci operacyjnej.
 
 
 \textbf{Mechanizmy dostępne w Kubernetes}
@@ -131,7 +131,7 @@ W zależności od stanu systemu należy podjąć następujące działania:
     \item \textbf{CRITICAL\_TO\_NORMAL} – przywrócenie wartości \texttt{requests} i \texttt{limits} do wartości domyślnych, ustawienie interwału obserwacji na niski (\texttt{LOW}).
 \end{itemize}
 
-W związku z powyższym opisem pętla powinna w każdej iteracji określi punkt pracy, czyli stan w jakim znajduje się UPF. Jeśli jest to stan \texttt{NORMAL}, nie ma potrzeby aby wykonywać jakiekolwiek akcje sterujące. W przeciwnym wypadku, należy "dostroić" UPF odpowiednimi wartościami \texttt{requests} oraz \texttt{limits}. Jeśli UPF jest lub zbliża się do stanu krytycznego należy je ustawić z odpowiednim zapasem, zaś jeżeli UPF wraca już do stanu normalnego należ przywrócić im wartości domyślne. Na sam koniec, jeżeli mamy jeden ze stanów przejściowych (\texttt{NORMAL\_TO\_CRITICAL} bądź \texttt{CRITICAL\_TO\_NORMAL}) należy zmienić interwał obserwacji odpowiednio na wysoki lub niski.
+W związku z powyższym opisem, pętla powinna w każdej iteracji określi punkt pracy, czyli stan w jakim znajduje się UPF. Jeśli jest to stan \texttt{NORMAL}, nie ma potrzeby aby wykonywać jakiekolwiek akcje sterujące. W przeciwnym wypadku, należy "dostroić" UPF odpowiednimi wartościami \texttt{requests} oraz \texttt{limits}. Jeśli UPF jest lub zbliża się do stanu krytycznego należy je ustawić z odpowiednim zapasem, zaś jeżeli UPF wraca z powrotem do stanu normalnego należ przywrócić im wartości domyślne. Na sam koniec, jeżeli mamy jeden ze stanów przejściowych (\texttt{NORMAL\_TO\_CRITICAL} bądź \texttt{CRITICAL\_TO\_NORMAL}) należy zmienić interwał obserwacji odpowiednio na wysoki lub niski.
 
 Z tego opisu widzimy, że \hyperlink{def:czesc-obliczeniowa}{\textbf{Część obliczeniowa}} logiki pętli składa się z trzech części:
 \begin{itemize}
@@ -147,7 +147,7 @@ Dlatego też powstaną trzy \hyperlink{def:element-zewnetrzny}{\textbf{Elementy 
     \item \textbf{INTERVAL} – akceptuje \texttt{"point"}, zwraca \texttt{"interval"}.
 \end{itemize}
 
-A \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} dla \hyperlink{def:element-lupus}{\textbf{Elementu Lupus}} odpowiedzialnego za rekoncyliację jednego wdrożenia będzie wyglądało jak na rysunku \ref{fig:53-workflow-akcji}.
+\hyperlink{def:workflow-akcji}{\textbf{Workflow Akcji}} dla \hyperlink{def:element-lupus}{\textbf{Elementu Lupus}} odpowiedzialnego za rekoncyliację jednego wdrożenia zostało zaprojektowane według rysunku \ref{fig:53-workflow-akcji}.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-workflow-akcji.png}
@@ -175,7 +175,7 @@ Kod \hyperlink{def:lupn}{\textbf{LupN}} znajduje się w \hyperlink{appendix:10}{
 
 \subsubsection{Prezentacja działania jednej iteracji pętli}
 
-Iterację rozpoczyna \hyperlink{def:agent-ingress}{\textbf{Agent Ingress}}, który pobiera \hyperlink{def:dane}{\textbf{Dane}} z Kubernetes (rys. \ref{fig:53-scr-1}). Następnie aktualizuje on \texttt{Status} obiektu API \texttt{lola-demux} (rys. \ref{fig:53-scr-2}), który wykonuje swoje \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} (rys. \ref{fig:53-scr-3}), skutkujące aktualizacją \texttt{Statusu} obiektów API \texttt{upf1} i \texttt{upf2} (rys. \ref{fig:53-scr-6}). To skutkuje wywołaniem \texttt{Operatora} dla tych obiektów. Operator wykonuje dla obu \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} (rys. \ref{fig:53-scr-4}). Na koniec oba elementy wywołują endpoint \texttt{api/data} serwowany przez \hyperlink{def:agent-egress}{\textbf{Agenta Egress}} (rys. \ref{fig:53-scr-5}).
+Iterację rozpoczyna \hyperlink{def:agent-ingress}{\textbf{Agent Ingress}}, który pobiera \hyperlink{def:dane}{\textbf{Dane}} z Kubernetes (rys. \ref{fig:53-scr-1}). Następnie aktualizuje on \texttt{Status} obiektu API \texttt{lola-demux} (rys. \ref{fig:53-scr-2}), który wykonuje swoje \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} (rys. \ref{fig:53-scr-3}) skutkujące aktualizacją \texttt{Status}'ów obiektów API \texttt{upf1} i \texttt{upf2} (rys. \ref{fig:53-scr-6}). To skutkuje wywołaniem \texttt{Operatora} dla tych obiektów. Operator wykonuje dla obu \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}} (rys. \ref{fig:53-scr-4}). Na koniec oba elementy wywołują endpoint \texttt{api/data} serwowany przez \hyperlink{def:agent-egress}{\textbf{Agenta Egress}} (rys. \ref{fig:53-scr-5}).
 
 
 \begin{figure}[!h]
@@ -208,7 +208,7 @@ Iterację rozpoczyna \hyperlink{def:agent-ingress}{\textbf{Agent Ingress}}, któ
     \caption{Logi Agenta Egress. Źródło: Opracowanie własne.}\label{fig:53-scr-5}
 \end{figure}
 
-Gdy pobudzimy funkcję UPF do większej pracy ruchem z UE, widzimy raportowane większe zużycie zasobów przez odpowiednie wdrożenie (rys. \ref{fig:53-scr-7}). Aktualne zużycie przekraczające zdefiniowany punkt pracy powoduje otrzymanie od elementu zewnętrznego \texttt{opa-point} punkt \texttt{NORMAL\_TO\_CRITICAL}, co z kolei wpływa na workflow akcji (rys. \ref{fig:53-scr-8}). W kolejnych iteracjach w logach Agenta Ingress widzimy błąd spowodowany tym, ze Pod UPF1 chwilowo nie istnieje, stało się tak dlatego iż Agent Egress w poprzedniej iteracji zmienił jego wartość \texttt{requests} oraz \texttt{limits}, co poskutkowało restartem Poda. Po restarcie widzimy iż Agent Ingress raportuje nowe wartości \texttt{requests} i \texttt{limits} dla Poda UPF1.
+Gdy pobudzimy funkcję UPF do większej pracy ruchem z UE, widzimy raportowane większe zużycie zasobów przez odpowiednie wdrożenie (rys. \ref{fig:53-scr-7}). Aktualne zużycie przekraczające zdefiniowany punkt pracy powoduje otrzymanie od elementu zewnętrznego \texttt{opa-point} punkt \texttt{NORMAL\_TO\_CRITICAL}, co z kolei wpływa na workflow akcji (rys. \ref{fig:53-scr-8}). W kolejnych iteracjach w logach Agenta Ingress widzimy błąd spowodowany tym, ze Pod UPF1 chwilowo nie istnieje, stało się tak dlatego iż Agent Egress w poprzedniej iteracji zmienił jego wartość \texttt{requests} oraz \texttt{limits}, co poskutkowało restartem Poda. Po restarcie widzimy, iż Agent Ingress raportuje nowe wartości \texttt{requests} i \texttt{limits} dla Poda UPF1.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{53-scr-7.png}

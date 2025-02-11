@@ -2,14 +2,14 @@
 Niniejsza praca zakłada znajomość czytelnika platformy Kubernetes na podstawowym poziomie.
 
 \subsubsection{Kontroler}
-Działanie Kubernetes opiera się na zamkniętej pętli sterowania [odnośnik do artykułu]. \textbf{Aktualny Stan} systemu zapisany jest w bazie etcd. \textbf{Stan Pożądany} wyrażony jest poprzez pliki manifestacyjne. Każdy \textit{Obiekt API} posiada swoją sekcję $`spec`$, to ona definiuje pożądany stan danego obiektu. Każdy obiekt ma swój kontroler, który rekoncyliuję aktualny stan do stan pożądanego. Kontroler jest to proces działający w warstwie sterowania Kubernetes. Każdy typ (ang. \textit{Kind}) wbudowanych zasobów (ang. \textit{buil-in resources}) ma swój kontroler stworzony przez zespół Kubernetes. Kontrolery każdego typu zasobu działają w podzie \texttt{kube-controller-manager}. 
+Działanie Kubernetes opiera się na zamkniętej pętli sterowania \footnote{https://kubernetes.io/docs/concepts/architecture/controller/}. \textbf{Aktualny Stan} systemu zapisany jest w bazie etcd. \textbf{Stan Pożądany} wyrażony jest poprzez pliki manifestacyjne. Każdy \textit{Obiekt API} posiada swoją sekcję \texttt{spec}, która określa jego pożądany stan. Każdy obiekt ma swój kontroler, który rekoncyliuję aktualny stan do stan pożądanego. Kontroler jest to proces działający w warstwie sterowania Kubernetes. Każdy typ (ang. \textit{Kind}) wbudowanych zasobów (ang. \textit{buil-in resources}) posiada kontroler opracowany przez zespół Kubernetes. Kontrolery każdego typu zasobu działają w podzie \texttt{kube-controller-manager}. 
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{42-k8s-arch.png}
     \caption{Architektura Kubernetes. Źródło: \url{https://kubernetes.io/docs/concepts/architecture/}}\label{fig:42-k8s-arch}
 \end{figure}
 
-Flow pracy kontrolera pokazano na rysunku \ref{fig:42-flow}. Gdy `kube-api-server' otrzyma żądanie zmiany danego obiektu API zanim `kube-api-server` zleci utrwalenie tych zmian wykona tzw. \textit{webhooki} do kontrolera danego obiektu. Webhooki nie są jednakże istotne z punktu widzenia niniejszej pracy dyplomowej \footnote{Dla zainteresowanych tematem: link}. Następnie, gdy doszło do zmian w obiekcie, kontroler zostaje o tym poinformowany. Jego misją jest rekoncyliacja, czyli porównanie aktualnego stanu obiektu ze stanem pożądanym. Kontroler zawiera w sobie logikę rekoncyliacji, która przybliży oba stany do siebie. Wykonanie logiki wiążę się często z przeprowadzeniem różnych akcji przez kontroler w innych częściach klastra. 
+Przepływ pracy kontrolera pokazano na rysunku \ref{fig:42-flow}. Gdy \texttt{kube-api-server} otrzymuje żądanie zmiany danego obiektu API, zanim zleci jego utrwalenie w bazie etcd, wykonuje tzw. webhooki do kontrolera danego obiektu. Webhooki nie są jednakże istotne z punktu widzenia niniejszej pracy dyplomowej. Po dokonaniu zmian w obiekcie kontroler zostaje o nich poinformowany. Jego głównym zadaniem jest rekoncyliacja, czyli porównanie aktualnego stanu obiektu ze stanem pożądanym. Kontroler zawiera logikę rekoncyliacyjną, która dąży do doprowadzenia stanu aktualnego do stanu pożądanego. Realizacja logiki rekoncyliacji często wiąże się z wykonywaniem różnych akcji w innych częściach klastra, takich jak skalowanie zasobów, tworzenie nowych instancji lub modyfikacja konfiguracji.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{42-flow.png}
@@ -18,17 +18,20 @@ Flow pracy kontrolera pokazano na rysunku \ref{fig:42-flow}. Gdy `kube-api-serve
 
 \subsubsection{Zasoby własne} 
 
-\hyperlink{def:zasoby-wlasne}{\textit{Zasoby własne} (ang. \textit{Custom Resources})} rozszerzają wbudowane zasoby (ang. \textit{buit-in resources}) o niestandardowe, zdefiniowane przez użytkownika. Najczęściej tworzone są w celu zarządzania konfiguracją skomplikowanych lub stanowych aplikacji. 
+\hyperlink{def:zasoby-wlasne}{\textit{Zasoby własne} (ang. \textit{Custom Resources})} rozszerzają zasoby wbudowane (ang. \textit{buit-in resources}) o niestandardowe typy, zdefiniowane przez użytkownika. Najczęściej tworzone są w celu zarządzania konfiguracją skomplikowanych lub stanowych aplikacji, tam gdzie wbudowane typy zasobów, takie jak Pody, Wdrożenia (Deployments) czy Serwisy (Services), nie są wystarczające. Aby utworzyć nowy typ zasobu, należy:
+\begin{enumerate}
+    \item Zdefiniować plik manifestacyjny YAML typu Custom Resource Definition (CRD).
+    \item Zaaplikować CRD w klastrze Kubernetes.
+\end{enumerate}
 
-Czasami wbudowane typy zasobów (jak Pody, Wdrożenia (ang. \textit{Deployments}), Serwisy (ang. \textit{Services})) nie są dla nas wystarczające, dlatego Kubernetes udostępnia możliwość rejestrowania nowych typów. Aby tego dokonać należy stworzyć plik manifestacyjny YAML typu \textit{Custom Resource Definition} a następnie zaaplikować go w klastrze. Po pomyślnej operacji, będzie można tworzyć obiekty nowego typu.
+Po pomyślnym dodaniu definicji możliwe jest tworzenie obiektów nowego typu, które będą zarządzane przez Kubernetes w taki sam sposób jak zasoby wbudowane.
 
 \subsubsection{Operatory}
 
-Mechanizm ten służy do rozszerzania możliwości Kubernetes. Kiedy tworzymy Zasoby Własne (ang. \textit{Custom Resources}), możemy również implementować dla nich kontrolery. Takie podejście nazywane jest "wzorem operatora" ("operator-pattern"). Często takie kontrolery nazywamy po prostu "operatorami". Nazwa "operator" wywodzi się z idei, że taki kontroler zazwyczaj zastępuje rzeczywistego operatora (człowieka), który zarządzałby aplikacją (dla której wdrożenie wymagało zdefiniowania Zasobu Własnego).
-
+Operator to kolejny mechanizm rozszerzania Kubernetes. Kiedy tworzymy Zasoby Własne (ang. \textit{Custom Resources}), możemy również implementować dla nich kontrolery. Takie podejście nazywane jest "wzorem operatora" ("operator-pattern"). Nazwa ta wynika z faktu, że operator pełni funkcję automatycznego zarządcy, zastępując człowieka, który w przeciwnym razie musiałby ręcznie zarządzać wdrożeniem i konfiguracją aplikacji wymagającej Zasobów Własnych. Lupus wykorzystuje Zasoby Własne w celu reprezentacji zewnętrznego bytu, nie skomplikowanej aplikacji.
 \subsubsection{Kubebuilder}
 
-Kubebuilder jest frameworkiem programistycznym do tworzenia textit{Zasobów Własnych} oraz ich \textit{Operatorów}. Pozwala na to, aby zaprogramować sekcje zaznaczone na rysunku \ref{fig:42-flow2}.
+Kubebuilder jest frameworkiem programistycznym do tworzenia \textit{Zasobów Własnych} oraz ich \textit{Operatorów}. Pozwala zaprogramować sekcje przepływu pracy kontrolera zaznaczone na rysunku \ref{fig:42-flow2} jasno czerwonym kolorem.
 
 
 \begin{figure}[!h]

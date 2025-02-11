@@ -5,20 +5,20 @@ Niniejszy rozdział przedstawia wyzwania, z którymi się mierzono podczas pracy
 
 W trakcie realizacji projektu napotkano liczne wyzwania, w tym:
 \begin{itemize}
-    \item Konieczne było dogłębne zrozumienie platformy Kubernetes – nie tylko jej podstaw na poziomie operacyjnym, ale także mechanizmów działania warstwy sterowania. Tworzenie własnych operatorów jest uważane za bardzo zaawansowane zadanie w kontekście Kubernetes.
-    \item Wymyślenie w jaki sposób może działać operator, który nie ma zaszytej żadnej logiki pętli zajęło kilka iteracji implementacyjnych projektu. W każdej przybliżano się do celu od zaimplementowania konkretnej struktury pętli, gdzie każdy element był zasobem innego typu i posiadał oddzielny operator, poprzez stopniowe wynajdywanie części wspólnych operatorów, aż do stworzenia jednego typu elementu i interpretera akcji w operatorze
-    \item Jednym z największych wyzwań była implementacja obiektu \textbf{danych}. Ze względu na dynamicznie określaną w czasie działania strukturę, trudno jest reprezentować taki obiekt w Go, które jest językiem silnie typowanym. Po drugie, nawet jak już zareprezentuje się taki obiekt w pamięci, ciężko nim operować. Kwestie takie jak implementacja zagnieżdżania pól czy obsługa dzikiej karty (\texttt{*}) były bardzo czasochłonne.
-    \item Dużo pracy poświęcono wdrożeniu platformy Open5GS-k8s do testowania. Aspekt podłączenia zewnętrznego UE wymagał czasochłonnej analizy i edukacji rozszerzeń sieciowych używanych przez autora repozytorium\footnote{\url{https://github.com/niloysh/open5gs-k8s/issues/7}}.
-    \item Z racji skali projektu oraz jego naturze, gdzie efektem końcowym nie jest uzyskanie danej funkcjonalności, a zaproponowanie framework'u użytkownikom, czasochłonny był proces dokumentacji platformy
+    \item Dogłębne zrozumienie platformy Kubernetes – konieczne było opanowanie nie tylko jej podstaw operacyjnych, ale także mechanizmów działania warstwy sterowania. Tworzenie własnych operatorów jest uważane za zaawansowane zadanie, wymagające szczegółowej znajomości architektury Kubernetes.
+    \item Projektowanie operatora bez wbudowanej logiki pętli – znalezienie odpowiedniego podejścia wymagało kilku iteracji implementacyjnych. Początkowo każdy element pętli był osobnym zasobem z własnym operatorem. Stopniowe identyfikowanie części wspólnych doprowadziło do stworzenia jednego uniwersalnego typu elementu oraz interpretera akcji w operatorze.
+    \item Implementacja obiektu \textbf{danych} – ze względu na dynamicznie określaną w czasie działania strukturę, trudne było jego odwzorowanie w języku Go, który jest silnie typowany. Dodatkowo, nawet po skutecznej reprezentacji w pamięci, manipulowanie danymi okazało się wyzwaniem. Szczególnie czasochłonne były kwestie związane z obsługą zagnieżdżonych pól.
+    \item Wdrożenie platformy Open5GS-k8s do testowania – wymagało znacznego nakładu pracy, zwłaszcza w zakresie podłączania zewnętrznych urządzeń UE. Proces ten wiązał się z dogłębną analizą oraz nauką rozszerzeń sieciowych wykorzystywanych przez autora repozytorium\footnote{\url{https://github.com/niloysh/open5gs-k8s/issues/7}}.
+    \item Złożoność dokumentacji – ze względu na skalę projektu oraz jego charakter, w którym efektem końcowym nie jest konkretna funkcjonalność, lecz propozycja frameworka dla użytkowników, opracowanie kompletnej i przejrzystej dokumentacji okazało się czasochłonne.
+    \item 
 \end{itemize}
 
 \subsection{Analiza w odniesieniu do założeń} 
-
-Wszystkie wymagania zdefiniowane w podrozdziale \ref{sec:32} zostały spełnione. Jedynym niezrealizowanym wymaganiem pozostaje interfejs graficzny, określony w wymaganiu \ref{req:13}. Uzyskano platformę, za pomocą której można modelować zamknięte pętle sterowania, co potwierdzają wyniki przedstawione w rozdziale \ref{sec:5}. 
-
+Uzyskano platformę, za pomocą której można modelować, uruchamiać oraz zarządzać zamkniętymi pętlami sterowania, co potwierdzają wyniki przedstawione w rozdziale \ref{sec:5}. 
+Wszystkie wymagania zdefiniowane w podrozdziale \ref{sec:32} zostały spełnione. Jedynym brakiem można uznać niezaimplementowany w PoC interfejs graficzny określony w wymaganiu \ref{req:13}. 
 \subsection{Ograniczenia}
 
-Jednym z głównych ograniczeń jest długość plików kodu LupN. Są one bardzo długie, przez co ich czytelność jest ograniczona. Kolejnym ograniczeniem może być nadmierna ogólność – duży ciężar implementacji spoczywa na użytkowniku platformy.
+Jednym z głównych ograniczeń jest długość plików kodu LupN. Ich rozbudowana struktura może wpływać na czytelność oraz utrudniać analizę i edycję. Kolejnym ograniczeniem może być nadmierna ogólność – duży ciężar implementacji spoczywa na użytkowniku platformy. 
 
 \subsection{Porównanie z istniejącymi rozwiązaniami}
 
@@ -26,5 +26,5 @@ Jedynym bezpośrednio porównywalnym rozwiązaniem jest ONAP/CLAMP. Proponowana 
 
 \subsection{Możliwości rozwoju}
 
-Proponowana architektura, po wdrożeniu komercyjnym, może stać się integralną częścią systemów zarządzania zgodnych ze specyfikacjami ETSI ENI, ETSI ZSM lub TM Forum.
+W przypadku komercyjnej implementacji proponowanej architektury możliwe jest uzyskanie platformy, która może być integralną częścią systemów zarządzania sieciami telekomunikacyjnymi zgodnymi ze specyfikacjami ETSI ENI, ETSI ZSM oraz TM Forum.
 
