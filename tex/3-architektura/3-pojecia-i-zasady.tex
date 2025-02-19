@@ -1,7 +1,7 @@
-\subsection{Pojęcia i zasady}
+\subsection{Pojęcia i zasady}\label{sec:33}
 
-\subsubsection{Wstęp}
-Niniejszy rozdział dokumentuje \hyperlink{def:lupus}{\textbf{Lupus}}, przedstawiając kluczowe pojęcia, koncepcje i zasady, które zostały zdefiniowane na potrzeby jego architektury. Stanowią one punkt wyjścia zarówno do dalszej specyfikacji systemu, jak i zrozumienia jego struktury.
+%\subsubsection{Wstęp}
+Niniejszy podrozdział dokumentuje \hyperlink{def:lupus}{\textbf{Lupus}}, przedstawiając kluczowe pojęcia, koncepcje i zasady, które zostały zdefiniowane na potrzeby jego architektury. Stanowią one punkt wyjścia zarówno do dalszej specyfikacji systemu, jak i zrozumienia jego struktury.
 
 Rozdział zawiera liczne odnośniki do definicji zamieszczonych w załącznikach, dlatego nie wszystkie pojęcia są wyjaśniane bezpośrednio w tej sekcji.
 
@@ -117,7 +117,7 @@ Jeden \hyperlink{def:element-lupus}{\textbf{Element Lupus}} może komunikować s
 
 \subsubsection{Dane i Akcje}
 
-\hyperlink{def:dane}{\textbf{Dane}} (ang. \textit{data}) to nośnik informacji w ramach jednej iteracji pętli w formacie JSON. Na wejściu \hyperlink{def:element-ingres}{\textbf{Elementu Ingress}} reprezentują one \hyperlink{def:stan-aktualny}{\textbf{Stan Aktualny}} \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}. Następnie, w trakcie iteracji pętli, \hyperlink{def:projektant}{\textbf{Projektant}} decyduje, jakie informacje będą przenosić. Zazwyczaj są to informacje związane z \hyperlink{def:logika-petli}{\textbf{Logiką Pętli}}, takie jak wejścia (ang. \textit{inputs}) do \hyperlink{def:element-zewnetrzny}{\textbf{Elementów Zewnętrznych}} oraz ich odpowiedzi. Na końcu iteracji, gdy \hyperlink{def:dane}{\textbf{Dane}} trafiają do \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}, muszą reprezentować \hyperlink{def:akcja-sterujaca}{\textbf{Akcję Sterowania}}. 
+\hyperlink{def:data}{\textbf{Dane}} (ang. \textit{data}) to nośnik informacji w ramach jednej iteracji pętli w formacie JSON. Na wejściu \hyperlink{def:element-ingres}{\textbf{Elementu Ingress}} reprezentują one \hyperlink{def:stan-aktualny}{\textbf{Stan Aktualny}} \hyperlink{def:system-zarzadzany}{\textbf{Systemu Zarządzanego}}. Następnie, w trakcie iteracji pętli, \hyperlink{def:projektant}{\textbf{Projektant}} decyduje, jakie informacje będą przenosić. Zazwyczaj są to informacje związane z \hyperlink{def:logika-petli}{\textbf{Logiką Pętli}}, takie jak wejścia (ang. \textit{inputs}) do \hyperlink{def:element-zewnetrzny}{\textbf{Elementów Zewnętrznych}} oraz ich odpowiedzi. Na końcu iteracji, gdy \hyperlink{def:dane}{\textbf{Dane}} trafiają do \hyperlink{def:agent-egress}{\textbf{Agenta Egress}}, muszą reprezentować \hyperlink{def:akcja-sterujaca}{\textbf{Akcję Sterowania}}. 
 
 Działanie pojedynczego \hyperlink{def:element-lupus}{\textbf{Elementu Lupus}} jest opisane poprzez \hyperlink{def:workflow-petli}{\textbf{Workflow Akcji}}. \hyperlink{def:akcja}{\textbf{Akcje}} wykonują różne operacje na \hyperlink{def:dane}{\textbf{Danych}}. Istnieje wiele rodzajów akcji, a kluczowym jest "Send", który pozwala komunikować się \hyperlink{def:element-lupus}{\textbf{Elementowi Lupus}} z \hyperlink{def:element-zewnetrzny}{\textbf{Elementem Zewnętrznym}}. Inne typy akcji służą organizacji danych lub sterują przepływem danego przebiegu pętli.
 

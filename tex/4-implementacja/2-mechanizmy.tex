@@ -28,7 +28,7 @@ Po pomyślnym dodaniu definicji możliwe jest tworzenie obiektów nowego typu, k
 
 \subsubsection{Operatory}
 
-Operator to kolejny mechanizm rozszerzania Kubernetes. Kiedy tworzymy Zasoby Własne (ang. \textit{Custom Resources}), możemy również implementować dla nich kontrolery. Takie podejście nazywane jest "wzorem operatora" ("operator-pattern"). Nazwa ta wynika z faktu, że operator pełni funkcję automatycznego zarządcy, zastępując człowieka, który w przeciwnym razie musiałby ręcznie zarządzać wdrożeniem i konfiguracją aplikacji wymagającej Zasobów Własnych. Lupus wykorzystuje Zasoby Własne w celu reprezentacji zewnętrznego bytu, nie skomplikowanej aplikacji.
+Operator to kolejny mechanizm rozszerzania Kubernetes. Kiedy tworzymy Zasoby Własne (ang. \textit{Custom Resources}), możemy również implementować dla nich kontrolery. Takie podejście nazywane jest "wzorem operatora" ("operator-pattern"). Nazwa ta wynika z faktu, że operator pełni funkcję automatycznego zarządcy, zastępując człowieka, który w przeciwnym razie musiałby ręcznie zarządzać wdrożeniem i konfiguracją aplikacji wymagającej Zasobów Własnych. Lupus wykorzystuje zasoby własne w celu reprezentacji zewnętrznego bytu, nie skomplikowanej aplikacji.
 \subsubsection{Kubebuilder}
 
 Kubebuilder jest frameworkiem programistycznym do tworzenia \textit{Zasobów Własnych} oraz ich \textit{Operatorów}. Pozwala zaprogramować sekcje przepływu pracy kontrolera zaznaczone na rysunku \ref{fig:42-flow2} jasno czerwonym kolorem.

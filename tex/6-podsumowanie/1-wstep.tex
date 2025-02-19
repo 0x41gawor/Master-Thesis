@@ -1,30 +1,7 @@
-\subsection{Wstęp}
-Niniejszy rozdział przedstawia wyzwania, z którymi się mierzono podczas pracy, analizuje wyniki w odniesieniu do założeń i celów projektu, omawia możliwe ograniczenia uzyskanych rezultatów, porównuje je z istniejącymi rozwiązaniami oraz przedstawia perspektywy dalszego rozwoju.
+W ramach realizacji projektu opracowano koncepcje modelowania pętli sterowania jako zasoby własne (ang. \textit{Custom Resources}) w Kubernetes oraz wykorzystania ich atrybutów (pole \texttt{status}) jako sposób komunikacji między operatorami implementującymi podstawową logikę bloków funkcjonalnych pętli. Opracowano również schemat delegowania złożonych operacji do aplikacji zewnętrznych oraz model współpracy elementów pętli z takimi aplikacjami, zawierając w tym definicję notacji (języka), która opisuje zbiór operacji dostępnych na poziomie elementów pętli, związanych z obsługą tego styku.
 
-\subsection{Wyzwania}
+W trakcie implementacji napotkano szereg wyzwań.  Jednym z głównych aspektów było dogłębne zrozumienie platformy Kubernetes, wymagające nie tylko opanowania jej podstaw operacyjnych, ale także znajomości mechanizmów działania warstwy sterowania. Tworzenie operatorów na Kubernetes to zadanie zaawansowane, które wymaga szczegółowej wiedzy o architekturze tego środowiska. Kolejnym istotnym zagadnieniem było projektowanie operatora bez wbudowanej logiki pętli, który nie narzucałby żadnej konkretnej architektury. Początkowo każdy element pętli był osobnym zasobem z własnym operatorem. Stopniowe identyfikowanie części wspólnych doprowadziło do stworzenia jednego uniwersalnego typu elementu oraz interpretera akcji w operatorze.
 
-W trakcie realizacji projektu napotkano liczne wyzwania, w tym:
-\begin{itemize}
-    \item Dogłębne zrozumienie platformy Kubernetes – konieczne było opanowanie nie tylko jej podstaw operacyjnych, ale także mechanizmów działania warstwy sterowania. Tworzenie własnych operatorów jest uważane za zaawansowane zadanie, wymagające szczegółowej znajomości architektury Kubernetes.
-    \item Projektowanie operatora bez wbudowanej logiki pętli – znalezienie odpowiedniego podejścia wymagało kilku iteracji implementacyjnych. Początkowo każdy element pętli był osobnym zasobem z własnym operatorem. Stopniowe identyfikowanie części wspólnych doprowadziło do stworzenia jednego uniwersalnego typu elementu oraz interpretera akcji w operatorze.
-    \item Implementacja obiektu \textbf{danych} – ze względu na dynamicznie określaną w czasie działania strukturę, trudne było jego odwzorowanie w języku Go, który jest silnie typowany. Dodatkowo, nawet po skutecznej reprezentacji w pamięci, manipulowanie danymi okazało się wyzwaniem. Szczególnie czasochłonne były kwestie związane z obsługą zagnieżdżonych pól.
-    \item Wdrożenie platformy Open5GS-k8s do testowania – wymagało znacznego nakładu pracy, zwłaszcza w zakresie podłączania zewnętrznych urządzeń UE. Proces ten wiązał się z dogłębną analizą oraz nauką rozszerzeń sieciowych wykorzystywanych przez autora repozytorium\footnote{\url{https://github.com/niloysh/open5gs-k8s/issues/7}}.
-    \item Złożoność dokumentacji – ze względu na skalę projektu oraz jego charakter, w którym efektem końcowym nie jest konkretna funkcjonalność, lecz propozycja frameworka dla użytkowników, opracowanie kompletnej i przejrzystej dokumentacji okazało się czasochłonne.
-    \item 
-\end{itemize}
+Dodatkowym wyzwaniem okazała się implementacja obiektu \textbf{danych} – ze względu na dynamicznie określaną w czasie działania strukturę, trudne było jego odwzorowanie w języku Go, który jest silnie typowany. Dodatkowo, nawet po skutecznej reprezentacji w pamięci, manipulowanie danymi okazało się wyzwaniem. Szczególnie czasochłonne były kwestie związane z obsługą zagnieżdżonych pól. Istotnym aspektem była również konfiguracja platformy Open5GS-k8s. Jej wdrożenie wymagało znacznego nakładu pracy, zwłaszcza w zakresie podłączania zewnętrznych urządzeń UE. Proces ten wiązał się z dogłębną analizą oraz nauką rozszerzeń sieciowych wykorzystywanych przez autora repozytorium\footnote{\url{https://github.com/niloysh/open5gs-k8s/issues/7}}, na którym bazowano. 
 
-\subsection{Analiza w odniesieniu do założeń} 
-Uzyskano platformę, za pomocą której można modelować, uruchamiać oraz zarządzać zamkniętymi pętlami sterowania, co potwierdzają wyniki przedstawione w rozdziale \ref{sec:5}. 
-Wszystkie wymagania zdefiniowane w podrozdziale \ref{sec:32} zostały spełnione. Jedynym brakiem można uznać niezaimplementowany w PoC interfejs graficzny określony w wymaganiu \ref{req:13}. 
-\subsection{Ograniczenia}
-
-Jednym z głównych ograniczeń jest długość plików kodu LupN. Ich rozbudowana struktura może wpływać na czytelność oraz utrudniać analizę i edycję. Kolejnym ograniczeniem może być nadmierna ogólność – duży ciężar implementacji spoczywa na użytkowniku platformy. 
-
-\subsection{Porównanie z istniejącymi rozwiązaniami}
-
-Jedynym bezpośrednio porównywalnym rozwiązaniem jest ONAP/CLAMP. Proponowana platforma oferuje dużo większą elastyczność modelowanych pętli oraz daje dowolność wyboru silnika polityk.
-
-\subsection{Możliwości rozwoju}
-
-W przypadku komercyjnej implementacji proponowanej architektury możliwe jest uzyskanie platformy, która może być integralną częścią systemów zarządzania sieciami telekomunikacyjnymi zgodnymi ze specyfikacjami ETSI ENI, ETSI ZSM oraz TM Forum.
-
+Pomimo napotkanych trudności udało się osiągnąć cel projektu – stworzenie platformy umożliwiającej modelowanie, uruchamianie oraz zarządzanie zamkniętymi pętlami sterowania. Wszystkie założenia projektowe zostały spełnione, z wyjątkiem interfejsu graficznego, którego implementacja w wersji demonstracyjnej nie została uwzględniona. Ograniczeniem platformy może być długość plików modelujących pętle, co potencjalnie wpływa na ich czytelność i utrudnia manualną edycję. Dodatkowo, szeroka elastyczność systemu powoduje, że znaczna część decyzji implementacyjnych pozostaje w gestii użytkownika. W kontekście dalszego rozwoju potencjalnymi kierunkami wydają się być integracja z silnikami AI, które mogłyby wspomóc procesy decyzyjne na styku "północnym", wprowadzenie interfejsu graficznego pozwalającego symbolicznie definiować pętle oraz rozwój mechanizmów komunikacji między modułami poprzez wykorzystanie zasobów własnych (ang. \textit{Custom Resources}) w stronę architektury bazującej na "szynie danych".

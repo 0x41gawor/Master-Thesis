@@ -1,20 +1,18 @@
-\subsection{Przegląd architektur zamkniętych pętli sterowania ENI}\hypertarget{sec:25}{}
+\subsection{Architektury zamkniętych pętli sterowania ENI}\hypertarget{sec:25}{}\label{sec:25}
 
-\subsubsection{Wstęp}
-
-Pętle sterowania przedstawione w tej sekcji stanowią punkt odniesienia dla późniejszej analizy, której celem jest sformułowanie wymagań dla platformy. Opis bazuje na \cite{etsieni2024}, gdzie dokonano przeglądu architektur zamkniętych pętli sterowania w kontekście ich integracji z modularną architekturą ENI.
+Pętle sterowania przedstawione w tym podrozdziale stanowią punkt odniesienia dla późniejszej analizy, której celem jest sformułowanie wymagań dla platformy. Opis bazuje na \cite{etsieni2024}, gdzie dokonano przeglądu architektur zamkniętych pętli sterowania w kontekście ich zastosowania w architekturze ENI.
 
 \subsubsection{Typy pętli sterowania}
 
 Większość architektur pętli sterowania dla systemów kognitywnych i adaptywnych używa mechanizmów:
 \begin{itemize}
-    \item sprzężenia zwrotnego (ang. \textit{ang. feedback}) - mechanizm, w którym system reaguje na swoje wyjście i dostowosuje swoje działanie na podstawie wyników,
-    \item sprzężenia wyprzedzającego (ang. \textit{ang. feedforward}) - mechanizm, w którym system przewiduje przyszłe zmiany i podejmuje działania, zanim błąd faktycznie się pojawi.
+    \item sprzężenia zwrotnego (ang. \textit{feedback}) - mechanizm, w którym system reaguje na swoje wyjście i dostowosuje swoje działanie na podstawie wyników,
+    \item sprzężenia wyprzedzającego (ang. \textit{feedforward}) - mechanizm, w którym system przewiduje przyszłe zmiany i podejmuje działania, zanim błąd faktycznie się pojawi.
 \end{itemize}
 
-Te sygnały odgrywają kluczową rolę w stabilizowaniu systemu, ale też jego umiejętności empirycznego uczenia się. Pętlę, która wykorzystuje mechanizm feedbacku nazywamy \textbf{zamkniętą}.
+Pętlę, która wykorzystuje mechanizm feedbacku nazywamy \textbf{zamkniętą}.
 
-\textbf{Hierarchiczna} koordynacja (organizacja) pętli ma strukturę drzewa. Organizacja ta pozwala, aby różne decyzje podejmowane były przez rożne węzły. W ogólności, istnieje zestaw nadrzędnych (ang. \textit{supervisory}) pętli, które alokują zadania do pętli podwładnych (ang. \textit{subordinary}). Każda podrzędna pętla wykonuje swoje zadania i zwraca rezultaty do swojej pętli nadrzędnej. 
+\textbf{Hierarchiczna} koordynacja (organizacja) pętli ma strukturę drzewa. Organizacja ta pozwala, aby różne decyzje podejmowane były przez rożne węzły. Zazwyczaj, istnieje zestaw nadrzędnych (ang. \textit{supervisory}) pętli, które alokują zadania do pętli podwładnych (ang. \textit{subordinary}). Każda podrzędna pętla wykonuje swoje zadania i zwraca rezultaty do swojej pętli nadrzędnej. 
 
 Zaawansowane zastosowania pozwalają jednej grupie dedykowanych pętli przejąć kontrolę nad hierarchią w zależności od celów i zmian w środowisku. 
 
@@ -35,7 +33,7 @@ Pętla \textbf{rozproszona} składa się z komponentów działających w różny
 \subsubsection{OODA}
 Architektura pętli OODA \cite{boyd1995} jest widoczna na Rysunku \ref{fig:25-ooda}.
 
-Widoczne jest iż, każdy element posiada komunikację na trzech płaszczyznach:
+Widoczne jest iż, każdy element komunikuje się na trzech płaszczyznach:
 \begin{itemize}
     \item Otrzymywanie danych od poprzedniego elementu lub ze środowiska zewnętrznego.
     \item Przekazywanie feedbacku do elementu „Observe” (z wyjątkiem „Orient”).
@@ -96,7 +94,7 @@ Architektura COMPA (Control, Orchestration, Management, Policies, Analytics) \ci
 \end{figure}
 
 \subsubsection{Focale v3}
-Architektura pętli Focale v3 \cite{strassner2009} jest widoczna na Rysunku \ref{fig:25-focalev3}. Jest to kolejna wersja architektury Focale, która to zamiast używać dwóch alternatywnych pętli proponuje dwie nieustannie działające pętle. Jedna zewnętrzna, używana do rekoncyliacji systemu zarządzanego na większą skale w ramach reagowanie na zmiany kontekstu środowiska. Druga wewnętrzna, do rekoncyliacji w ramach jednego określone kontekstu (sytuacji) np. w jednej iteracji. Obie mają 3 alternatywne przebiegi inspirowane \cite{minsky1986}. Przebieg reaktywny używany jest w wypadku gdy zmiany kontekstu już kiedyś się wydarzyły i były przeanalizowane. Przebieg obradujący (ang. \textit{deliberative}) jest wykorzystywany gdy zmiana kontekstu jest znana, ale jej detale nie są jeszcze zrozumiane na tyle, aby móc podjąć natychmiastową akcję. Przebieg refleksyjny ma miejsce, gdy zachodzą zupełnie nowe zmiany kontekstu i system musi się dopiero nauczyć jak sobie z nimi radzić. W kontekście komunikacji elementów wersja ta nie wnosi nic poza to co pętla FOCALE.
+Architektura pętli Focale v3 \cite{strassner2009} jest widoczna na Rysunku \ref{fig:25-focalev3}. Jest to kolejna wersja architektury Focale, która zamiast używać dwóch alternatywnych pętli proponuje dwie nieustannie działające pętle. Jedna zewnętrzna, używana do rekoncyliacji systemu zarządzanego na większą skale w ramach odpowiedzi na zmiany kontekstu środowiska. Druga wewnętrzna, do rekoncyliacji w ramach jednego określonego kontekstu (sytuacji) np. w jednej iteracji. Obie mają 3 alternatywne przebiegi inspirowane \cite{minsky1986}. Przebieg reaktywny używany jest w wypadku gdy zmiany kontekstu już kiedyś się wydarzyły i były przeanalizowane. Przebieg obradujący (ang. \textit{deliberative}) jest wykorzystywany gdy zmiana kontekstu jest znana, ale jej detale nie są jeszcze zrozumiane na tyle, aby móc podjąć natychmiastową akcję. Przebieg refleksyjny ma miejsce, gdy zachodzą zupełnie nowe zmiany kontekstu i system musi się dopiero nauczyć jak sobie z nimi radzić. W kontekście komunikacji elementów wersja ta nie wnosi nic poza to co pętla FOCALE.
 
 \begin{figure}[!h]
     \centering \includegraphics[width=1\linewidth]{25-focalev3.png}
