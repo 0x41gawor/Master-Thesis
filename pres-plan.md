@@ -46,8 +46,30 @@
 - Architektury ETSI ZSM oraz CLADRA opierają się na uruchamianiu wielu równoległych zamkniętych pętli sterowania, które orkiestrują pracą serwisów zarządzania
 - To co praca wnosi nowego do tematu to elastyczność, której brakuje w ONAP oraz model kompatybilny z architekturami ETSI
 ## 4. Realizacja projektu
-- Na podstawie przeglądu literatury zdefiniowano wymagania na platformę, co doprowadziło do wyboru Kubernetes jako środowiska uruchomieniowego.
-- Następnie przy pomocy framework Kubebuilder rozwijano PoC opierające się na mechanizmach rozszerzeń Kubernetes (jak Custom Resources czy Operator Pattern) mające na celu walidacje opracowywanych koncepcji
+Na podstawie przeglądu literatury zdefiniowano wymagania na platformę:
+1. Środowisko wykonawcze powinno być dobrze znane w branży teleinformatycznej
+2. Środowisko wykonawcze powinno wspierać 12 pryncypiów architektury ZSM
+3. Środowisko wykonawcze powinno być cloud-native
+4. Platforma musi wspierać komunikację pomiędzy elementami pętli poprzez "pobudzanie" ich danymi
+5. Platforma musi wspierać koordynację pomiędzy pętlami w sposób hierarchiczny, federacyjny oraz rekurencyjny
+6. Elementy pętli działają współbieżnie
+7. Część obliczeniowa logiki pętli musi być delegowana do komponentów zewnętrznych
+8. Element może pobudzać wiele innych elementów lub komunikować się ze środowiskiem zewnętrznym
+9. Element pętli może zawierać wewnętrzne workflow, umożliwiające m.in. podejmowanie decyzji zmieniających przebieg pętli w danej iteracji
+10. Elementy pętli są sterowane danymi (data-driven) i nie powinny narzucać żadnej logiki działania
+11. Modelowanie pętli powinno być ustandaryzowane i ujednolicone poprzez określoną notację lub język
+12. Zastosowana notacja nie powinna wymagać specjalistycznych umiejętności technicznych
+13. Kod w notacji powinien móc być generowany za pomocą interfejsu graficznego
+14. Notacja powinna w jednolity sposób definiować zarządzany przez siebie byt
+15. Pętla komunikująca się ze środowiskiem zewnętrznym powinna wykorzystywać komponent pośredniczący, który umożliwia translację formatów danych oraz integrację.
+16. Platforma powinna zapewniać wszystkie funkcje zarządzania pętlami zdefiniowane w architekturze referencyjnej CLADRA
+
+Z racji wymagań 1-3 oraz 16 jako środowisko wykonawcze wybrano Kubernetes.
+
+Wyrażenie elementów pętli jako zasobów Kubernetes pozwala spełnić wymagania 4 oraz 6. Dalsze prace nad projektem skupiły się na opracowaniu operatora oraz specyfikacji takiego zasobu. Zgodnie z wymaganiami 11, 12 i 13 opracowano notację (język) umożliwiającą wyrażanie logiki elementów pętli, w tym: workflow decyzyjnych (wymaganie 9) opartych na danych (wymaganie 10) oraz delegowania złożonych obliczeń na zewnątrz (wymaganie 7).  Dodatkowo wyspecyfikowano interfejsy umożliwiające komunikację elementów pętli ze środowiskiem zewnętrznym.
+
+> Możliwe, że ten "slajd" graficznie będzie składał się z np. dwóch. Tekst zostanie okrojony, ten dokument specyfikuje informacje przekazywane podczas prezentacji na danym slajdzie, nie jego treść.
+
 ## 5. Opis rozwiązania
 - Schemat komunikacji między elementami pętli. Rysunek 4.4:
 <img src="tex/img/43-komunikacja.png" style="zoom:50%">
@@ -55,12 +77,15 @@
 <img src="tex/img/33-workflow-akcji.png" style="zoom:50%"> 
 - Logiczne workflow elementów pętli. Rysunek 3.4:
 <img src="tex/img/33-workflow.png" style="zoom:50%">
-- Krótka instrukcja użytkowania: wyrażanie pętli w notacji LupN
+- Wyrażanie logiki pętli w notacji LupN
+// Tu jakiś screen z notacją
+- Krótka instrukcja użytkowania -> wypisane kroki jakie należy podjąć
 
 ## 6. Efekty projektu
 - Co uzyskano? 
 > Platforma, bazując na wbudowanych mechanizmach warstwy sterowania Kubernetes, umożliwia użytkownikowi modelowanie złożonych scenariuszy sterowania w formie pętli. Logika bloków funkcjonalnych zawartych w scenariuszach może być wyniesiona do specjalizowanych aplikacji. Platforma integruje te bloki w spójny przepływ pracy (ang. *workflow*), jednocześnie umożliwiając modularność pętli - horyzontalnie, poprzez mechanizmy zasobów własnych (ang. *Custom Resources*) i komunikacji między nimi (modyfikacje atrybutów i rekoncyliacja operatorów) oraz wertykalnie, dzięki wprowadzonym mechanizmom komunikacji i przetwarzania, realizowanym za pomocą opracowanej składni.  W tym też kontekście niniejsza praca nie koncentruje się na aspektach związanych ze sztuczną inteligencją. Opracowana platforma ma służyć do modelowania, uruchamiania i zarządzania przepływem pracy (ang. *workflow*) w złożonych pętlach sterowania, ale sama nie stanowi środowiska wykonawczego dla jej zaawansowanych komponentów (np. silników polityk czy narzędzi AI/ML).
 - Wykonano test przy użyciu emulatora 5G złożonego z Open5GS oraz UERANSIM.
+// rysunki
 ## 7. Podsumowanie
 - Główne osiągnięcia pracy:
     - Opracowanie koncepcji modelowania zamkniętych pętli sterowania jako zbioru zasobów Kubernetes
