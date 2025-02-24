@@ -36,37 +36,37 @@
 - Politechnika Warszawska, Wydział Elektroniki i Technik Informacyjnych, Teleinformatyka i cyberbezpieczeństwo
 - 27.02.2025
 ## 2. Wprowadzenie
-- Treść sekcji 1.1: Obserwacja wzrostu skomplikowania sieci, enablers w postaci AI/ML oraz SDN/NFV, autonomiczne sieci, prace ETSI ZSM oraz ENI, zamknięte pętle sterowania jako centralny punkt konceptu, brak platformy do modelowania oraz wdrażania zamkniętych pętli sterowania
-- Treść sekcji 1.2: Zaproponowanie architektury platformy, za pomocą której możliwe jest modelowanie, uruchamianie oraz zarządzanie pętlami sterowania, która może stanowić jako podstawa do implementacji jednego z modułów Kognitywnych i Autonomicznych Systemów Zarządzania Siecią specyfikowanych przez ETSI.
+Obserwujemy nieustanny wzrost skomplikowania sieci telekomunikacyjnych przez co coraz ciężej manualnie nimi operować. Pojawienie się takich technologii jak wirtualizacja i programowalność sieci oraz rozwoj sztucznej inteligencji stanowią solidną podstawę do tego, aby w telekomunikacji pojawiły się w pełni autonomiczne systemy zarządzania sieciami oparte o AI. Dwa komitety ETSI (Zero Touch Network and Service Management) oraz Experiential Networked Intelligence pracują nad specyfikacjami w tym kierunku. Punktem centralnym takich systemów są tytułowe pętle sterowania. 
+
+Celem pracy jest opracowanie platformy, która umożliwia modelowani, uruchamiania oraz zarządzanie złożonymi pętlami sterowania. 
 ## 3. Przegląd literatury
-- Treść rozdziału 2
-- Rysunek 2.2 "Zestawienie lini czasu rozwoju systemów zarządzania siecią oraz pętli sterowania", komentarz: systemy telco są słabo określonymi stochastycznymi systemami, co opóźniło zastosowanie zamkniętych pętli sterowania
-- Cytat z [6]: "Dotychczasowe rozwiązania są zbyt pragmatyczne i sztywne, skupione na wdrożeniu danej funkcjonalności"
-- Przykładowo ONAP/CLAMP narzuca określoną architekturę pętli (MAPE-K) oraz współpraca jedynie w zakresie ONAP (w tym wybrane silniki polityk)
-- Architektury ETSI ZSM oraz CLADRA opierają się na uruchamianiu wielu równoległych zamkniętych pętli sterowania, które orkiestrują pracą serwisów zarządzania
-- To co praca wnosi nowego do tematu to elastyczność, której brakuje w ONAP oraz model kompatybilny z architekturami ETSI
+
+Pracę rozpoczęto od przeglądu literatury. 
+
+Ogólnie zamknięte pętle sterowania są już dosyć dobrze znane ludzkość w innych branżach, jednakże ze względu na to, że systemy telekomunikacyjne są słabo określonymi stochastycznymi systemami dopiero wkraczają do tej branży.
+
+Od momentu pojawienia się SDN czy NFV w latach 2010 obserwujemy zastosowanie zamkniętych pęli sterowania na rynku, jednakże są to często implementacje określone tylko na jeden specyficzny problem i ciężko przenieść je na inne przypadki. W systemie zarządzania sieciami ONAP (Open Network Automation Platform) istnieje komponent CLAMP (Closed Loop Automation Management Platform), który umożliwia tworzenie zamkniętych pętli sterowania jednakże tam narzucona jest konkretna architektura pęli (tzw. MAPE-K) oraz okrojony jest wybór komponentów do współpracy. Kluczowym znaleziskiem jest również fakt, iż specyfikowane przez ETSI oraz CLADRA architektury opierają się o wiele działających równolegle pętlach sterowania, które orkiestrują pracą różnych serwisów zarządzania.
+
+W związku z tym w pracy zdefiniowano lukę badawczą w postaci braku platformy, które umożliwia modelowanie i uruchamianie zamkniętych pętli sterowania w dodatku nie narzuca żadnej architektury pęli oraz żadnych komponentów współpracy oraz dodatkowo jest kompatybilna z modelem świeżo specyfikowanych architektur ETSI czy CLADRA.
+
+## 3. Wymagania oraz założenia
+
+Bezpośrednio z literatury zdefiniowano trzy wymagania wejściowe. Platforma ma pozwalać modelować pętle w ustandaryzowany sposób, musi potrafić integrować pętle ze środowiskiem zewnętrznym poza platformę oraz pozwalać zarządzać cyklem życia pętli sterowania.
+
+Następnie w drodze badań formułowano wymagania szczegółowe dotyczące po pierwsze samych elementów pętli oraz po drugie środowiska wykonawczego, tak aby nie pisać platformy od zera.
+
+Wymagania na elementy wywiedziono z ponownej analizy literatury z dokumentów, które omawiają znane już ludzkości architektury pętli sterowania, za cel platformy postawiono możliwość ich realizacji. 
+
 ## 4. Realizacja projektu
-Na podstawie przeglądu literatury zdefiniowano wymagania na platformę:
-1. Środowisko wykonawcze powinno być dobrze znane w branży teleinformatycznej
-2. Środowisko wykonawcze powinno wspierać 12 pryncypiów architektury ZSM
-3. Środowisko wykonawcze powinno być cloud-native
-4. Platforma musi wspierać komunikację pomiędzy elementami pętli poprzez "pobudzanie" ich danymi
-5. Platforma musi wspierać koordynację pomiędzy pętlami w sposób hierarchiczny, federacyjny oraz rekurencyjny
-6. Elementy pętli działają współbieżnie
-7. Część obliczeniowa logiki pętli musi być delegowana do komponentów zewnętrznych
-8. Element może pobudzać wiele innych elementów lub komunikować się ze środowiskiem zewnętrznym
-9. Element pętli może zawierać wewnętrzne workflow, umożliwiające m.in. podejmowanie decyzji zmieniających przebieg pętli w danej iteracji
-10. Elementy pętli są sterowane danymi (data-driven) i nie powinny narzucać żadnej logiki działania
-11. Modelowanie pętli powinno być ustandaryzowane i ujednolicone poprzez określoną notację lub język
-12. Zastosowana notacja nie powinna wymagać specjalistycznych umiejętności technicznych
-13. Kod w notacji powinien móc być generowany za pomocą interfejsu graficznego
-14. Notacja powinna w jednolity sposób definiować zarządzany przez siebie byt
-15. Pętla komunikująca się ze środowiskiem zewnętrznym powinna wykorzystywać komponent pośredniczący, który umożliwia translację formatów danych oraz integrację.
-16. Platforma powinna zapewniać wszystkie funkcje zarządzania pętlami zdefiniowane w architekturze referencyjnej CLADRA
 
 Z racji wymagań 1-3 oraz 16 jako środowisko wykonawcze wybrano Kubernetes.
+Wyrażenie elementów pętli jako zasobów Kubernetes pozwala spełnić wymagania 4 oraz 6. 
 
-Wyrażenie elementów pętli jako zasobów Kubernetes pozwala spełnić wymagania 4 oraz 6. Dalsze prace nad projektem skupiły się na opracowaniu operatora oraz specyfikacji takiego zasobu. Zgodnie z wymaganiami 11, 12 i 13 opracowano notację (język) umożliwiającą wyrażanie logiki elementów pętli, w tym: workflow decyzyjnych (wymaganie 9) opartych na danych (wymaganie 10) oraz delegowania złożonych obliczeń na zewnątrz (wymaganie 7).  Dodatkowo wyspecyfikowano interfejsy umożliwiające komunikację elementów pętli ze środowiskiem zewnętrznym.
+Dalsze prace nad projektem skupiły się na opracowaniu operatora oraz specyfikacji takiego zasobu. 
+
+Zgodnie z wymaganiami 11, 12 i 13 opracowano notację (język) umożliwiającą wyrażanie logiki elementów pętli, w tym: workflow decyzyjnych (wymaganie 9) opartych na danych (wymaganie 10) oraz delegowania złożonych obliczeń na zewnątrz (wymaganie 7). 
+
+Dodatkowo wyspecyfikowano interfejsy umożliwiające komunikację elementów pętli ze środowiskiem zewnętrznym.
 
 > Możliwe, że ten "slajd" graficznie będzie składał się z np. dwóch. Tekst zostanie okrojony, ten dokument specyfikuje informacje przekazywane podczas prezentacji na danym slajdzie, nie jego treść.
 
@@ -75,8 +75,6 @@ Wyrażenie elementów pętli jako zasobów Kubernetes pozwala spełnić wymagani
 <img src="tex/img/43-komunikacja.png" style="zoom:50%">
 - Workflow akcji w obrębie pojedynczego elementu. Rysunek 3.5:
 <img src="tex/img/33-workflow-akcji.png" style="zoom:50%"> 
-- Logiczne workflow elementów pętli. Rysunek 3.4:
-<img src="tex/img/33-workflow.png" style="zoom:50%">
 - Wyrażanie logiki pętli w notacji LupN
 // Tu jakiś screen z notacją
 - Krótka instrukcja użytkowania -> wypisane kroki jakie należy podjąć
@@ -84,7 +82,7 @@ Wyrażenie elementów pętli jako zasobów Kubernetes pozwala spełnić wymagani
 ## 6. Efekty projektu
 - Co uzyskano? 
 > Platforma, bazując na wbudowanych mechanizmach warstwy sterowania Kubernetes, umożliwia użytkownikowi modelowanie złożonych scenariuszy sterowania w formie pętli. Logika bloków funkcjonalnych zawartych w scenariuszach może być wyniesiona do specjalizowanych aplikacji. Platforma integruje te bloki w spójny przepływ pracy (ang. *workflow*), jednocześnie umożliwiając modularność pętli - horyzontalnie, poprzez mechanizmy zasobów własnych (ang. *Custom Resources*) i komunikacji między nimi (modyfikacje atrybutów i rekoncyliacja operatorów) oraz wertykalnie, dzięki wprowadzonym mechanizmom komunikacji i przetwarzania, realizowanym za pomocą opracowanej składni.  W tym też kontekście niniejsza praca nie koncentruje się na aspektach związanych ze sztuczną inteligencją. Opracowana platforma ma służyć do modelowania, uruchamiania i zarządzania przepływem pracy (ang. *workflow*) w złożonych pętlach sterowania, ale sama nie stanowi środowiska wykonawczego dla jej zaawansowanych komponentów (np. silników polityk czy narzędzi AI/ML).
-- Wykonano test przy użyciu emulatora 5G złożonego z Open5GS oraz UERANSIM.
+- Wykonano test przy użyciu emulatora 5G złożonego z Open5GS oraz UERANSIM.https://www.canva.com/design/DAFMhjC8sjY/bPWI_XifbD9yie0nFcpKWw/edit
 // rysunki
 ## 7. Podsumowanie
 - Główne osiągnięcia pracy:
@@ -92,7 +90,7 @@ Wyrażenie elementów pętli jako zasobów Kubernetes pozwala spełnić wymagani
     - Opracowanie koncepcji wykorzystania atrybutów zasobów Kubernetes jako kanału komunikacji między elementami pętli
     - Opracowanie koncepcji realizacji logiki elementów pętli za pomocą operatorów Kubernetes
     - Opracowanie koncepcji delegowania złożonych operacji zarządzania do aplikacji wewnętrznych i model współpracy elementów pętli z takimi aplikacjami
-    - Opracowanie notacji (języka) opisującej działanie elementów pętli w tym zarządzanie danymi oraz delegowanie złożonych operacji
+    - Opracowanie notacji (języka) opisującej działanie elementów pętli (w tym zarządzanie danymi, zmiany przebiegu pojedynczych iteracji oraz delegowanie złożonych operacji)
 - Kierunki rozwoju:
     - Integracja z silnikami AI lub innymi silnikami polityk niż Open Policy Agent
     - Wprowadzenie interfejsu graficznego pozwalającego symbolicznie definiować pętle
